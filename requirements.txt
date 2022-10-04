@@ -1,0 +1,7 @@
+numpy>=1.15.1
+joblib==1.1.0
+scikit-learn==1.0.1
+mealpy>=2.5.0
+permetrics>=1.3.0
+opfunu>=1.0.0
+
