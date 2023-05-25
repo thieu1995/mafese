@@ -52,30 +52,27 @@ class Recursive(Selector):
 
     Examples
     --------
-    import pandas as pd
-    from mafese.wrapper.recursive import Recursive
+    The following example shows how to retrieve the 5 most informative features in the Recursive FS method
 
-    # load X and y
-    # NOTE mafese accepts numpy arrays only, hence the .values attribute
-    X = pd.read_csv('examples/test_X.csv', index_col=0).values
-    y = pd.read_csv('examples/test_y.csv', header=None, index_col=0).values
-    y = y.ravel()
-
-    # define mafese feature selection method
-    feat_selector = Recursive(problem="classification", estimator="rf", n_features=5)
-
-    # find all relevant features - 5 features should be selected
-    feat_selector.fit(X, y)
-
-    # check selected features - True (or 1) is selected, False (or 0) is not selected
-    print(feat_selector.selected_feature_masks)
-    print(feat_selector.selected_feature_solution)
-
-    # check the index of selected features
-    print(feat_selector.selected_feature_indexes)
-
-    # call transform() on X to filter it down to selected features
-    X_filtered = feat_selector.transform(X)
+    >>> import pandas as pd
+    >>> from mafese.wrapper.recursive import Recursive
+    >>> # load dataset
+    >>> dataset = pd.read_csv('your_path/dataset.csv', index_col=0).values
+    >>> X, y = dataset[:, 0:-1], dataset[:, -1]     # Assumption that the last column is label column
+    >>> # define mafese feature selection method
+    >>> feat_selector = Recursive(problem="classification", estimator="rf", n_features=5)
+    >>> # find all relevant features - 5 features should be selected
+    >>> feat_selector.fit(X, y)
+    >>> # check selected features - True (or 1) is selected, False (or 0) is not selected
+    >>> print(feat_selector.selected_feature_masks)
+    array([ True, True, True, False, False, True, False, False, False, True])
+    >>> print(feat_selector.selected_feature_solution)
+    array([ 1, 1, 1, 0, 0, 1, 0, 0, 0, 1])
+    >>> # check the index of selected features
+    >>> print(feat_selector.selected_feature_indexes)
+    array([ 0, 1, 2, 5, 9])
+    >>> # call transform() on X to filter it down to selected features
+    >>> X_filtered = feat_selector.transform(X)
     """
 
     SUPPORTED_ESTIMATORS = ["rf", "svm"]
