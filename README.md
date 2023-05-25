@@ -228,7 +228,22 @@ We share lots of information, questions, and answers there. You will get more su
 
 
 
-## References 
+# References 
+
+If you are using mafese in your project, we would appreciate citations:
+
+```code 
+@software{nguyen_van_thieu_2023_7969043,
+  author       = {Nguyen Van Thieu},
+  title        = {MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library},
+  month        = may,
+  year         = 2023,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.7969042},
+  url          = {https://github.com/thieu1995/mafese}
+}
+```
+
 
 
 ```code 
