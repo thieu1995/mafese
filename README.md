@@ -1,5 +1,5 @@
 
-<p align="center"><img src=".github/img/logo.png" alt="MAFESE" title="MAFESE"/></p>
+<p align="center"><img style="height:300px;" src=".github/img/logo.png" alt="MAFESE" title="MAFESE"/></p>
 
 ---
 
