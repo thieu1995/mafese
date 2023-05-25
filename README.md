@@ -200,8 +200,16 @@ X_test_selected = feat_selector.transform(data.X_test)
 ```
 
 
+
 For more usage examples please look at [examples](/examples) folder.
 
+### Shortcut 
+To call the class
+
+```code 
+from mafese import Data, get_dataset
+from mafese import SequentialSelector, RecursiveSelector, FilterSelector
+```
 
 
 # Get helps (questions, problems)

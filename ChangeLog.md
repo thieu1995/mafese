@@ -5,7 +5,10 @@
 + Add citation
 + Add tests
 + Add docs
-
++ Rename classes:
+  + Sequential to SequentialSelector
+  + Recursive to RecursiveSelector
+  + Filter to FilterSelector
 
 ---------------------------------------------------------------------
 
