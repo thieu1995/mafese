@@ -1,7 +1,6 @@
 docs/
 tests/
 .flake8
-.github/
 
 examples.md
 # Pycharm

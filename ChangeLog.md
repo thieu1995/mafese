@@ -18,5 +18,7 @@
 + Add wrapper module:
   + sequential-based
   + recursive-based
-  + mha-based
++ Add filter-based module.
++ Add examples
++ Add infors (ChangeLog.md, MANIFEST.in, LICENSE, README.md, requirements.txt)
 
