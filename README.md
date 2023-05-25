@@ -28,7 +28,7 @@ using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 170 methods 
-* **Total Filter-based (Statistical-based)**: > 6 methods
+* **Total FilterSelector-based (Statistical-based)**: > 6 methods
 * **Total classification dataset**: > 20 datasets
 * **Total estimator methods**: > 3 methods
 * **Total performance metrics (as fitness)**: > 10 metrics
@@ -179,10 +179,10 @@ X_test_selected = feat_selector.transform(data.X_test)
 Or, how to use Filter-based feature selection with different correlation methods:
 
 ```python
-from mafese.filter import Filter
+from mafese.filter import FilterSelector
 
 # define mafese feature selection method
-feat_selector = Filter(problem='classification', method='SPEARMAN', n_features=5)
+feat_selector = FilterSelector(problem='classification', method='SPEARMAN', n_features=5)
 
 # find all relevant features - 5 features should be selected
 feat_selector.fit(data.X_train, data.y_train)

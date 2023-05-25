@@ -131,10 +131,10 @@ Or, how to use Sequential (backward or forward) wrapper-based method::
 
 Or, how to use Filter-based feature selection with different correlation methods::
 
-	from mafese.filter import Filter
+	from mafese.filter import FilterSelector
 
 	# define mafese feature selection method
-	feat_selector = Filter(problem='classification', method='SPEARMAN', n_features=5)
+	feat_selector = FilterSelector(problem='classification', method='SPEARMAN', n_features=5)
 
 	# find all relevant features - 5 features should be selected
 	feat_selector.fit(data.X_train, data.y_train)

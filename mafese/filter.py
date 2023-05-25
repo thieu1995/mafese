@@ -10,9 +10,9 @@ from mafese.utils import validator
 from mafese.utils import correlation
 
 
-class Filter(Selector):
+class FilterSelector(Selector):
     """
-    Defines a Filter class that hold all filter methods for feature selection problems
+    Defines a FilterSelector class that hold all filter methods for feature selection problems
 
     Parameters
     ----------
@@ -20,7 +20,7 @@ class Filter(Selector):
         The problem you are trying to solve (or type of dataset), "classification" or "regression"
 
     method: str, default = "ANOVA"
-        If the problem = "classification", Filter's support method can be one of this value:
+        If the problem = "classification", FilterSelector's support method can be one of this value:
 
             - "CHI": Chi-Squared statistic
             - "ANOVA": ANOVA F-score
@@ -29,7 +29,7 @@ class Filter(Selector):
             - "SPEARMAN": Spearman’s Rho correlation
             - "POINT": Point-biserial correlation
 
-        If the problem = "regression", Filter's support method can be one of this value:
+        If the problem = "regression", FilterSelector's support method can be one of this value:
 
             - "PEARSON": Pearson correlation
             - "ANOVA": ANOVA F-score
@@ -54,15 +54,15 @@ class Filter(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the Filter FS method
+    The following example shows how to retrieve the 5 most informative features in the FilterSelector FS method
 
     >>> import pandas as pd
-    >>> from mafese.filter import Filter
+    >>> from mafese.filter import FilterSelector
     >>> # load dataset
     >>> dataset = pd.read_csv('your_path/dataset.csv', index_col=0).values
     >>> X, y = dataset[:, 0:-1], dataset[:, -1]     # Assumption that the last column is label column
     >>> # define mafese feature selection method
-    >>> feat_selector = Filter(problem='classification', method='SPEARMAN', n_features=5)
+    >>> feat_selector = FilterSelector(problem='classification', method='SPEARMAN', n_features=5)
     >>> # find all relevant features - 5 features should be selected
     >>> feat_selector.fit(X, y)
     >>> # check selected features - True (or 1) is selected, False (or 0) is not selected

@@ -42,10 +42,10 @@ def get_filter_from_scikit_learn(data_type, X, y):
 
 def get_filter_from_mafese(data_type, method, X, y):
     ## Using Mafese library
-    from mafese.filter import Filter
+    from mafese.filter import FilterSelector
 
     print("=============Using Mafese library===============")
-    feat_selector = Filter(problem=data_type, method=method, n_features=2)
+    feat_selector = FilterSelector(problem=data_type, method=method, n_features=2)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)
