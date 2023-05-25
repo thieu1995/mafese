@@ -41,10 +41,10 @@ def get_recursive_from_scikit_learn(data_type, X, y):
 
 def get_recursive_from_mafese(data_type, X, y):
     ## Using Mafese library
-    from mafese.wrapper.recursive import Recursive
+    from mafese.wrapper.recursive import RecursiveSelector
 
     print("=============Using Mafese library===============")
-    feat_selector = Recursive(problem=data_type, estimator="rf", n_features=3)
+    feat_selector = RecursiveSelector(problem=data_type, estimator="rf", n_features=3)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)

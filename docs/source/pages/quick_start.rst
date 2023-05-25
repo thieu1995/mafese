@@ -87,10 +87,10 @@ Next, split dataset into train and test set::
 
 Next, how to use Recursive wrapper-based method::
 
-	from mafese.wrapper.recursive import Recursive
+	from mafese.wrapper.recursive import RecursiveSelector
 
 	# define mafese feature selection method
-	feat_selector = Recursive(problem="classification", estimator="rf", n_features=5)
+	feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=5)
 
 	# find all relevant features - 5 features should be selected
 	feat_selector.fit(data.X_train, data.y_train)

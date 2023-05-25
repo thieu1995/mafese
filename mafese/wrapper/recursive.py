@@ -11,9 +11,9 @@ from mafese.utils import validator
 from mafese.utils.estimator import get_classifier_for_recursive, get_regressor_for_recursive
 
 
-class Recursive(Selector):
+class RecursiveSelector(Selector):
     """
-    Defines a Recursive class that hold all Recursive Feature Selection methods for feature selection problems
+    Defines a RecursiveSelector class that hold all RecursiveSelector Feature Selection methods for feature selection problems
 
     Parameters
     ----------
@@ -52,15 +52,15 @@ class Recursive(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the Recursive FS method
+    The following example shows how to retrieve the 5 most informative features in the RecursiveSelector FS method
 
     >>> import pandas as pd
-    >>> from mafese.wrapper.recursive import Recursive
+    >>> from mafese.wrapper.recursive import RecursiveSelector
     >>> # load dataset
     >>> dataset = pd.read_csv('your_path/dataset.csv', index_col=0).values
     >>> X, y = dataset[:, 0:-1], dataset[:, -1]     # Assumption that the last column is label column
     >>> # define mafese feature selection method
-    >>> feat_selector = Recursive(problem="classification", estimator="rf", n_features=5)
+    >>> feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=5)
     >>> # find all relevant features - 5 features should be selected
     >>> feat_selector.fit(X, y)
     >>> # check selected features - True (or 1) is selected, False (or 0) is not selected

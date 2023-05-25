@@ -8,5 +8,5 @@ __version__ = "0.1.1"
 
 from mafese.utils.data_loader import Data, get_dataset
 from mafese.filter import Filter
-from mafese.wrapper.recursive import Recursive
+from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.sequential import Sequential

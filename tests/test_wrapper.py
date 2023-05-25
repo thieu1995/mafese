@@ -6,7 +6,7 @@
 
 import numpy as np
 from mafese.wrapper.sequential import Sequential
-from mafese.wrapper.recursive import Recursive
+from mafese.wrapper.recursive import RecursiveSelector
 
 np.random.seed(42)
 
@@ -26,7 +26,7 @@ def test_Recursive_class():
     X = np.random.rand(10, 6)
     y = np.random.randint(0, 2, size=10)
     n_features = 3
-    feat_selector = Recursive(problem="classification", estimator="rf", n_features=3)
+    feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=3)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     assert X_selected.shape[1] == n_features
