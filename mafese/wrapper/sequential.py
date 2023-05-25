@@ -11,9 +11,9 @@ from mafese.utils import validator
 from mafese.utils.estimator import get_classifier, get_regressor
 
 
-class Sequential(Selector):
+class SequentialSelector(Selector):
     """
-    Defines a Sequential class that hold all Forward or Backward Feature Selection methods for feature selection problems
+    Defines a SequentialSelector class that hold all Forward or Backward Feature Selection methods for feature selection problems
 
     Parameters
     ----------
@@ -69,12 +69,12 @@ class Sequential(Selector):
     The following example shows how to retrieve the 5 most informative features in the Forward FS method
 
     >>> import pandas as pd
-    >>> from mafese.wrapper.sequential import Sequential
+    >>> from mafese.wrapper.sequential import SequentialSelector
     >>> # load dataset
     >>> dataset = pd.read_csv('your_path/dataset.csv', index_col=0).values
     >>> X, y = dataset[:, 0:-1], dataset[:, -1]     # Assumption that the last column is label column
     >>> # define mafese feature selection method
-    >>> feat_selector = Sequential(problem="classification", estimator="knn", n_features=5, direction="forward")
+    >>> feat_selector = SequentialSelector(problem="classification", estimator="knn", n_features=5, direction="forward")
     >>> # find all relevant features - 5 features should be selected
     >>> feat_selector.fit(X, y)
     >>> # check selected features - True (or 1) is selected, False (or 0) is not selected

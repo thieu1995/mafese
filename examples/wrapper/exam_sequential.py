@@ -40,11 +40,11 @@ def get_sequential_from_scikit_learn(data_type, X, y):
 
 
 def get_sequential_from_mafese(data_type, X, y):
-    from mafese.wrapper.sequential import Sequential
+    from mafese.wrapper.sequential import SequentialSelector
 
     ## Using Mafese library
     print("=============Using Mafese library===============")
-    feat_selector = Sequential(problem=data_type, estimator="knn", n_features=3, direction="forward")
+    feat_selector = SequentialSelector(problem=data_type, estimator="knn", n_features=3, direction="forward")
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)

@@ -5,7 +5,7 @@
 # --------------------------------------------------%
 
 import numpy as np
-from mafese.wrapper.sequential import Sequential
+from mafese.wrapper.sequential import SequentialSelector
 from mafese.wrapper.recursive import RecursiveSelector
 
 np.random.seed(42)
@@ -15,7 +15,7 @@ def test_Sequential_class():
     X = np.random.rand(10, 6)
     y = np.random.randint(0, 2, size=10)
     n_features = 3
-    feat_selector = Sequential(problem="regression", estimator="knn", n_features=n_features, direction="forward")
+    feat_selector = SequentialSelector(problem="regression", estimator="knn", n_features=n_features, direction="forward")
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     assert X_selected.shape[1] == n_features

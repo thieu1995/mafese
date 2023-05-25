@@ -152,13 +152,13 @@ X_test_selected = feat_selector.transform(data.X_test)
 ```
 
 
-Or, how to use Sequential wrapper-based method:
+Or, how to use Sequential (backward or forward) wrapper-based method:
 
 ```python
-from mafese.wrapper.sequential import Sequential
+from mafese.wrapper.sequential import SequentialSelector
 
 # define mafese feature selection method
-feat_selector = Sequential(problem="classification", estimator="knn", n_features=3, direction="forward")
+feat_selector = SequentialSelector(problem="classification", estimator="knn", n_features=3, direction="forward")
 
 # find all relevant features - 5 features should be selected
 feat_selector.fit(data.X_train, data.y_train)
