@@ -15,7 +15,7 @@ def readme():
 
 setup(
     name="mafese",
-    version="0.1.0",
+    version="0.1.1",
     author="Thieu",
     author_email="nguyenthieu2102@gmail.com",
     description="MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library",
