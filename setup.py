@@ -70,7 +70,7 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Utilities",
     ],
-    install_requires=["numpy>=1.17.1", "scipy>=1.7.1", "scikit-learn>=1.1.2", "pandas>=1.5.2",
+    install_requires=["numpy>=1.17.1", "scipy>=1.7.1", "scikit-learn>=1.0.2", "pandas>=1.5.2",
                       "matplotlib>=3.3.0", "mealpy>=2.5.3", "permetrics>=1.3.3"],
     extras_require={
         "dev": ["pytest>=7.0", "twine>=4.0.1"],
