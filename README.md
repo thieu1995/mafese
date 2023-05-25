@@ -248,9 +248,9 @@ If you are using mafese in your project, we would appreciate citations:
 
 ```code 
 1. https://neptune.ai/blog/feature-selection-methods
-https://github.com/LBBSoft/FeatureSelect
-https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
-
-https://github.com/scikit-learn-contrib/boruta_py
+2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
+3. https://github.com/LBBSoft/FeatureSelect
+4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
+5. https://github.com/scikit-learn-contrib/boruta_py
 ```
 

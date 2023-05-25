@@ -1,14 +1,7 @@
-docs/
-.flake8
-
-examples.md
 # Pycharm
 .idea/
 tut_upcode.md
 drafts/
-examples/myhelp.py
-examples/haha.py
-examples/nicec.py
 docs/refs/
 # Byte-compiled / optimized / DLL files
 __pycache__/

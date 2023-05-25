@@ -1,13 +1,10 @@
 
 # Version 0.1.1
 
-+ Add docs
-+ Add tests
-+ Add citation
 + Add Github Action
-+ Add engineering problems from papers:
-  + Prairie Dog Optimization Algorithm (pdo_2022)
-  + A Test-suite of Non-Convex Constrained Optimization Problems from the Real-World and Some Baseline Results (rwco_2020)
++ Add citation
++ Add tests
++ Add docs
 
 
 ---------------------------------------------------------------------
