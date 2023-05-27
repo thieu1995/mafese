@@ -24,6 +24,12 @@ class Data:
         if not inplace:
             return self.X_train, self.X_test, self.y_train, self.y_test
 
+    def set_train_test(self, X_train=None, y_train=None, X_test=None, y_test=None):
+        self.X_train = X_train
+        self.y_train = y_train
+        self.X_test = X_test
+        self.y_test = y_test
+
 
 def get_dataset(dataset_name):
     # function to retrieve the data
