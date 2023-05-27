@@ -152,7 +152,7 @@ class MhaSelector(Selector):
         y : array-like of shape (n_samples,)
             The target values.
 
-        fit_weights : {list, tuple or np.ndarray} of shape (1, 2), default = (0.9, 0.1)
+        fit_weights : list, tuple or np.ndarray, default = (0.9, 0.1)
             The first weight is for objective value and the second weight is for the number of features
 
         verbose : int, default = True
@@ -207,3 +207,9 @@ class MhaSelector(Selector):
     def fit_transform(self, X, y=None, fit_weights=(0.9, 0.1), verbose=True, mode='single', n_workers=None, termination=None):
         self.fit(X, y, fit_weights, verbose, mode, n_workers, termination)
         return self.transform(X)
+
+    def get_best_obj_and_fit(self):
+        return {
+            "obj": self.optimizer.solution[1][1][1],
+            "fit": self.optimizer.solution[1][1][0]
+        }
