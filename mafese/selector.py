@@ -18,6 +18,7 @@ class Selector(ABC):
     def __init__(self, problem="classification"):
         self.problem = self.set_problem(problem)
         self.selector = None
+        self.estimator = None
         self.paras = {}
         self.selected_feature_indexes = []
         self.selected_feature_masks = []

@@ -10,3 +10,4 @@ from mafese.utils.data_loader import Data, get_dataset
 from mafese.filter import FilterSelector
 from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.sequential import SequentialSelector
+from mafese.wrapper.mha import MhaSelector
