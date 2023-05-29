@@ -177,6 +177,10 @@ class MhaSelector(Selector):
         lb = [-8, ] * X.shape[1]
         ub = [8, ] * X.shape[1]
         if self.problem == "classification":
+            if len(np.unique(y)) == 2:
+                self.obj_paras = {"average": "micro"}
+            else:
+                self.obj_paras = {"average": "weighted"}
             if self.obj_name is None:
                 self.obj_name = "AS"
             else:
@@ -184,6 +188,7 @@ class MhaSelector(Selector):
             minmax = self.SUPPORTED_CLS_METRICS[self.obj_name]
             metric_class = ClassificationMetric
         else:
+            self.obj_paras = {"decimal": 4}
             if self.obj_name is None:
                 self.obj_name = "MSE"
             else:
@@ -195,7 +200,7 @@ class MhaSelector(Selector):
         prob = FeatureSelectionProblem(lb, ub, minmax, data=self.data,
                                        estimator=self.estimator, transfer_func=self.transfer_func_, obj_name=self.obj_name,
                                        metric_class=metric_class, fit_weights=fit_weights, fit_sign=fit_sign, log_to=log_to,
-                                       obj_weights=(1.0, 0.))
+                                       obj_weights=(1.0, 0.), obj_paras=self.obj_paras)
         best_position, best_fitness = self.optimizer.solve(prob, mode=mode, n_workers=n_workers, termination=termination)
         self.selected_feature_solution = np.array(best_position, dtype=int)
         self.selected_feature_masks = np.where(self.selected_feature_solution == 0, False, True)
