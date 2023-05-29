@@ -36,7 +36,7 @@ def get_optimizer_by_name(name):
 class FeatureSelectionProblem(Problem):
     def __init__(self, lb, ub, minmax, data=None, estimator=None,
                  transfer_func=None, obj_name=None,
-                 metric_class=None, fit_weights=(0.9, 0.1), fit_sign=1,
+                 metric_class=None, fit_weights=(0.9, 0.1), fit_sign=1, obj_paras=None,
                  name="Feature Selection Problem", **kwargs):
         ## data is assigned first because when initialize the Problem class, we need to check the output of fitness
         self.data = data
@@ -46,6 +46,7 @@ class FeatureSelectionProblem(Problem):
         self.metric_class = metric_class
         self.fit_weights = fit_weights
         self.fit_sign = fit_sign
+        self.obj_paras = obj_paras
         self.name = name
         super().__init__(lb, ub, minmax, **kwargs)
 
@@ -62,6 +63,6 @@ class FeatureSelectionProblem(Problem):
         self.estimator.fit(self.data.X_train[:, cols], self.data.y_train)
         y_valid_pred = self.estimator.predict(self.data.X_test[:, cols])
         evaluator = self.metric_class(self.data.y_test, y_valid_pred)
-        obj = evaluator.get_metric_by_name(self.obj_name)[self.obj_name]
+        obj = evaluator.get_metric_by_name(self.obj_name, paras=self.obj_paras)[self.obj_name]
         fitness = self.fit_weights[0]*obj + self.fit_sign * self.fit_weights[1]*(np.sum(solution)/self.n_dims)
         return [fitness, obj]
