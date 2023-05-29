@@ -33,6 +33,22 @@ mafese.utils.estimator module
    :undoc-members:
    :show-inheritance:
 
+mafese.utils.mealpy\_util module
+--------------------------------
+
+.. automodule:: mafese.utils.mealpy_util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mafese.utils.transfer module
+----------------------------
+
+.. automodule:: mafese.utils.transfer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 mafese.utils.validator module
 -----------------------------
 

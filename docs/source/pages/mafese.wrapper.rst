@@ -1,6 +1,7 @@
 mafese.wrapper package
 ======================
 
+
 mafese.wrapper.recursive module
 -------------------------------
 
@@ -13,6 +14,14 @@ mafese.wrapper.sequential module
 --------------------------------
 
 .. automodule:: mafese.wrapper.sequential
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mafese.wrapper.mha module
+-------------------------
+
+.. automodule:: mafese.wrapper.mha
    :members:
    :undoc-members:
    :show-inheritance:

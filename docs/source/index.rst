@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.1.1-yellow.svg
+.. image:: https://img.shields.io/badge/release-0.1.2-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -57,14 +57,6 @@ Welcome to MAFESE's documentation!
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
 
-::
-
-   "Knowledge is power, sharing it is the premise of progress in life.
-   It seems like a burden to someone, but it is the only way to achieve immortality.
-                                                   `Nguyen Van Thieu`_
-
-
-.. _Nguyen Van Thieu: https://www.thieu1995.github.io/
 
 MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python library focused on feature selection
 using meta-heuristic algorithms.
