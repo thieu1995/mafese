@@ -54,7 +54,7 @@ class FeatureSelectionProblem(Problem):
         position = self.transfer_func(position)
         cons = np.random.uniform(0, 1, len(position))
         x = np.where(cons < position, 1, 0)
-        if np.all((x == 0)):
+        if np.sum(x) == 0:
             x[np.random.randint(0, len(x))] = 1
         return x
 
