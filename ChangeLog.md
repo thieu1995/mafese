@@ -1,3 +1,13 @@
+# Version 0.1.3
+
++ Relocate regression and classification datasets
++ Add Embedded Feature Selection:
+  + Regularization methods (lasso-based)
+  + Tree-based methods
++ Update documents, examples, test
+
+---------------------------------------------------------------------
+
 
 # Version 0.1.2
 
