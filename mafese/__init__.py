@@ -11,3 +11,5 @@ from mafese.filter import FilterSelector
 from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.sequential import SequentialSelector
 from mafese.wrapper.mha import MhaSelector
+from mafese.embedded.lasso import LassoSelector
+from mafese.embedded.tree import TreeSelector
