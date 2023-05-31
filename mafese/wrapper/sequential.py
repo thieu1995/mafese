@@ -75,7 +75,7 @@ class SequentialSelector(Selector):
     >>> X, y = dataset[:, 0:-1], dataset[:, -1]     # Assumption that the last column is label column
     >>> # define mafese feature selection method
     >>> feat_selector = SequentialSelector(problem="classification", estimator="knn", n_features=5, direction="forward")
-    >>> # find all relevant features - 5 features should be selected
+    >>> # find all relevant features
     >>> feat_selector.fit(X, y)
     >>> # check selected features - True (or 1) is selected, False (or 0) is not selected
     >>> print(feat_selector.selected_feature_masks)
