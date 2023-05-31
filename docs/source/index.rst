@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.1.2-yellow.svg
+.. image:: https://img.shields.io/badge/release-0.1.3-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -62,11 +62,12 @@ MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python li
 using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
-* **Total Wrapper-based (Metaheuristic Algorithms)**: > 170 methods
-* **Total Filter-based (Statistical-based)**: > 6 methods
-* **Total classification dataset**: > 20 datasets
-* **Total estimator methods**: > 3 methods
-* **Total performance metrics (as fitness)**: > 10 metrics
+* **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
+* **Total Filter-based (Statistical-based)**: > 12 methods
+* **Total Embedded-based (Tree and Lasso)**: > 10 methods
+* **Total classification dataset**: >= 30 datasets
+* **Total regression dataset**: >= 3 datasets
+* **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
 * **Dependencies:** numpy, scipy, scikit-learn, pandas, matplotlib, mealpy, permetrics
@@ -78,6 +79,8 @@ Features
 - Our library provides all state-of-the-art feature selection methods:
    + Filter-based FS
    + Embedded-based FS
+      + Regularization (Lasso-based)
+      + Tree-based methods
    + Wrapper-based FS
       + Sequential-based: forward and backward
       + Recursive-based

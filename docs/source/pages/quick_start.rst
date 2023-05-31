@@ -4,7 +4,7 @@ Installation
 
 * Install the `current PyPI release <https://pypi.python.org/pypi/mafese />`_::
 
-   $ pip install mafese==0.1.2
+   $ pip install mafese==0.1.3
 
 
 * Install directly from source code::
@@ -23,16 +23,29 @@ Current's structure::
    docs
    examples
    mafese
-      wrapper
+      data/
+         cls/
+         ...csv
+         reg/
+         ...csv
+      wrapper/
+         mha.py
          recursive.py
          sequential.py
+      embedded/
+         lasso.py
+         tree.py
       filter.py
-      utils
+      utils/
          correlation.py
+         data_loader.py
          encoder.py
          estimator.py
+         mealpy_util.py
+         transfer.py
          validator.py
       __init__.py
+      evaluator.py
       selector.py
    README.md
    setup.py
@@ -149,6 +162,114 @@ Or, how to use Filter-based feature selection with different correlation methods
 	# call transform() on X to filter it down to selected features
 	X_train_selected = feat_selector.transform(data.X_train)
 	X_test_selected = feat_selector.transform(data.X_test)
+
+
+
+Or, use Metaheuristic-based feature selection with different metaheuristic algorithms::
+
+	from mafese.wrapper.mha import MhaSelector
+	from mafese import get_dataset
+	from mafese import evaluator
+	from sklearn.svm import SVC
+
+	data = get_dataset("Arrhythmia")
+	data.split_train_test(test_size=0.2)
+	print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
+
+	# define mafese feature selection method
+	feat_selector = MhaSelector(problem="classification", estimator="knn",
+	                            optimizer="BaseGA", optimizer_paras=None,
+	                            transfer_func="vstf_01", obj_name="AS")
+	# find all relevant features
+	feat_selector.fit(data.X_train, data.y_train, fit_weights=(0.9, 0.1), verbose=True)
+
+	# check selected features - True (or 1) is selected, False (or 0) is not selected
+	print(feat_selector.selected_feature_masks)
+	print(feat_selector.selected_feature_solution)
+
+	# check the index of selected features
+	print(feat_selector.selected_feature_indexes)
+
+	# call transform() on X to filter it down to selected features
+	X_train_selected = feat_selector.transform(data.X_train)
+	X_test_selected = feat_selector.transform(data.X_test)
+
+	# Evaluate final dataset with different estimator with multiple performance metrics
+	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	print(results)
+	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+
+
+Or, use Lasso-based feature selection with different estimator::
+
+	from mafese.embedded.lasso import LassoSelector
+	from mafese import get_dataset
+	from mafese import evaluator
+	from sklearn.svm import SVC
+
+
+	data = get_dataset("Arrhythmia")
+	data.split_train_test(test_size=0.2)
+	print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
+
+	# define mafese feature selection method
+	feat_selector = LassoSelector(problem="classification", estimator="lasso", estimator_paras={"alpha": 0.1})
+	# find all relevant features
+	feat_selector.fit(data.X_train, data.y_train)
+
+	# check selected features - True (or 1) is selected, False (or 0) is not selected
+	print(feat_selector.selected_feature_masks)
+	print(feat_selector.selected_feature_solution)
+
+	# check the index of selected features
+	print(feat_selector.selected_feature_indexes)
+
+	# call transform() on X to filter it down to selected features
+	X_train_selected = feat_selector.transform(data.X_train)
+	X_test_selected = feat_selector.transform(data.X_test)
+
+	# Evaluate final dataset with different estimator with multiple performance metrics
+	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	print(results)
+	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+
+
+
+Or, use Tree-based feature selection with different estimator::
+
+	from mafese.embedded.tree import TreeSelector
+	from mafese import get_dataset
+	from mafese import evaluator
+	from sklearn.svm import SVC
+
+
+	data = get_dataset("Arrhythmia")
+	data.split_train_test(test_size=0.2)
+	print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
+
+	# define mafese feature selection method
+	feat_selector = TreeSelector(problem="classification", estimator="tree")
+	# find all relevant features
+	feat_selector.fit(data.X_train, data.y_train)
+
+	# check selected features - True (or 1) is selected, False (or 0) is not selected
+	print(feat_selector.selected_feature_masks)
+	print(feat_selector.selected_feature_solution)
+
+	# check the index of selected features
+	print(feat_selector.selected_feature_indexes)
+
+	# call transform() on X to filter it down to selected features
+	X_train_selected = feat_selector.transform(data.X_train)
+	X_test_selected = feat_selector.transform(data.X_test)
+
+	# Evaluate final dataset with different estimator with multiple performance metrics
+	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	print(results)
+	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+
+
+
 
 For more usage examples please look at [examples](/examples) folder.
 

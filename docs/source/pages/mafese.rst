@@ -37,3 +37,4 @@ mafese submodule
 
    mafese.utils
    mafese.wrapper
+   mafese.embedded
