@@ -4,7 +4,7 @@
 ---
 
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.2-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.1.3-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -27,15 +27,15 @@ MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python li
 using meta-heuristic algorithms. 
 
 * **Free software:** GNU General Public License (GPL) V3 license
-* **Total Wrapper-based (Metaheuristic Algorithms)**: > 170 methods 
-* **Total FilterSelector-based (Statistical-based)**: > 6 methods
-* **Total classification dataset**: > 20 datasets
-* **Total estimator methods**: > 3 methods
-* **Total performance metrics (as fitness)**: > 10 metrics
+* **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
+* **Total Filter-based (Statistical-based)**: > 12 methods
+* **Total Embedded-based (Tree and Lasso)**: > 10 methods
+* **Total classification dataset**: >= 30 datasets
+* **Total regression dataset**: >= 3 datasets
+* **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
 * **Dependencies:** numpy, scipy, scikit-learn, pandas, matplotlib, mealpy, permetrics
-
 
 
 # Installation
@@ -44,7 +44,7 @@ using meta-heuristic algorithms.
 
 Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.2
+$ pip install mafese==0.1.3
 ```
 
 ### Install directly from source code
@@ -69,6 +69,9 @@ mafese
         mha.py
         recursive.py
         sequential.py
+    embedded/
+        lasso.py
+        tree.py
     filter.py
     utils/
         correlation.py
@@ -246,6 +249,78 @@ print(results)
 ```
 
 
+Or, use Lasso-based feature selection with different estimator:
+
+```python
+from mafese.embedded.lasso import LassoSelector
+from mafese import get_dataset
+from mafese import evaluator
+from sklearn.svm import SVC
+
+
+data = get_dataset("Arrhythmia")
+data.split_train_test(test_size=0.2)
+print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
+
+# define mafese feature selection method
+feat_selector = LassoSelector(problem="classification", estimator="lasso", estimator_paras={"alpha": 0.1})
+# find all relevant features
+feat_selector.fit(data.X_train, data.y_train)
+
+# check selected features - True (or 1) is selected, False (or 0) is not selected
+print(feat_selector.selected_feature_masks)
+print(feat_selector.selected_feature_solution)
+
+# check the index of selected features
+print(feat_selector.selected_feature_indexes)
+
+# call transform() on X to filter it down to selected features
+X_train_selected = feat_selector.transform(data.X_train)
+X_test_selected = feat_selector.transform(data.X_test)
+
+# Evaluate final dataset with different estimator with multiple performance metrics
+results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+print(results)
+# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+```
+
+
+Or, use Tree-based feature selection with different estimator:
+
+```python
+from mafese.embedded.tree import TreeSelector
+from mafese import get_dataset
+from mafese import evaluator
+from sklearn.svm import SVC
+
+
+data = get_dataset("Arrhythmia")
+data.split_train_test(test_size=0.2)
+print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
+
+# define mafese feature selection method
+feat_selector = TreeSelector(problem="classification", estimator="tree")
+# find all relevant features
+feat_selector.fit(data.X_train, data.y_train)
+
+# check selected features - True (or 1) is selected, False (or 0) is not selected
+print(feat_selector.selected_feature_masks)
+print(feat_selector.selected_feature_solution)
+
+# check the index of selected features
+print(feat_selector.selected_feature_indexes)
+
+# call transform() on X to filter it down to selected features
+X_train_selected = feat_selector.transform(data.X_train)
+X_test_selected = feat_selector.transform(data.X_test)
+
+# Evaluate final dataset with different estimator with multiple performance metrics
+results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+print(results)
+# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+```
+
+
 
 For more usage examples please look at [examples](/examples) folder.
 
@@ -254,7 +329,9 @@ To call the class
 
 ```code 
 from mafese import Data, get_dataset
-from mafese import SequentialSelector, RecursiveSelector, FilterSelector, MhaSelector
+from mafese import FilterSelector
+from mafese import SequentialSelector, RecursiveSelector, MhaSelector
+from mafese import LassoSelector, TreeSelector
 ```
 
 
