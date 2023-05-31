@@ -4,9 +4,10 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-from sklearn.svm import SVC, SVR
+from sklearn.svm import SVC, SVR, LinearSVC
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.linear_model import Lasso, LogisticRegression, LinearRegression
 
 
 def get_classifier(name):
@@ -51,3 +52,25 @@ def get_regressor_for_recursive(name):
         return SVR(kernel="linear")
     else:
         raise ValueError(f"Currently, we don't support: {name} regressor. You can define your own scikit-learn model.")
+
+
+def get_lasso_based_estimator(problem, name, paras=None):
+    if paras is None:
+        paras = {}
+    name = name.lower()
+    if problem == "regression":
+        if name == "lasso":
+            return Lasso(**paras)
+        else:
+            raise ValueError(f"For Regression problem, lasso-based method only supports 'lasso' estimator.")
+    else:
+        if name == "lasso":
+            return Lasso(**paras)
+        elif name == "lr":
+            est = LogisticRegression(**paras)
+            est.set_params(**{"penalty": "l1", "solver": "liblinear"})
+            return est
+        elif name == "svm":
+            return LinearSVC(**paras)
+        else:
+            raise ValueError(f"For Classification problem, lasso-based method supports: 'lasso', 'lr', and 'svm' estimator.")
