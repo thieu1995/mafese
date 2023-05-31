@@ -54,7 +54,7 @@ class FilterSelector(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the FilterSelector FS method
+    The following example shows how to retrieve the most informative features in the FilterSelector FS method
 
     >>> import pandas as pd
     >>> from mafese.filter import FilterSelector

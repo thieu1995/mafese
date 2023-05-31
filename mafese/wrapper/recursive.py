@@ -52,7 +52,7 @@ class RecursiveSelector(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the RecursiveSelector FS method
+    The following example shows how to retrieve the most informative features in the RecursiveSelector FS method
 
     >>> import pandas as pd
     >>> from mafese.wrapper.recursive import RecursiveSelector

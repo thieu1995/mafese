@@ -58,7 +58,7 @@ class MhaSelector(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the MhaSelector FS method
+    The following example shows how to retrieve the most informative features in the MhaSelector FS method
 
     >>> import pandas as pd
     >>> from mafese.wrapper.mha import MhaSelector

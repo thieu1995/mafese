@@ -66,7 +66,7 @@ class SequentialSelector(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the 5 most informative features in the Forward FS method
+    The following example shows how to retrieve the most informative features in the Sequential-based (forward, backward) FS method
 
     >>> import pandas as pd
     >>> from mafese.wrapper.sequential import SequentialSelector
