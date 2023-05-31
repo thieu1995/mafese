@@ -74,3 +74,34 @@ def get_lasso_based_estimator(problem, name, paras=None):
             return LinearSVC(**paras)
         else:
             raise ValueError(f"For Classification problem, lasso-based method supports: 'lasso', 'lr', and 'svm' estimator.")
+
+
+def get_tree_based_estimator(problem, name, paras=None):
+    from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor, AdaBoostRegressor, GradientBoostingRegressor
+    from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
+
+    if paras is None:
+        paras = {}
+    name = name.lower()
+    if problem == "regression":
+        if name == "rf":
+            return RandomForestRegressor(**paras)
+        elif name == "adaboost":
+            return AdaBoostRegressor(**paras)
+        elif name == "xgb":
+            return GradientBoostingRegressor(**paras)
+        elif name == "tree":
+            return ExtraTreesRegressor(**paras)
+        else:
+            raise ValueError(f"For Regression problem, we don't support {name} estimator.")
+    else:
+        if name == "rf":
+            return RandomForestClassifier(**paras)
+        elif name == "adaboost":
+            return AdaBoostClassifier(**paras)
+        elif name == "xgb":
+            return GradientBoostingClassifier(**paras)
+        elif name == "tree":
+            return ExtraTreesClassifier(**paras)
+        else:
+            raise ValueError(f"For Classification problem, we don't support {name} estimator.")
