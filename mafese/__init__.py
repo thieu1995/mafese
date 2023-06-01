@@ -4,7 +4,7 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 from mafese.utils.data_loader import Data, get_dataset
 from mafese.filter import FilterSelector
@@ -13,3 +13,4 @@ from mafese.wrapper.sequential import SequentialSelector
 from mafese.wrapper.mha import MhaSelector
 from mafese.embedded.lasso import LassoSelector
 from mafese.embedded.tree import TreeSelector
+from mafese.unsupervised import UnsupervisedSelector

@@ -4,7 +4,7 @@
 ---
 
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.3-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.1.4-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -15,8 +15,6 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/thieu1995/mafese.svg)
 [![Documentation Status](https://readthedocs.org/projects/mafese/badge/?version=latest)](https://mafese.readthedocs.io/en/latest/?badge=latest)
 [![Chat](https://img.shields.io/badge/Chat-on%20Telegram-blue)](https://t.me/+fRVCJGuGJg1mNDg1)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/thieu1995/mafese.svg)](http://isitmaintained.com/project/thieu1995/mafese "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/thieu1995/mafese.svg)](http://isitmaintained.com/project/thieu1995/mafese "Percentage of issues still open")
 ![GitHub contributors](https://img.shields.io/github/contributors/thieu1995/mafese.svg)
 [![GitTutorial](https://img.shields.io/badge/PR-Welcome-%23FF8300.svg?)](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project)
 [![DOI](https://zenodo.org/badge/545209353.svg)](https://doi.org/10.5281/zenodo.7969042)
@@ -30,6 +28,7 @@ using meta-heuristic algorithms.
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
 * **Total Filter-based (Statistical-based)**: > 12 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
+* **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets
 * **Total regression dataset**: >= 3 datasets
 * **Total performance metrics (as fitness)**: > 30 metrics
@@ -44,7 +43,7 @@ using meta-heuristic algorithms.
 
 Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.3
+$ pip install mafese==0.1.4
 ```
 
 ### Install directly from source code
@@ -73,6 +72,7 @@ mafese
         lasso.py
         tree.py
     filter.py
+    unsupervised.py
     utils/
         correlation.py
         data_loader.py

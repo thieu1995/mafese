@@ -1,3 +1,17 @@
+# Version 0.1.4
+
++ Relocate regression and classification datasets
++ Add Unsupervised-based methods:
+  - "VAR": Variance Threshold method
+  - "MAD": Mean Absolute Difference
+  - "DR": Dispersion Ratio
+  - "MCL": Multicollinearity method based on Variance Inflation Factor (VIF) value
++ Update documents, examples, test
++ Remove matplotlib dependency
+
+---------------------------------------------------------------------
+
+
 # Version 0.1.3
 
 + Relocate regression and classification datasets

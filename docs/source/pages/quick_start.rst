@@ -4,7 +4,7 @@ Installation
 
 * Install the `current PyPI release <https://pypi.python.org/pypi/mafese />`_::
 
-   $ pip install mafese==0.1.3
+   $ pip install mafese==0.1.4
 
 
 * Install directly from source code::
@@ -36,6 +36,7 @@ Current's structure::
          lasso.py
          tree.py
       filter.py
+      unsupervised.py
       utils/
          correlation.py
          data_loader.py

@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.1.3-yellow.svg
+.. image:: https://img.shields.io/badge/release-0.1.4-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -39,12 +39,6 @@ Welcome to MAFESE's documentation!
 .. image:: https://img.shields.io/badge/Chat-on%20Telegram-blue
    :target: https://t.me/+fRVCJGuGJg1mNDg1
 
-.. image:: http://isitmaintained.com/badge/resolution/thieu1995/mafese.svg
-   :target: http://isitmaintained.com/project/thieu1995/mafese
-
-.. image:: http://isitmaintained.com/badge/open/thieu1995/mafese.svg
-   :target: http://isitmaintained.com/project/thieu1995/mafese
-
 .. image:: https://img.shields.io/github/contributors/thieu1995/mafese.svg
    :target: https://img.shields.io/github/contributors/thieu1995/mafese.svg
 
@@ -65,6 +59,7 @@ using meta-heuristic algorithms.
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
 * **Total Filter-based (Statistical-based)**: > 12 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
+* **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets
 * **Total regression dataset**: >= 3 datasets
 * **Total performance metrics (as fitness)**: > 30 metrics
@@ -85,6 +80,7 @@ Features
       + Sequential-based: forward and backward
       + Recursive-based
       + MHA-based: Metaheuristic Algorithms
+   + Unsupervised-based FS
 - We have implemented all feature selection methods based on scipy, scikit-learn and numpy to increase the speed of the algorithms.
 
 
