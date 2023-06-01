@@ -70,7 +70,7 @@ using meta-heuristic algorithms.
 * **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
-* **Dependencies:** numpy, scipy, scikit-learn, pandas, matplotlib, mealpy, permetrics
+* **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics
 
 
 Features

@@ -15,7 +15,7 @@ def readme():
 
 setup(
     name="mafese",
-    version="0.1.3",
+    version="0.1.4",
     author="Thieu",
     author_email="nguyenthieu2102@gmail.com",
     description="MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library",
@@ -70,8 +70,8 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Utilities",
     ],
-    install_requires=["numpy>=1.17.1", "scipy>=1.7.1", "scikit-learn>=1.0.2", "pandas>=1.3.5",
-                      "matplotlib>=3.3.0", "mealpy>=2.5.3", "permetrics>=1.3.3"],
+    install_requires=["numpy>=1.17.1", "scipy>=1.7.1", "scikit-learn>=1.0.2",
+                      "pandas>=1.3.5", "mealpy>=2.5.3", "permetrics>=1.3.3"],
     extras_require={
         "dev": ["pytest>=7.0", "pytest-cov==4.0.0", "flake8>=4.0.1"],
     },
