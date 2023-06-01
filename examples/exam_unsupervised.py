@@ -29,7 +29,7 @@ def get_unsupervised_from_mafese(data_type, method, X, y):
     from mafese.unsupervised import UnsupervisedSelector
 
     print("=============Using Mafese library===============")
-    feat_selector = UnsupervisedSelector(problem=data_type, method=method, threshold=10)
+    feat_selector = UnsupervisedSelector(problem=data_type, method=method, n_features=5, threshold=10)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)
@@ -41,6 +41,6 @@ def get_unsupervised_from_mafese(data_type, method, X, y):
 
 
 data_type = "regression"
-method = "MCL"      # MCL
+method = "MAD"      # MCL, DR, MAD, VAR
 X, y = get_dataset(data_type)
 get_unsupervised_from_mafese(data_type, method, X, y)
