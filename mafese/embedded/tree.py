@@ -20,11 +20,12 @@ class TreeSelector(Selector):
     problem: str, default = "classification"
         The problem you are trying to solve (or type of dataset), "classification" or "regression"
 
-    estimator: str, default = 'lasso'
+    estimator: str, default = 'tree'
         We are currently support:
-            - lasso: lasso estimator (both regression and classification)
-            - lr: Logistic Regression (classification)
-            - svm: LinearSVC, support vector machine (classification)
+            - rf: random forest
+            - adaboost: AdaBoost
+            - xgb: Gradient Boosting
+            - tree: Extra Trees
 
     estimator_paras: None or dict, default = None
         The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
@@ -82,6 +83,7 @@ class TreeSelector(Selector):
     def __init__(self, problem="classification", estimator="tree", estimator_paras=None, threshold=None, norm_order=1, max_features=None):
         super().__init__(problem)
         self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator_paras = estimator_paras
         self.threshold = threshold
         self.norm_order = norm_order
         self.max_features = max_features
