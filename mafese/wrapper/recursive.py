@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.feature_selection import RFE
 from mafese.selector import Selector
 from mafese.utils import validator
-from mafese.utils.estimator import get_classifier_for_recursive, get_regressor_for_recursive
+from mafese.utils.estimator import get_recursive_estimator
 
 
 class RecursiveSelector(Selector):
@@ -22,11 +22,18 @@ class RecursiveSelector(Selector):
 
     estimator: str or Estimator instance (from scikit-learn or custom)
         If estimator is str, we are currently support:
-            - rf: random forest
             - svm: support vector machine with kernel = 'linear'
+            - rf: random forest
+            - adaboost: AdaBoost
+            - xgb: Gradient Boosting
+            - tree: Extra Trees
 
         If estimator is Estimator instance: you need to make sure it is has a ``fit`` method that provides
         information about feature importance (e.g. `coef_`, `feature_importances_`).
+
+    estimator_paras: None or dict, default = None
+        The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
+        If None, we use the best parameter for selected estimator
 
     n_features : int or float, default=3
         The number of features to select. If `None`, half of the features are selected.
@@ -75,11 +82,12 @@ class RecursiveSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["rf", "svm"]
+    SUPPORTED_ESTIMATORS = ["svm", "rf", "adaboost", "xgb", "tree"]
 
-    def __init__(self, problem="classification", estimator="knn", n_features=3, step=1, verbose=0, importance_getter="auto"):
+    def __init__(self, problem="classification", estimator="knn", estimator_paras=None, n_features=3, step=1, verbose=0, importance_getter="auto"):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator)
+        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator_paras = estimator_paras
         self.n_features = n_features
         self.step = step
         self.verbose = verbose
@@ -87,13 +95,10 @@ class RecursiveSelector(Selector):
         self.selector = RFE(estimator=self.estimator, n_features_to_select=self.n_features,
                             step=self.step, verbose=self.verbose, importance_getter=self.importance_getter)
 
-    def set_estimator(self, estimator=None):
+    def set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
-            if self.problem == "classification":
-                return get_classifier_for_recursive(estimator_name)
-            else:
-                return get_regressor_for_recursive(estimator_name)
+            return get_recursive_estimator(self.problem, estimator_name, paras)
         elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and \
                 (callable(estimator.fit) and callable(estimator.predict)):
             return estimator
