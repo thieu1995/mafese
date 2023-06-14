@@ -23,15 +23,19 @@ class SequentialSelector(Selector):
     estimator: str or Estimator instance (from scikit-learn or custom)
         If estimator is str, we are currently support:
             - knn: k-nearest neighbors
-            - rf: random forest
             - svm: support vector machine
+            - rf: random forest
+            - adaboost: AdaBoost
+            - xgb: Gradient Boosting
+            - tree: Extra Trees
+            - ann: Artificial Neural Network (Multi-Layer Perceptron)
 
         If estimator is Estimator instance: you need to make sure it is has a ``fit`` method that provides
         information about feature importance (e.g. `coef_`, `feature_importances_`).
 
     estimator_paras: None or dict, default = None
         The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
-        If None, we use the best parameter for selected estimator
+        If None, we use the default parameter for selected estimator
 
     n_features : int or float, default=3
         The number of features to select. If `None`, half of the features are selected.
