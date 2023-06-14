@@ -6,7 +6,8 @@
 
 from sklearn.svm import SVC, SVR, LinearSVC
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-from sklearn.linear_model import Lasso, LogisticRegression, LinearRegression
+from sklearn.neural_network import MLPRegressor, MLPClassifier
+from sklearn.linear_model import Lasso, LogisticRegression, LinearRegression, BayesianRidge, Perceptron
 from sklearn.ensemble import ExtraTreesRegressor, RandomForestRegressor, AdaBoostRegressor, GradientBoostingRegressor
 from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 
@@ -18,20 +19,36 @@ def get_general_estimator(problem, name, paras=None):
     if problem == "regression":
         if name == "knn":
             return KNeighborsRegressor(**paras)
-        elif name == "rf":
-            return RandomForestRegressor(**paras)
         elif name == "svm":
             return SVR(**paras)
+        elif name == "rf":
+            return RandomForestRegressor(**paras)
+        elif name == "adaboost":
+            return AdaBoostRegressor(**paras)
+        elif name == "xgb":
+            return GradientBoostingRegressor(**paras)
+        elif name == "tree":
+            return ExtraTreesRegressor(**paras)
+        elif name == "ann":
+            return MLPRegressor(**paras)
         else:
             raise ValueError(f"For Regression problem, we don't support: {name} regressor as string. \n"
                              f"You can define your own scikit-learn model.")
     else:
         if name == 'knn':
             return KNeighborsClassifier(**paras)
-        elif name == 'rf':
-            return RandomForestClassifier(**paras)
         elif name == 'svm':
             return SVC(**paras)
+        elif name == 'rf':
+            return RandomForestClassifier(**paras)
+        elif name == "adaboost":
+            return AdaBoostClassifier(**paras)
+        elif name == "xgb":
+            return GradientBoostingClassifier(**paras)
+        elif name == "tree":
+            return ExtraTreesClassifier(**paras)
+        elif name == "ann":
+            return MLPClassifier(**paras)
         else:
             raise ValueError(f"For Classification problem, we don't support: {name} classifier as string. \n"
                              f"You can define your own scikit-learn model.")

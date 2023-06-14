@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.feature_selection import SequentialFeatureSelector as SFS
 from mafese.selector import Selector
 from mafese.utils import validator
-from mafese.utils.estimator import get_classifier, get_regressor
+from mafese.utils.estimator import get_general_estimator
 
 
 class SequentialSelector(Selector):
@@ -28,6 +28,10 @@ class SequentialSelector(Selector):
 
         If estimator is Estimator instance: you need to make sure it is has a ``fit`` method that provides
         information about feature importance (e.g. `coef_`, `feature_importances_`).
+
+    estimator_paras: None or dict, default = None
+        The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
+        If None, we use the best parameter for selected estimator
 
     n_features : int or float, default=3
         The number of features to select. If `None`, half of the features are selected.
@@ -89,12 +93,13 @@ class SequentialSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["knn", "rf", "svm"]
+    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
 
-    def __init__(self, problem="classification", estimator="knn", n_features=3,
+    def __init__(self, problem="classification", estimator="knn", estimator_paras=None, n_features=3,
                  direction="forward", tol=None, scoring=None, cv=5, n_jobs=None):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator)
+        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator_paras = estimator_paras
         self.n_features = n_features
         self.direction = direction
         self.tol = tol
@@ -103,13 +108,10 @@ class SequentialSelector(Selector):
         self.n_jobs = n_jobs
         self.selector = SFS(estimator=self.estimator, n_features_to_select=self.n_features, direction=self.direction)
 
-    def set_estimator(self, estimator=None):
+    def set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
-            if self.problem == "classification":
-                return get_classifier(estimator_name)
-            else:
-                return get_regressor(estimator_name)
+            return get_general_estimator(self.problem, estimator_name, paras)
         elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and \
                 (callable(estimator.fit) and callable(estimator.predict)):
             return estimator
