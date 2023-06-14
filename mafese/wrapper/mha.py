@@ -7,7 +7,7 @@
 import numpy as np
 from mafese.selector import Selector
 from mafese.utils import validator
-from mafese.utils.estimator import get_classifier, get_regressor
+from mafese.utils.estimator import get_general_estimator
 from mafese.utils.mealpy_util import get_optimizer_by_name, get_all_optimizers, FeatureSelectionProblem, Optimizer
 from mafese.utils import transfer
 from mafese.utils.data_loader import Data
@@ -26,12 +26,19 @@ class MhaSelector(Selector):
 
     estimator: str or Estimator instance (from scikit-learn or custom)
         If estimator is str, we are currently support:
-            - knn: K-Nearest Neighbors
-            - rf: random forest
+            - knn: k-nearest neighbors
             - svm: support vector machine
+            - rf: random forest
+            - adaboost: AdaBoost
+            - xgb: Gradient Boosting
+            - tree: Extra Trees
+            - ann: Artificial Neural Network (Multi-Layer Perceptron)
 
-        If estimator is Estimator instance: you need to make sure it is has a ``fit`` method that provides
-        information about feature importance (e.g. `coef_`, `feature_importances_`).
+        If estimator is Estimator instance: you need to make sure that it has `fit` and `predict` methods
+
+    estimator_paras: None or dict, default = None
+        The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
+        If None, we use the default parameter for selected estimator
 
     optimizer : str or instance of Optimizer class (from Mealpy library), default = "BaseGA"
         The Metaheuristic Algorithm that use to solve the feature selection problem.
@@ -81,7 +88,7 @@ class MhaSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["knn", "rf", "svm"]
+    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
     SUPPORTED_TRANSFER_FUNCS = ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"]
     SUPPORTED_REG_METRICS = {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
                              "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
@@ -90,21 +97,19 @@ class MhaSelector(Selector):
                              "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"}
     SUPPORTED_OPTIMIZERS = list(get_all_optimizers().keys())
 
-    def __init__(self, problem="classification", estimator="knn", optimizer="BaseGA", optimizer_paras=None,
-                 transfer_func="vstf_01", obj_name=None):
+    def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
+                 optimizer="BaseGA", optimizer_paras=None, transfer_func="vstf_01", obj_name=None):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator)
+        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.optimizer_paras = estimator_paras
         self.optimizer = self.set_optimizer(optimizer, optimizer_paras)
         self.transfer_func_ = self.set_transfer_func(transfer_func)
         self.obj_name = obj_name
 
-    def set_estimator(self, estimator=None):
+    def set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
-            if self.problem == "classification":
-                return get_classifier(estimator_name)
-            else:
-                return get_regressor(estimator_name)
+            return get_general_estimator(self.problem, estimator_name, paras)
         elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and \
                 (callable(estimator.fit) and callable(estimator.predict)):
             return estimator
