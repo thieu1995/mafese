@@ -54,30 +54,6 @@ def get_general_estimator(problem, name, paras=None):
                              f"You can define your own scikit-learn model.")
 
 
-# def get_classifier(name):
-#     name = name.lower()
-#     if name == 'knn':
-#         return KNeighborsClassifier()
-#     elif name == 'rf':
-#         return RandomForestClassifier()
-#     elif name == 'svm':
-#         return SVC()
-#     else:
-#         raise ValueError(f"Currently, MAFESE doesn't support: {name} classifier. You can define your own scikit-learn model.")
-
-
-# def get_regressor(name):
-#     name = name.lower()
-#     if name == "knn":
-#         return KNeighborsRegressor()
-#     elif name == "rf":
-#         return RandomForestRegressor()
-#     elif name == "svm":
-#         return SVR()
-#     else:
-#         raise ValueError(f"Currently, we don't support: {name} regressor. You can define your own scikit-learn model.")
-
-
 def get_recursive_estimator(problem, name, paras=None):
     if paras is None:
         paras = {}

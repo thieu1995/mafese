@@ -6,8 +6,7 @@
 
 import numpy as np
 from mafese.selector import Selector
-from mafese.utils import validator
-from mafese.utils import correlation
+from mafese.utils import validator, correlation
 
 
 class FilterSelector(Selector):
