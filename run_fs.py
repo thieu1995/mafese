@@ -5,8 +5,7 @@
 # --------------------------------------------------%
 
 from mafese.wrapper.mha import MhaSelector
-from mafese import get_dataset
-from mafese import evaluator
+from mafese import get_dataset, evaluator
 from sklearn.svm import SVC
 
 

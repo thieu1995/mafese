@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.1.4-yellow.svg
+.. image:: https://img.shields.io/badge/release-0.1.5-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -61,7 +61,7 @@ using meta-heuristic algorithms.
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets
-* **Total regression dataset**: >= 3 datasets
+* **Total regression dataset**: >= 7 datasets
 * **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x

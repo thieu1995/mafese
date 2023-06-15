@@ -1,6 +1,13 @@
+# Version 0.1.5
+
++ Add more regression and classification datasets
++ Update documents, examples, test
++ Remove matplotlib dependency
+
+---------------------------------------------------------------------
+
 # Version 0.1.4
 
-+ Relocate regression and classification datasets
 + Add Unsupervised-based methods:
   - "VAR": Variance Threshold method
   - "MAD": Mean Absolute Difference

@@ -4,7 +4,7 @@
 ---
 
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.4-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.1.5-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -21,7 +21,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python library focused on feature selection 
+MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python library for feature selection problem 
 using meta-heuristic algorithms. 
 
 * **Free software:** GNU General Public License (GPL) V3 license
@@ -30,7 +30,7 @@ using meta-heuristic algorithms.
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets
-* **Total regression dataset**: >= 3 datasets
+* **Total regression dataset**: >= 7 datasets
 * **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
@@ -43,7 +43,7 @@ using meta-heuristic algorithms.
 
 Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.4
+$ pip install mafese==0.1.5
 ```
 
 ### Install directly from source code
@@ -216,8 +216,7 @@ Or, use Metaheuristic-based feature selection with different metaheuristic algor
 
 ```python
 from mafese.wrapper.mha import MhaSelector
-from mafese import get_dataset
-from mafese import evaluator
+from mafese import get_dataset, evaluator
 from sklearn.svm import SVC
 
 data = get_dataset("Arrhythmia")
@@ -253,8 +252,7 @@ Or, use Lasso-based feature selection with different estimator:
 
 ```python
 from mafese.embedded.lasso import LassoSelector
-from mafese import get_dataset
-from mafese import evaluator
+from mafese import get_dataset, evaluator
 from sklearn.svm import SVC
 
 
@@ -289,8 +287,7 @@ Or, use Tree-based feature selection with different estimator:
 
 ```python
 from mafese.embedded.tree import TreeSelector
-from mafese import get_dataset
-from mafese import evaluator
+from mafese import get_dataset, evaluator
 from sklearn.svm import SVC
 
 
@@ -328,7 +325,7 @@ For more usage examples please look at [examples](/examples) folder.
 To call the class
 
 ```code 
-from mafese import Data, get_dataset
+from mafese import Data, get_dataset, evaluator
 from mafese import FilterSelector
 from mafese import SequentialSelector, RecursiveSelector, MhaSelector
 from mafese import LassoSelector, TreeSelector
@@ -383,5 +380,8 @@ If you are using mafese in your project, we would appreciate citations:
 3. https://github.com/LBBSoft/FeatureSelect
 4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
 5. https://github.com/scikit-learn-contrib/boruta_py
-```
+6.  https://elki-project.github.io/
+7. https://sci2s.ugr.es/keel/index.php
+8. https://archive.ics.uci.edu/datasets
 
+```
