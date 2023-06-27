@@ -16,7 +16,7 @@ class Selector(ABC):
     SUPPORTED_PROBLEMS = ["classification", "regression"]
 
     def __init__(self, problem="classification"):
-        self.problem = self.set_problem(problem)
+        self.problem = self._set_problem(problem)
         self.selector = None
         self.estimator = None
         self.paras = {}
@@ -26,7 +26,7 @@ class Selector(ABC):
         self.epsilon = 1e-8
         self.w = 1e8
 
-    def set_problem(self, problem):
+    def _set_problem(self, problem):
         if type(problem) is not str:
             raise TypeError(f"problem should be string, and is 'classification' or 'regression'.")
         else:

@@ -70,12 +70,12 @@ class UnsupervisedSelector(Selector):
 
     def __init__(self, problem="classification", method="MCL", n_features=None, threshold=10):
         super().__init__(problem)
-        self.method = self.set_method(method)
+        self.method = self._set_method(method)
         self.n_features = n_features
         self.threshold = threshold
         self.support_values = None
 
-    def set_method(self, method=None):
+    def _set_method(self, method=None):
         if type(method) is str:
             return validator.check_str("method", method, list(self.SUPPORTED_METHODS.keys()))
         else:

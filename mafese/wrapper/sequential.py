@@ -102,7 +102,7 @@ class SequentialSelector(Selector):
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None, n_features=3,
                  direction="forward", tol=None, scoring=None, cv=5, n_jobs=None):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator = self._set_estimator(estimator, estimator_paras)
         self.estimator_paras = estimator_paras
         self.n_features = n_features
         self.direction = direction
@@ -112,7 +112,7 @@ class SequentialSelector(Selector):
         self.n_jobs = n_jobs
         self.selector = SFS(estimator=self.estimator, n_features_to_select=self.n_features, direction=self.direction)
 
-    def set_estimator(self, estimator=None, paras=None):
+    def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
             return get_general_estimator(self.problem, estimator_name, paras)

@@ -82,7 +82,7 @@ class TreeSelector(Selector):
 
     def __init__(self, problem="classification", estimator="tree", estimator_paras=None, threshold=None, norm_order=1, max_features=None):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator = self._set_estimator(estimator, estimator_paras)
         self.estimator_paras = estimator_paras
         self.threshold = threshold
         self.norm_order = norm_order
@@ -90,7 +90,7 @@ class TreeSelector(Selector):
         self.selector = SelectFromModel(estimator=self.estimator, threshold=self.threshold, prefit=False,
                                         norm_order=self.norm_order, max_features=self.max_features)
 
-    def set_estimator(self, estimator=None, paras=None):
+    def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
             return get_tree_based_estimator(self.problem, estimator_name, paras)

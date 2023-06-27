@@ -86,7 +86,7 @@ class RecursiveSelector(Selector):
 
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None, n_features=3, step=1, verbose=0, importance_getter="auto"):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator = self._set_estimator(estimator, estimator_paras)
         self.estimator_paras = estimator_paras
         self.n_features = n_features
         self.step = step
@@ -95,7 +95,7 @@ class RecursiveSelector(Selector):
         self.selector = RFE(estimator=self.estimator, n_features_to_select=self.n_features,
                             step=self.step, verbose=self.verbose, importance_getter=self.importance_getter)
 
-    def set_estimator(self, estimator=None, paras=None):
+    def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
             return get_recursive_estimator(self.problem, estimator_name, paras)

@@ -84,17 +84,17 @@ class FilterSelector(Selector):
         else:
             self.supported_methods = {"PEARSON": "r_regression", "ANOVA": "f_regression", "MI": "mutual_info_regression",
                                       "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
-        self.method = self.set_method(method)
-        self.set_selector(n_features)
+        self.method = self._set_method(method)
+        self._set_selector(n_features)
 
-    def set_method(self, method=None):
+    def _set_method(self, method=None):
         if type(method) is str:
             method_name = validator.check_str("method", method, list(self.supported_methods.keys()))
             return getattr(correlation, self.supported_methods[method_name])
         else:
             raise TypeError(f"Your method needs to be a string.")
 
-    def set_selector(self, n_features):
+    def _set_selector(self, n_features):
         self.n_features = n_features
         if type(n_features) is int:
             self.selector = correlation.SelectKBest(score_func=self.method, k=n_features)

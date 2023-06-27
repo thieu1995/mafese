@@ -100,13 +100,13 @@ class MhaSelector(Selector):
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
                  optimizer="BaseGA", optimizer_paras=None, transfer_func="vstf_01", obj_name=None):
         super().__init__(problem)
-        self.estimator = self.set_estimator(estimator, estimator_paras)
+        self.estimator = self._set_estimator(estimator, estimator_paras)
         self.optimizer_paras = estimator_paras
-        self.optimizer = self.set_optimizer(optimizer, optimizer_paras)
-        self.transfer_func_ = self.set_transfer_func(transfer_func)
+        self.optimizer = self._set_optimizer(optimizer, optimizer_paras)
+        self.transfer_func_ = self._set_transfer_func(transfer_func)
         self.obj_name = obj_name
 
-    def set_estimator(self, estimator=None, paras=None):
+    def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
             estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
             return get_general_estimator(self.problem, estimator_name, paras)
@@ -116,7 +116,7 @@ class MhaSelector(Selector):
         else:
             raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
 
-    def set_optimizer(self, optimizer=None, optimizer_paras=None):
+    def _set_optimizer(self, optimizer=None, optimizer_paras=None):
         if type(optimizer) is str:
             opt_class = get_optimizer_by_name(optimizer)
             if type(optimizer_paras) is dict:
@@ -130,7 +130,7 @@ class MhaSelector(Selector):
         else:
             raise TypeError(f"optimizer needs to set as a string and supported by Mealpy library.")
 
-    def set_transfer_func(self, transfer_func="vstf_01"):
+    def _set_transfer_func(self, transfer_func="vstf_01"):
         if transfer_func is None:
             return getattr(transfer, "vstf_01")
         elif type(transfer_func) is str:
@@ -141,7 +141,7 @@ class MhaSelector(Selector):
         else:
             raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORTED_TRANSFER_FUNCS}")
 
-    def set_metric(self, metric_name=None, list_supported_metrics=None):
+    def _set_metric(self, metric_name=None, list_supported_metrics=None):
         if type(metric_name) is str:
             return validator.check_str("obj_name", metric_name, list_supported_metrics)
         else:
@@ -189,7 +189,7 @@ class MhaSelector(Selector):
             if self.obj_name is None:
                 self.obj_name = "AS"
             else:
-                self.obj_name = self.set_metric(self.obj_name, self.SUPPORTED_CLS_METRICS)
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_CLS_METRICS)
             minmax = self.SUPPORTED_CLS_METRICS[self.obj_name]
             metric_class = ClassificationMetric
         else:
@@ -197,7 +197,7 @@ class MhaSelector(Selector):
             if self.obj_name is None:
                 self.obj_name = "MSE"
             else:
-                self.obj_name = self.set_metric(self.obj_name, self.SUPPORTED_REG_METRICS)
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_REG_METRICS)
             minmax = self.SUPPORTED_REG_METRICS[self.obj_name]
             metric_class = RegressionMetric
         fit_sign = -1 if minmax == "max" else 1
