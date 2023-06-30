@@ -383,5 +383,7 @@ If you are using mafese in your project, we would appreciate citations:
 6.  https://elki-project.github.io/
 7. https://sci2s.ugr.es/keel/index.php
 8. https://archive.ics.uci.edu/datasets
+9. https://python-charts.com/distribution/box-plot-plotly/
+10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
 
 ```

@@ -71,7 +71,8 @@ setup(
         "Topic :: Utilities",
     ],
     install_requires=["numpy>=1.17.1", "scipy>=1.7.1", "scikit-learn>=1.0.2",
-                      "pandas>=1.3.5", "mealpy>=2.5.3", "permetrics>=1.3.3"],
+                      "pandas>=1.3.5", "mealpy>=2.5.3", "permetrics>=1.3.3",
+                      "plotly>=5.10.0", "kaleido>=0.2.1"],
     extras_require={
         "dev": ["pytest>=7.0", "pytest-cov==4.0.0", "flake8>=4.0.1"],
     },

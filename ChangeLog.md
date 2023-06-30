@@ -1,3 +1,12 @@
+# Version 0.1.6
+
++ Rename some public functions to private functions
++ Add MultiMhaSelector class
++ Add Matplotlib library and support visualization for MultiMhaSelector class
++ Add dependency plotly>=5.10.0 and kaleido >=0.2.1
+
+---------------------------------------------------------------------
+
 # Version 0.1.5
 
 + Add more regression and classification datasets
