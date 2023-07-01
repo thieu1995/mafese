@@ -97,7 +97,7 @@ class SequentialSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
+    SUPPORT = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
 
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None, n_features=3,
                  direction="forward", tol=None, scoring=None, cv=5, n_jobs=None):
@@ -114,10 +114,9 @@ class SequentialSelector(Selector):
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
-            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORT)
             return get_general_estimator(self.problem, estimator_name, paras)
-        elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and \
-                (callable(estimator.fit) and callable(estimator.predict)):
+        elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and (callable(estimator.fit) and callable(estimator.predict)):
             return estimator
         else:
             raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
