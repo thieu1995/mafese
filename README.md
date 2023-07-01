@@ -83,7 +83,6 @@ mafese
         validator.py
     __init__.py
     selector.py
-    evaluator.py
 README.md
 setup.py
 ```
@@ -105,7 +104,7 @@ Let's go through some examples.
 
 ### Examples
 
-First, you need to load your dataset, or you can load own available datasets:
+* 1.First, you need to load your dataset, or you can load own available datasets:
 
 ```python 
 # Load available dataset from MAFESE
@@ -118,9 +117,9 @@ get_dataset("unknown")
 data = get_dataset("Arrhythmia")
 ```
 
+* Or you can load your own dataset 
 
 ```python
-# Load your own dataset 
 import pandas as pd
 from mafese import Data
 
@@ -131,7 +130,7 @@ X, y = dataset[:, 0:-1], dataset[:, -1]
 data = Data(X, y)
 ```
 
-Next, split dataset into train and test set
+* 2.Next, split dataset into train and test set
 
 ```python 
 data.split_train_test(test_size=0.2, inplace=True)
@@ -139,197 +138,105 @@ print(data.X_train[:2].shape)
 print(data.y_train[:2].shape)
 ```
 
+* 3.Next, choose the Selector that you want to use by first import them:
 
-Next, how to use Recursive wrapper-based method:
+```python 
+## First way, we recommended 
+from mafese import UnsupervisedSelector, FilterSelector, LassoSelector, TreeSelector
+from mafese import SequentialSelector, RecursiveSelector, MhaSelector, MultiMhaSelector
 
-```python
-from mafese.wrapper.recursive import RecursiveSelector
-
-# define mafese feature selection method
-feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=5)
-
-# find all relevant features - 5 features should be selected
-feat_selector.fit(data.X_train, data.y_train)
-
-# check selected features - True (or 1) is selected, False (or 0) is not selected
-print(feat_selector.selected_feature_masks)
-print(feat_selector.selected_feature_solution)
-
-# check the index of selected features
-print(feat_selector.selected_feature_indexes)
-
-# call transform() on X to filter it down to selected features
-X_train_selected = feat_selector.transform(data.X_train)
-X_test_selected = feat_selector.transform(data.X_test)
-```
-
-
-Or, how to use Sequential (backward or forward) wrapper-based method:
-
-```python
-from mafese.wrapper.sequential import SequentialSelector
-
-# define mafese feature selection method
-feat_selector = SequentialSelector(problem="classification", estimator="knn", n_features=3, direction="forward")
-
-# find all relevant features - 5 features should be selected
-feat_selector.fit(data.X_train, data.y_train)
-
-# check selected features - True (or 1) is selected, False (or 0) is not selected
-print(feat_selector.selected_feature_masks)
-print(feat_selector.selected_feature_solution)
-
-# check the index of selected features
-print(feat_selector.selected_feature_indexes)
-
-# call transform() on X to filter it down to selected features
-X_train_selected = feat_selector.transform(data.X_train)
-X_test_selected = feat_selector.transform(data.X_test)
-```
-
-
-Or, how to use Filter-based feature selection with different correlation methods:
-
-```python
+## Second way
+from mafese.unsupervised import UnsupervisedSelector
 from mafese.filter import FilterSelector
+from mafese.embedded.lasso import LassoSelector
+from mafese.embedded.tree import TreeSelector
+from mafese.wrapper.sequential import SequentialSelector
+from mafese.wrapper.recursive import RecursiveSelector
+from mafese.wrapper.mha import MhaSelector, MultiMhaSelector
+```
 
-# define mafese feature selection method
+* 4.Next, create an instance of Selector class you want to use:
+
+```python 
+feat_selector = UnsupervisedSelector(problem='classification', method='DR', n_features=5)
+
 feat_selector = FilterSelector(problem='classification', method='SPEARMAN', n_features=5)
 
-# find all relevant features - 5 features should be selected
-feat_selector.fit(data.X_train, data.y_train)
+feat_selector = LassoSelector(problem="classification", estimator="lasso", estimator_paras={"alpha": 0.1})
 
-# check selected features - True (or 1) is selected, False (or 0) is not selected
-print(feat_selector.selected_feature_masks)
-print(feat_selector.selected_feature_solution)
+feat_selector = TreeSelector(problem="classification", estimator="tree")
 
-# check the index of selected features
-print(feat_selector.selected_feature_indexes)
+feat_selector = SequentialSelector(problem="classification", estimator="knn", n_features=3, direction="forward")
 
-# call transform() on X to filter it down to selected features
-X_train_selected = feat_selector.transform(data.X_train)
-X_test_selected = feat_selector.transform(data.X_test)
-```
+feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=5)
 
-
-Or, use Metaheuristic-based feature selection with different metaheuristic algorithms:
-
-```python
-from mafese.wrapper.mha import MhaSelector
-from mafese import get_dataset, evaluator
-from sklearn.svm import SVC
-
-data = get_dataset("Arrhythmia")
-data.split_train_test(test_size=0.2)
-print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
-
-# define mafese feature selection method
 feat_selector = MhaSelector(problem="classification", estimator="knn",
                             optimizer="BaseGA", optimizer_paras=None,
                             transfer_func="vstf_01", obj_name="AS")
-# find all relevant features
-feat_selector.fit(data.X_train, data.y_train, fit_weights=(0.9, 0.1), verbose=True)
 
-# check selected features - True (or 1) is selected, False (or 0) is not selected
-print(feat_selector.selected_feature_masks)
-print(feat_selector.selected_feature_solution)
-
-# check the index of selected features
-print(feat_selector.selected_feature_indexes)
-
-# call transform() on X to filter it down to selected features
-X_train_selected = feat_selector.transform(data.X_train)
-X_test_selected = feat_selector.transform(data.X_test)
-
-# Evaluate final dataset with different estimator with multiple performance metrics
-results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
-print(results)
-# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+list_optimizers = ("OriginalWOA", "OriginalGWO", "OriginalTLO", "OriginalGSKA")
+list_paras = [{"epoch": 10, "pop_size": 30}, ]*4
+feat_selector = MultiMhaSelector(problem="classification", estimator="knn",
+                            list_optimizers=list_optimizers, list_optimizer_paras=list_paras,
+                            transfer_func="vstf_01", obj_name="AS")
 ```
 
+* 5.Fit the model to X_train and y_train
 
-Or, use Lasso-based feature selection with different estimator:
-
-```python
-from mafese.embedded.lasso import LassoSelector
-from mafese import get_dataset, evaluator
-from sklearn.svm import SVC
-
-
-data = get_dataset("Arrhythmia")
-data.split_train_test(test_size=0.2)
-print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
-
-# define mafese feature selection method
-feat_selector = LassoSelector(problem="classification", estimator="lasso", estimator_paras={"alpha": 0.1})
-# find all relevant features
+```python 
 feat_selector.fit(data.X_train, data.y_train)
+```
 
+* 6.Get the information
+
+```python 
 # check selected features - True (or 1) is selected, False (or 0) is not selected
 print(feat_selector.selected_feature_masks)
 print(feat_selector.selected_feature_solution)
 
 # check the index of selected features
 print(feat_selector.selected_feature_indexes)
-
-# call transform() on X to filter it down to selected features
-X_train_selected = feat_selector.transform(data.X_train)
-X_test_selected = feat_selector.transform(data.X_test)
-
-# Evaluate final dataset with different estimator with multiple performance metrics
-results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
-print(results)
-# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 ```
 
+* 7.Call transform() on the X that you want to filter it down to selected features
 
-Or, use Tree-based feature selection with different estimator:
-
-```python
-from mafese.embedded.tree import TreeSelector
-from mafese import get_dataset, evaluator
-from sklearn.svm import SVC
-
-
-data = get_dataset("Arrhythmia")
-data.split_train_test(test_size=0.2)
-print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
-
-# define mafese feature selection method
-feat_selector = TreeSelector(problem="classification", estimator="tree")
-# find all relevant features
-feat_selector.fit(data.X_train, data.y_train)
-
-# check selected features - True (or 1) is selected, False (or 0) is not selected
-print(feat_selector.selected_feature_masks)
-print(feat_selector.selected_feature_solution)
-
-# check the index of selected features
-print(feat_selector.selected_feature_indexes)
-
-# call transform() on X to filter it down to selected features
+```python 
 X_train_selected = feat_selector.transform(data.X_train)
 X_test_selected = feat_selector.transform(data.X_test)
-
-# Evaluate final dataset with different estimator with multiple performance metrics
-results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
-print(results)
-# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 ```
 
+* 8.You can build your own evaluating methods or use our. 
+**If you use our evaluator, don't transform the data.**
+
+i) You can use difference estimator than the one used in feature selection process 
+```python 
+feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
+
+## Here, we pass the data that was loaded above. So it contains both train and test set. So, the results will look 
+like this: 
+{'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+```
+
+ii) You can use the same estimator in feature selection process 
+```python 
+X_test, y_test = data.X_test, data.y_test
+feat_selector.evaluate(estimator=None, data=(X_test, y_test), metrics=["AS", "PS", "RS"])
+
+## Here, we pass only tuple/list of X, y. So the results will look like this:
+{'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+```
+
+1) Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?
+You can find it here: https://github.com/thieu1995/permetrics
+
+2) How do I know my Selector support which estimator? which methods?
+```python 
+print(feat_selector.SUPPORT) 
+```
+Or you better read the document from: https://mafese.readthedocs.io/en/latest/
 
 
 For more usage examples please look at [examples](/examples) folder.
-
-### Shortcut 
-To call the class
-
-```code 
-from mafese import Data, get_dataset, evaluator
-from mafese import FilterSelector
-from mafese import SequentialSelector, RecursiveSelector, MhaSelector
-from mafese import LassoSelector, TreeSelector
-```
 
 
 # Get helps (questions, problems)
@@ -339,7 +246,8 @@ from mafese import LassoSelector, TreeSelector
 * Download releases: https://pypi.org/project/mafese/
 * Issue tracker: https://github.com/thieu1995/mafese/issues
 * Notable changes log: https://github.com/thieu1995/mafese/blob/master/ChangeLog.md
-* Examples with different meapy version: https://github.com/thieu1995/mafese/blob/master/examples.md
+* Examples with different mealpy version: https://github.com/thieu1995/mafese/blob/master/examples.md
+* Official chat group: https://t.me/+fRVCJGuGJg1mNDg1
 
 * This project also related to our another projects which are "meta-heuristics", "neural-network", and "optimization" 
   check it here
@@ -349,11 +257,6 @@ from mafese import LassoSelector, TreeSelector
     * https://github.com/thieu1995/enoppy
     * https://github.com/thieu1995/permetrics
     * https://github.com/aiir-team
-
-
-**Want to have an instant assistant? Join our telegram community at [link](https://t.me/+fRVCJGuGJg1mNDg1)**
-We share lots of information, questions, and answers there. You will get more support and knowledge there.
-
 
 
 # References 
