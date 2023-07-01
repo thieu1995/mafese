@@ -6,6 +6,7 @@
 
 from abc import ABC
 from mafese.utils import validator
+from mafese.utils.estimator import get_general_estimator
 from mafese.utils.evaluator import get_metrics
 from mafese.utils.data_loader import Data
 
@@ -16,6 +17,7 @@ class Selector(ABC):
     """
     name = "Feature Selector"
     SUPPORTED_PROBLEMS = ["classification", "regression"]
+    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
 
     def __init__(self, problem="classification"):
         self.problem = self._set_problem(problem)
@@ -95,24 +97,31 @@ class Selector(ABC):
         """
         return self.selector.fit_transform(X, y, **fit_params)
 
-    def evaluate(self, estimator=None, data=None, metrics=None):
+    def evaluate(self, estimator=None, estimator_paras=None, data=None, metrics=None):
         if estimator is None:
             if self.estimator is None:
                 raise ValueError("You need to set estimator to evaluate the data.")
-            estimator = self.estimator
+            est_ = self.estimator
+        elif type(estimator) is str:
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            est_ = get_general_estimator(self.problem, estimator_name, estimator_paras)
+        elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and (callable(estimator.fit) and callable(estimator.predict)):
+            est_ = estimator
+        else:
+            raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
         if (metrics is None) or (type(metrics) not in (tuple, list)):
             raise ValueError("You need to pass a tuple/list of performance metrics. See the supported metrics at https://github.com/thieu1995/permetrics")
         if type(data) in (tuple, list):
             X_test, y_test = self.transform(data[0]), data[1]
-            estimator.fit(X_test, y_test)
-            y_test_pred = estimator.predict(X_test)
+            est_.fit(X_test, y_test)
+            y_test_pred = est_.predict(X_test)
             return get_metrics(self.problem, y_test, y_test_pred, metrics=metrics, testcase="test")
         elif isinstance(data, Data):
             X_train = self.transform(data.X_train)
             X_test = self.transform(data.X_test)
-            estimator.fit(X_train, data.y_train)
-            y_train_pred = estimator.predict(X_train)
-            y_test_pred = estimator.predict(X_test)
+            est_.fit(X_train, data.y_train)
+            y_train_pred = est_.predict(X_train)
+            y_test_pred = est_.predict(X_test)
             train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
             test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
             return {**train_result, **test_result}
