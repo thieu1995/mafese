@@ -55,6 +55,10 @@ def get_filter_from_mafese(data_type, method, X, y):
     print(feat_selector.selected_feature_solution)
     print(feat_selector.selected_feature_indexes)
 
+    ## Set up evaluating methods
+    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["AS", "PS", "RS"])
+    print(results)
+
 
 data_type = "classification"
 method = "KENDALL"

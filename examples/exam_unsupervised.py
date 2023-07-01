@@ -40,6 +40,10 @@ def get_unsupervised_from_mafese(data_type, method, X, y):
     print(feat_selector.selected_feature_indexes)
     print(feat_selector.support_values)
 
+    ## Set up evaluating methods
+    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["RMSE", "MSE", "MAPE"])
+    print(results)
+
 
 data_type = "regression"
 method = "MAD"      # MCL, DR, MAD, VAR
