@@ -55,7 +55,7 @@ class TreeSelector(Selector):
 
     Examples
     --------
-    The following example shows how to retrieve the most informative features in the Lasso-based FS method
+    The following example shows how to retrieve the most informative features in the Tree-based FS method
 
     >>> import pandas as pd
     >>> from mafese.embedded.tree import TreeSelector
@@ -78,7 +78,7 @@ class TreeSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["rf", "adaboost", "xgb", "tree"]
+    SUPPORTED = ["rf", "adaboost", "xgb", "tree"]
 
     def __init__(self, problem="classification", estimator="tree", estimator_paras=None, threshold=None, norm_order=1, max_features=None):
         super().__init__(problem)
@@ -92,7 +92,7 @@ class TreeSelector(Selector):
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
-            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED)
             return get_tree_based_estimator(self.problem, estimator_name, paras)
         else:
             raise TypeError("Estimator should be a string.")

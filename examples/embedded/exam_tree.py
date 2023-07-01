@@ -49,6 +49,9 @@ def get_tree_from_mafese(data_type, X, y):
         feat_selector = TreeSelector(problem=data_type, estimator="tree")
     else:
         feat_selector = TreeSelector(problem=data_type, estimator="rf")
+
+    print(feat_selector.SUPPORTED)
+
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)
@@ -56,6 +59,10 @@ def get_tree_from_mafese(data_type, X, y):
     print(feat_selector.selected_feature_masks)
     print(feat_selector.selected_feature_solution)
     print(feat_selector.selected_feature_indexes)
+
+    ## Set up evaluating methods
+    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["RMSE", "MSE", "MAPE"])
+    print(results)
 
 
 data_type = "regression"    # classification
