@@ -98,14 +98,16 @@ class MhaSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
-    SUPPORTED_TRANSFER_FUNCS = ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"]
-    SUPPORTED_REG_METRICS = {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
+    SUPPORT = {
+        "estimator": ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"],
+        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"],
+        "regression_objective": {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
                              "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
-                             "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"}
-    SUPPORTED_CLS_METRICS = {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
-                             "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"}
-    SUPPORTED_OPTIMIZERS = list(get_all_optimizers().keys())
+                             "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"},
+        "classification_objective": {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
+                             "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"},
+        "optimizer": list(get_all_optimizers().keys())
+    }
 
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
                  optimizer="BaseGA", optimizer_paras=None, transfer_func="vstf_01", obj_name=None):
@@ -118,7 +120,7 @@ class MhaSelector(Selector):
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
-            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORT["estimator"])
             return get_general_estimator(self.problem, estimator_name, paras)
         elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and \
                 (callable(estimator.fit) and callable(estimator.predict)):
@@ -144,12 +146,12 @@ class MhaSelector(Selector):
         if transfer_func is None:
             return getattr(transfer, "vstf_01")
         elif type(transfer_func) is str:
-            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORTED_TRANSFER_FUNCS)
+            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORT["transfer_func"])
             return getattr(transfer, transfer_func)
         elif callable(transfer_func):
             return transfer_func
         else:
-            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORTED_TRANSFER_FUNCS}")
+            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORT['transfer_func']}")
 
     def _set_metric(self, metric_name=None, list_supported_metrics=None):
         if type(metric_name) is str:
@@ -199,16 +201,16 @@ class MhaSelector(Selector):
             if self.obj_name is None:
                 self.obj_name = "AS"
             else:
-                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_CLS_METRICS)
-            minmax = self.SUPPORTED_CLS_METRICS[self.obj_name]
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORT["classification_objective"])
+            minmax = self.SUPPORT["classification_objective"][self.obj_name]
             metric_class = ClassificationMetric
         else:
             self.obj_paras = {"decimal": 4}
             if self.obj_name is None:
                 self.obj_name = "MSE"
             else:
-                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_REG_METRICS)
-            minmax = self.SUPPORTED_REG_METRICS[self.obj_name]
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORT["regression_objective"])
+            minmax = self.SUPPORT["regression_objective"][self.obj_name]
             metric_class = RegressionMetric
         fit_sign = -1 if minmax == "max" else 1
         log_to = "console" if verbose else "None"
