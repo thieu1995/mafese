@@ -17,6 +17,7 @@ from mafese.utils.estimator import get_general_estimator
 from mafese.utils.mealpy_util import get_optimizer_by_name, get_all_optimizers, FeatureSelectionProblem, Optimizer
 from mafese.utils import transfer
 from mafese.utils.data_loader import Data
+from mafese.utils.evaluator import get_metrics
 from permetrics.regression import RegressionMetric
 from permetrics.classification import ClassificationMetric
 import plotly.express as px
@@ -239,14 +240,25 @@ class MhaSelector(Selector):
 
 class MultiMhaSelector(Selector):
 
-    SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
-    SUPPORTED_TRANSFER_FUNCS = ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"]
-    SUPPORTED_REG_METRICS = {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
+    # SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
+    # SUPPORTED_TRANSFER_FUNCS = ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"]
+    # SUPPORTED_REG_METRICS = {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
+    #                          "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
+    #                          "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"}
+    # SUPPORTED_CLS_METRICS = {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
+    #                          "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"}
+    # SUPPORTED_OPTIMIZERS = list(get_all_optimizers().keys())
+
+    SUPPORT = {
+        "estimator": ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"],
+        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"],
+        "regression_objective": {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
                              "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
-                             "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"}
-    SUPPORTED_CLS_METRICS = {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
-                             "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"}
-    SUPPORTED_OPTIMIZERS = list(get_all_optimizers().keys())
+                             "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"},
+        "classification_objective": {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
+                             "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"},
+        "optimizer": list(get_all_optimizers().keys())
+    }
 
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
                  list_optimizers=("BaseGA",), list_optimizer_paras=None, transfer_func="vstf_01", obj_name=None):
@@ -258,7 +270,7 @@ class MultiMhaSelector(Selector):
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
-            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORT['estimator'])
             return get_general_estimator(self.problem, estimator_name, paras), paras
         elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and (callable(estimator.fit) and callable(estimator.predict)):
             return estimator, paras
@@ -293,12 +305,12 @@ class MultiMhaSelector(Selector):
         if transfer_func is None:
             transfer_func = "vstf_01"
         if type(transfer_func) is str:
-            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORTED_TRANSFER_FUNCS)
+            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORT['transfer_func'])
             return getattr(transfer, transfer_func)
         elif callable(transfer_func):
             return transfer_func
         else:
-            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORTED_TRANSFER_FUNCS}")
+            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORT['transfer_func']}")
 
     def _set_metric(self, metric_name=None, list_supported_metrics=None):
         if type(metric_name) is str:
@@ -366,16 +378,16 @@ class MultiMhaSelector(Selector):
             if self.obj_name is None:
                 self.obj_name = "AS"
             else:
-                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_CLS_METRICS)
-            minmax = self.SUPPORTED_CLS_METRICS[self.obj_name]
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORT['classification_objective'])
+            minmax = self.SUPPORT['classification_objective'][self.obj_name]
             metric_class = ClassificationMetric
         else:
             self.obj_paras = {"decimal": 4}
             if self.obj_name is None:
                 self.obj_name = "MSE"
             else:
-                self.obj_name = self._set_metric(self.obj_name, self.SUPPORTED_REG_METRICS)
-            minmax = self.SUPPORTED_REG_METRICS[self.obj_name]
+                self.obj_name = self._set_metric(self.obj_name, self.SUPPORT['regression_objective'])
+            minmax = self.SUPPORT['regression_objective'][self.obj_name]
             metric_class = RegressionMetric
         fit_sign = -1 if minmax == "max" else 1
         log_to = "console" if verbose else "None"
@@ -398,11 +410,17 @@ class MultiMhaSelector(Selector):
         convergence_results = {}
         solution_results = {}
         position_results = {}
+        self.list_selected_feature_solutions = {}
+        self.list_selected_feature_masks = {}
+        self.list_selected_feature_indexes = {}
         trial_list = list(range(1, self.n_trials + 1))
         for idx in trial_list:
             convergence_results[f"trial{idx}"] = {}
             solution_results[f"trial{idx}"] = {}
             position_results[f"trial{idx}"] = {}
+            self.list_selected_feature_solutions[f"trial{idx}"] = {}
+            self.list_selected_feature_masks[f"trial{idx}"] = {}
+            self.list_selected_feature_indexes[f"trial{idx}"] = {}
         for id_model, model in enumerate(self.list_optimizers):
             if n_jobs is None:
                 with parallel.ProcessPoolExecutor(n_workers) as executor:
@@ -424,10 +442,14 @@ class MultiMhaSelector(Selector):
                     if verbose:
                         print(f"Solving problem: {list_problems[id_model].get_name()} using algorithm: {model.get_name()}, "
                               f"on the: {result['id_trial']} trial, with best fitness: {result['best_fitness']}")
+
         for trial_, models_ in solution_results.items():
             for name_, sol in models_.items():
-                position_results[trial_][name_] = np.concatenate((sol[0], [sol[1][0], sol[1][1][1]]), axis=None)     # Get the position, fitness, and objective
-                print(sol[1])
+                # Get the position, fitness, and objective
+                position_results[trial_][name_] = np.concatenate((sol[0], [sol[1][0], sol[1][1][1]]), axis=None)
+                self.list_selected_feature_solutions[trial_][name_] = np.array(sol[0], dtype=int)
+                self.list_selected_feature_masks[trial_][name_] = np.where(sol[0] == 0, False, True)
+                self.list_selected_feature_indexes[trial_][name_] = np.where(sol[0] == 1)[0]
             indexes = [f"x{idx}" for idx in range(1, len(sol[0]) + 1)] + ["fitness", "objective"]
             df0 = pd.DataFrame(position_results[trial_])
             df0["idx"] = indexes
@@ -440,11 +462,6 @@ class MultiMhaSelector(Selector):
             for idx in trial_list:
                 df2 = pd.DataFrame(convergence_results[f"trial{idx}"])
                 df2.to_csv(f"{save_path}/convergence-trial{idx}.csv", index=False)
-
-        # best_position, best_fitness = self.optimizer.solve(prob, mode=mode, n_workers=n_workers, termination=termination)
-        # self.selected_feature_solution = np.array(best_position, dtype=int)
-        # self.selected_feature_masks = np.where(self.selected_feature_solution == 0, False, True)
-        # self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
 
     def export_boxplot_figures(self, xlabel="Model", ylabel="Global best fitness value",
                                title="Boxplot of comparison models", show_legend=True, show_mean_only=False, exts=(".png", ".pdf")):
@@ -487,15 +504,118 @@ class MultiMhaSelector(Selector):
             for idx, ext in enumerate(exts):
                 fig.write_image(f"{self.save_path}/convergence-trial{trial}{ext}")
 
-    def transform(self, X):
-        return X[:, self.selected_feature_indexes]
+    def transform(self, X, trial=1, model="BaseGA", all_models=False):
+        if all_models:
+            dict_X = {}
+            for trial_, models_ in self.list_selected_feature_indexes.items():
+                dict_X[trial_] = {}
+                for name_, indexes in models_.items():
+                    dict_X[trial_][name_] = deepcopy(X[:, indexes])
+            return dict_X
+        else:
+            if type(trial) is int and 1 <= trial <= self.n_trials:
+                list_models = [model.get_name() for model in self.list_optimizers]
+                if type(model) is str and model in list_models:
+                    return X[:, self.list_selected_feature_indexes[f"trial{trial}"][model]]
+                else:
+                    raise ValueError(f"model: {model} is not trained yet.")
+            else:
+                raise ValueError("trial index should be >= 1 and <= n_trials.")
 
-    def fit_transform(self, X, y=None, fit_weights=(0.9, 0.1), verbose=True, mode='single', n_workers=None, termination=None):
-        self.fit(X, y, fit_weights, verbose, mode, n_workers, termination)
-        return self.transform(X)
+    def fit_transform(self, X, y=None, n_trials=2, n_jobs=2, save_path="history", save_results=True,
+                      verbose=True, fit_weights=(0.9, 0.1), mode='single', n_workers=None, termination=None):
+        self.fit(X, y, n_trials, n_jobs, save_path, save_results, verbose, fit_weights, mode, n_workers, termination)
+        return self.transform(X, trial=1, model="BaseGa", all_models=False)
 
-    def get_best_obj_and_fit(self):
-        return {
-            "obj": self.optimizer.solution[1][1][1],
-            "fit": self.optimizer.solution[1][1][0]
-        }
+    def evaluate(self, estimator=None, estimator_paras=None, data=None, metrics=None,
+                 trial=1, model="BaseGA", all_models=False):
+        """
+        Evaluate the new dataset. We will re-train the estimator with training set
+        and return the metrics of both training and testing set
+
+        Parameters
+        ----------
+        estimator : str or Estimator instance (from scikit-learn or custom)
+            If estimator is str, we are currently support:
+                - knn: k-nearest neighbors
+                - svm: support vector machine
+                - rf: random forest
+                - adaboost: AdaBoost
+                - xgb: Gradient Boosting
+                - tree: Extra Trees
+                - ann: Artificial Neural Network (Multi-Layer Perceptron)
+
+            If estimator is Estimator instance: you need to make sure that it has `fit` and `predict` methods
+
+        estimator_paras: None or dict, default = None
+            The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
+            If None, we use the default parameter for selected estimator
+
+        data : Data, an instance of Data class. It must have training and testing set
+
+        metrics : tuple, list, default = None
+            Depend on the regression or classification you are trying to tackle. The supported metrics can be found at:
+            https://github.com/thieu1995/permetrics
+
+        trial : int.
+            The index of i-th trial
+
+        model : str.
+            The name of the tested optimizer
+
+        all_models : bool, default = False
+            If True, it will ignore `trial` and `model` parameters. It will calculate metrics for all of models in all trials
+            If False, it will calculate the metrics for `model` in i-th `trial`
+
+        Returns
+        -------
+        metrics_results: dict.
+            The metrics for both training and testing set.
+        """
+
+        if estimator is None:
+            if self.estimator is None:
+                raise ValueError("You need to set estimator to evaluate the data.")
+            est_ = self.estimator
+        elif type(estimator) is str:
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_ESTIMATORS)
+            est_ = get_general_estimator(self.problem, estimator_name, estimator_paras)
+        elif (hasattr(estimator, 'fit') and hasattr(estimator, 'predict')) and (callable(estimator.fit) and callable(estimator.predict)):
+            est_ = estimator
+        else:
+            raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
+        if (metrics is None) or (type(metrics) not in (tuple, list)):
+            raise ValueError("You need to pass a tuple/list of performance metrics. See the supported metrics at https://github.com/thieu1995/permetrics")
+        if isinstance(data, Data):
+            if all_models:
+                dict_results = {}
+                dict_X_train = self.transform(data.X_train, all_models=True)
+                dict_X_test = self.transform(data.X_test, all_models=True)
+                for trial_, model_ in dict_X_train.items():
+                    dict_results[trial_] = {}
+                    for name_, X_train_selected in model_.items():
+                        est_.fit(X_train_selected, data.y_train)
+                        y_train_pred = est_.predict(X_train_selected)
+                        y_test_pred = est_.predict(dict_X_test[trial_][name_])
+                        train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
+                        test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
+                        dict_results[trial_][name_] = {**train_result, **test_result}
+                return dict_results
+            else:
+                if type(trial) is int and 1 <= trial <= self.n_trials:
+                    list_models = [model.get_name() for model in self.list_optimizers]
+                    if type(model) is str and model in list_models:
+                        X_train = self.transform(data.X_train, trial, model)
+                        X_test = self.transform(data.X_test, trial, model)
+                        est_.fit(X_train, data.y_train)
+                        y_train_pred = est_.predict(X_train)
+                        y_test_pred = est_.predict(X_test)
+                        train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
+                        test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
+                        return {**train_result, **test_result}
+                    else:
+                        raise ValueError(f"model: {model} is not trained yet.")
+                else:
+                    raise ValueError("trial index should be >= 1 and <= n_trials.")
+        else:
+            raise ValueError("'data' should be an instance of Data class.")
