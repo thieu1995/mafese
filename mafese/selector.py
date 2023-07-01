@@ -6,6 +6,8 @@
 
 from abc import ABC
 from mafese.utils import validator
+from mafese.utils.evaluator import get_metrics
+from mafese.utils.data_loader import Data
 
 
 class Selector(ABC):
@@ -92,3 +94,27 @@ class Selector(ABC):
             Transformed array.
         """
         return self.selector.fit_transform(X, y, **fit_params)
+
+    def evaluate(self, estimator=None, data=None, metrics=None):
+        if estimator is None:
+            if self.estimator is None:
+                raise ValueError("You need to set estimator to evaluate the data.")
+            estimator = self.estimator
+        if (metrics is None) or (type(metrics) not in (tuple, list)):
+            raise ValueError("You need to pass a tuple/list of performance metrics. See the supported metrics at https://github.com/thieu1995/permetrics")
+        if type(data) in (tuple, list):
+            X_test, y_test = self.transform(data[0]), data[1]
+            estimator.fit(X_test, y_test)
+            y_test_pred = estimator.predict(X_test)
+            return get_metrics(self.problem, y_test, y_test_pred, metrics=metrics, testcase="test")
+        elif isinstance(data, Data):
+            X_train = self.transform(data.X_train)
+            X_test = self.transform(data.X_test)
+            estimator.fit(X_train, data.y_train)
+            y_train_pred = estimator.predict(X_train)
+            y_test_pred = estimator.predict(X_test)
+            train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
+            test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
+            return {**train_result, **test_result}
+        else:
+            raise ValueError("You need to set data as a tuple/list of X, y or Data instance.")
