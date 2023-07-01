@@ -42,12 +42,15 @@ def get_filter_from_scikit_learn(data_type, X, y):
 
 def get_filter_from_mafese(data_type, method, X, y):
     ## Using Mafese library
-    from mafese.filter import FilterSelector
+    from mafese import Data, FilterSelector
+
+    data = Data(X, y)
+    data.split_train_test(test_size=0.2, inplace=True)
 
     print("=============Using Mafese library===============")
     feat_selector = FilterSelector(problem=data_type, method=method, n_features=2)
     print(feat_selector.SUPPORT)
-    feat_selector.fit(X, y)
+    feat_selector.fit(data.X_train, data.y_train)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)
     print(X_selected[:1])
@@ -55,8 +58,8 @@ def get_filter_from_mafese(data_type, method, X, y):
     print(feat_selector.selected_feature_solution)
     print(feat_selector.selected_feature_indexes)
 
-    ## Set up evaluating methods
-    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["AS", "PS", "RS"])
+    ## Set up evaluating method
+    results = feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
     print(results)
 
 
