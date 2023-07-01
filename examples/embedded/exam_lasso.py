@@ -42,7 +42,10 @@ def get_lasso_from_scikit_learn(data_type, X, y):
 
 def get_lasso_from_mafese(data_type, X, y):
     ## Using Mafese library
-    from mafese.embedded.lasso import LassoSelector
+    from mafese import Data, LassoSelector
+
+    data = Data(X, y)
+    data.split_train_test(test_size=0.2, inplace=True)
 
     print("=============Using Mafese library===============")
     if data_type == "regression":
@@ -51,8 +54,8 @@ def get_lasso_from_mafese(data_type, X, y):
         feat_selector = LassoSelector(problem=data_type, estimator="svm")
     print(feat_selector.SUPPORT)
 
-    feat_selector.fit(X, y)
-    X_selected = feat_selector.transform(X)
+    feat_selector.fit(data.X_train, data.y_train)
+    X_selected = feat_selector.transform(data.X_train)
     print(X_selected.shape)
     print(X_selected[:1])
     print(feat_selector.selected_feature_masks)
@@ -60,7 +63,7 @@ def get_lasso_from_mafese(data_type, X, y):
     print(feat_selector.selected_feature_indexes)
 
     ## Set up evaluating methods
-    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["RMSE", "MSE", "MAPE"])
+    results = feat_selector.evaluate(estimator="svm", data=data, metrics=["RMSE", "MSE", "MAPE"])
     print(results)
 
 

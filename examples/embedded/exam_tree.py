@@ -42,7 +42,10 @@ def get_tree_from_scikit_learn(data_type, X, y):
 
 def get_tree_from_mafese(data_type, X, y):
     ## Using Mafese library
-    from mafese.embedded.tree import TreeSelector
+    from mafese import Data, TreeSelector
+
+    data = Data(X, y)
+    data.split_train_test(test_size=0.2, inplace=True)
 
     print("=============Using Mafese library===============")
     if data_type == "regression":
@@ -61,7 +64,7 @@ def get_tree_from_mafese(data_type, X, y):
     print(feat_selector.selected_feature_indexes)
 
     ## Set up evaluating methods
-    results = feat_selector.evaluate(estimator="svm", data=(X, y), metrics=["RMSE", "MSE", "MAPE"])
+    results = feat_selector.evaluate(estimator="svm", data=data, metrics=["RMSE", "MSE", "MAPE"])
     print(results)
 
 
