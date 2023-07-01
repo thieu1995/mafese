@@ -41,17 +41,27 @@ def get_recursive_from_scikit_learn(data_type, X, y):
 
 def get_recursive_from_mafese(data_type, estimator, X, y):
     ## Using Mafese library
-    from mafese.wrapper.recursive import RecursiveSelector
+    from mafese import Data, RecursiveSelector
+
+    data = Data(X, y)
+    data.split_train_test(test_size=0.2, inplace=True)
 
     print("=============Using Mafese library===============")
     feat_selector = RecursiveSelector(problem=data_type, estimator=estimator, n_features=3)
-    feat_selector.fit(X, y)
-    X_selected = feat_selector.transform(X)
+
+    print(feat_selector.SUPPORT)
+
+    feat_selector.fit(data.X_train, data.y_train)
+    X_selected = feat_selector.transform(data.X_train)
     print(X_selected.shape)
     print(X_selected[:1])
     print(feat_selector.selected_feature_masks)
     print(feat_selector.selected_feature_solution)
     print(feat_selector.selected_feature_indexes)
+
+    ## Set up evaluating method
+    results = feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
+    print(results)
 
 
 data_type = "classification"    # classification
