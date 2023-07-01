@@ -61,7 +61,7 @@ class UnsupervisedSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_METHODS = {
+    SUPPORT = {
         "VAR": "Variance Threshold",
         "DR": "Dispersion Ratio",
         "MAD": "Mean Absolute Difference",
@@ -77,7 +77,7 @@ class UnsupervisedSelector(Selector):
 
     def _set_method(self, method=None):
         if type(method) is str:
-            return validator.check_str("method", method, list(self.SUPPORTED_METHODS.keys()))
+            return validator.check_str("method", method, list(self.SUPPORT.keys()))
         else:
             raise TypeError(f"Your method needs to be a string.")
 

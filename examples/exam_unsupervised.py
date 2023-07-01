@@ -30,6 +30,7 @@ def get_unsupervised_from_mafese(data_type, method, X, y):
 
     print("=============Using Mafese library===============")
     feat_selector = UnsupervisedSelector(problem=data_type, method=method, n_features=5, threshold=10)
+    print(feat_selector.SUPPORT)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     print(X_selected.shape)
