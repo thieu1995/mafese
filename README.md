@@ -104,7 +104,7 @@ Let's go through some examples.
 
 ### Examples
 
-* 1.First, load dataset. You can use the available datasets from Mafese:
+#### 1. First, load dataset. You can use the available datasets from Mafese:
 
 ```python 
 # Load available dataset from MAFESE
@@ -130,7 +130,7 @@ X, y = dataset[:, 0:-1], dataset[:, -1]
 data = Data(X, y)
 ```
 
-* 2.Next, split dataset into train and test set
+#### 2. Next, split dataset into train and test set
 
 ```python 
 data.split_train_test(test_size=0.2, inplace=True)
@@ -141,7 +141,7 @@ print(data.y_train[:2].shape)
 **You should confirm that your dataset is scaled and normalized for some problem or estimator such as Neural Network**
 
 
-* 3.Next, choose the Selector that you want to use by first import them:
+#### 3. Next, choose the Selector that you want to use by first import them:
 
 ```python 
 ## First way, we recommended 
@@ -158,7 +158,7 @@ from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.mha import MhaSelector, MultiMhaSelector
 ```
 
-* 4.Next, create an instance of Selector class you want to use:
+#### 4. Next, create an instance of Selector class you want to use:
 
 ```python 
 feat_selector = UnsupervisedSelector(problem='classification', method='DR', n_features=5)
@@ -184,13 +184,13 @@ feat_selector = MultiMhaSelector(problem="classification", estimator="knn",
                             transfer_func="vstf_01", obj_name="AS")
 ```
 
-* 5.Fit the model to X_train and y_train
+#### 5. Fit the model to X_train and y_train
 
 ```python 
 feat_selector.fit(data.X_train, data.y_train)
 ```
 
-* 6.Get the information
+#### 6. Get the information
 
 ```python 
 # check selected features - True (or 1) is selected, False (or 0) is not selected
@@ -201,14 +201,15 @@ print(feat_selector.selected_feature_solution)
 print(feat_selector.selected_feature_indexes)
 ```
 
-* 7.Call transform() on the X that you want to filter it down to selected features
+#### 7. Call transform() on the X that you want to filter it down to selected features
 
 ```python 
 X_train_selected = feat_selector.transform(data.X_train)
 X_test_selected = feat_selector.transform(data.X_test)
 ```
 
-* 8.You can build your own evaluating method or use our method.
+#### 8.You can build your own evaluating method or use our method.
+
 **If you use our method, don't transform the data.**
 
 i) You can use difference estimator than the one used in feature selection process 
