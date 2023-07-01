@@ -20,15 +20,6 @@ mafese.filter
    :show-inheritance:
 
 
-mafese.evaluator
-----------------
-
-.. automodule:: mafese.evaluator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
 mafese submodule
 ----------------
 

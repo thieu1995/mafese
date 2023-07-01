@@ -46,7 +46,6 @@ Current's structure::
          transfer.py
          validator.py
       __init__.py
-      evaluator.py
       selector.py
    README.md
    setup.py
@@ -196,7 +195,7 @@ Or, use Metaheuristic-based feature selection with different metaheuristic algor
 	X_test_selected = feat_selector.transform(data.X_test)
 
 	# Evaluate final dataset with different estimator with multiple performance metrics
-	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	results = feat_selector.evaluate(estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
 	print(results)
 	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 
@@ -230,7 +229,7 @@ Or, use Lasso-based feature selection with different estimator::
 	X_test_selected = feat_selector.transform(data.X_test)
 
 	# Evaluate final dataset with different estimator with multiple performance metrics
-	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	results = feat_selector.evaluate(estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
 	print(results)
 	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 
@@ -265,7 +264,7 @@ Or, use Tree-based feature selection with different estimator::
 	X_test_selected = feat_selector.transform(data.X_test)
 
 	# Evaluate final dataset with different estimator with multiple performance metrics
-	results = evaluator.evaluate(feat_selector, estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
+	results = feat_selector.evaluate(estimator=SVC(), data=data, metrics=["AS", "PS", "RS"])
 	print(results)
 	# {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 
