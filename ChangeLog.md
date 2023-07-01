@@ -4,6 +4,8 @@
 + Add MultiMhaSelector class
 + Add Matplotlib library and support visualization for MultiMhaSelector class
 + Add dependency plotly>=5.10.0 and kaleido >=0.2.1
++ Update examples for some Selector class
++ Replace evaluator module by evaluate method in Selector class.
 
 ---------------------------------------------------------------------
 

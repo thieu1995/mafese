@@ -5,7 +5,6 @@
 # --------------------------------------------------%
 
 import numpy as np
-from mealpy.optimizer import Optimizer
 from mealpy import *
 import sys, inspect
 
