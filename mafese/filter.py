@@ -76,14 +76,16 @@ class FilterSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
+    SUPPORT = {
+        "classification": {"CHI": "chi2", "ANOVA": "f_classif", "MI": "mutual_info_classif",
+                            "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"},
+        "regression": {"PEARSON": "r_regression", "ANOVA": "f_regression", "MI": "mutual_info_regression",
+                        "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
+    }
+
     def __init__(self, problem="classification", method="ANOVA", n_features=3):
         super().__init__(problem)
-        if self.problem == "classification":
-            self.supported_methods = {"CHI": "chi2", "ANOVA": "f_classif", "MI": "mutual_info_classif",
-                                      "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
-        else:
-            self.supported_methods = {"PEARSON": "r_regression", "ANOVA": "f_regression", "MI": "mutual_info_regression",
-                                      "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
+        self.supported_methods = self.SUPPORT[self.problem]
         self.method = self._set_method(method)
         self._set_selector(n_features)
 
