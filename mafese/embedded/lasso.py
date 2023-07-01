@@ -77,8 +77,10 @@ class LassoSelector(Selector):
     >>> X_filtered = feat_selector.transform(X)
     """
 
-    SUPPORTED_REG_ESTIMATORS = ["lasso"]
-    SUPPORTED_CLS_ESTIMATORS = ["lasso", "lr", "svm"]
+    SUPPORT = {
+        "classification": ["lasso", "lr", "svm"],
+        "regression": ["lasso"]
+    }
 
     def __init__(self, problem="classification", estimator="lasso", estimator_paras=None, threshold=None, norm_order=1, max_features=None):
         super().__init__(problem)
@@ -91,7 +93,7 @@ class LassoSelector(Selector):
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
-            estimator_name = validator.check_str("estimator", estimator, self.SUPPORTED_CLS_ESTIMATORS + self.SUPPORTED_REG_ESTIMATORS)
+            estimator_name = validator.check_str("estimator", estimator, self.SUPPORT[self.problem])
             return get_lasso_based_estimator(self.problem, estimator_name, paras)
         else:
             raise TypeError("Estimator should be a string.")
