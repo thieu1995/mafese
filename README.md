@@ -104,7 +104,7 @@ Let's go through some examples.
 
 ### Examples
 
-* 1.First, you need to load your dataset, or you can load own available datasets:
+* 1.First, load dataset. You can use the available datasets from Mafese:
 
 ```python 
 # Load available dataset from MAFESE
@@ -112,7 +112,7 @@ from mafese import get_dataset
 
 # Try unknown data
 get_dataset("unknown")
-# Enter: 1
+# Enter: 1      -> This wil list all of avaialble dataset
 
 data = get_dataset("Arrhythmia")
 ```
@@ -137,6 +137,9 @@ data.split_train_test(test_size=0.2, inplace=True)
 print(data.X_train[:2].shape)
 print(data.y_train[:2].shape)
 ```
+
+**You should confirm that your dataset is scaled and normalized for some problem or estimator such as Neural Network**
+
 
 * 3.Next, choose the Selector that you want to use by first import them:
 
@@ -205,8 +208,8 @@ X_train_selected = feat_selector.transform(data.X_train)
 X_test_selected = feat_selector.transform(data.X_test)
 ```
 
-* 8.You can build your own evaluating methods or use our. 
-**If you use our evaluator, don't transform the data.**
+* 8.You can build your own evaluating method or use our method.
+**If you use our method, don't transform the data.**
 
 i) You can use difference estimator than the one used in feature selection process 
 ```python 
@@ -220,10 +223,7 @@ like this:
 ii) You can use the same estimator in feature selection process 
 ```python 
 X_test, y_test = data.X_test, data.y_test
-feat_selector.evaluate(estimator=None, data=(X_test, y_test), metrics=["AS", "PS", "RS"])
-
-## Here, we pass only tuple/list of X, y. So the results will look like this:
-{'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
+feat_selector.evaluate(estimator=None, data=data, metrics=["AS", "PS", "RS"])
 ```
 
 1) Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?

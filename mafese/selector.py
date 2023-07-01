@@ -98,6 +98,40 @@ class Selector(ABC):
         return self.selector.fit_transform(X, y, **fit_params)
 
     def evaluate(self, estimator=None, estimator_paras=None, data=None, metrics=None):
+        """
+        Evaluate the new dataset. We will re-train the estimator with training set
+        and  return the metrics of both training and testing set
+
+        Parameters
+        ----------
+        estimator : str or Estimator instance (from scikit-learn or custom)
+            If estimator is str, we are currently support:
+                - knn: k-nearest neighbors
+                - svm: support vector machine
+                - rf: random forest
+                - adaboost: AdaBoost
+                - xgb: Gradient Boosting
+                - tree: Extra Trees
+                - ann: Artificial Neural Network (Multi-Layer Perceptron)
+
+            If estimator is Estimator instance: you need to make sure that it has `fit` and `predict` methods
+
+        estimator_paras: None or dict, default = None
+            The parameters of the estimator, please see the official document of scikit-learn to selected estimator.
+            If None, we use the default parameter for selected estimator
+
+        data : Data, an instance of Data class. It must have training and testing set
+
+        metrics : tuple, list, default = None
+            Depend on the regression or classification you are trying to tackle. The supported metrics can be found at:
+            https://github.com/thieu1995/permetrics
+
+        Returns
+        -------
+        metrics_results: dict.
+            The metrics for both training and testing set.
+        """
+
         if estimator is None:
             if self.estimator is None:
                 raise ValueError("You need to set estimator to evaluate the data.")
@@ -111,12 +145,7 @@ class Selector(ABC):
             raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
         if (metrics is None) or (type(metrics) not in (tuple, list)):
             raise ValueError("You need to pass a tuple/list of performance metrics. See the supported metrics at https://github.com/thieu1995/permetrics")
-        if type(data) in (tuple, list):
-            X_test, y_test = self.transform(data[0]), data[1]
-            est_.fit(X_test, y_test)
-            y_test_pred = est_.predict(X_test)
-            return get_metrics(self.problem, y_test, y_test_pred, metrics=metrics, testcase="test")
-        elif isinstance(data, Data):
+        if isinstance(data, Data):
             X_train = self.transform(data.X_train)
             X_test = self.transform(data.X_test)
             est_.fit(X_train, data.y_train)
@@ -126,4 +155,4 @@ class Selector(ABC):
             test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
             return {**train_result, **test_result}
         else:
-            raise ValueError("You need to set data as a tuple/list of X, y or Data instance.")
+            raise ValueError("'data' should be an instance of Data class.")
