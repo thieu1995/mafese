@@ -236,6 +236,45 @@ print(feat_selector.SUPPORT)
 ```
 Or you better read the document from: https://mafese.readthedocs.io/en/latest/
 
+3) I got this type of error
+```python 
+raise ValueError("Existed at least one new label in y_pred.")
+ValueError: Existed at least one new label in y_pred.
+``` 
+How to solve this?
+
++ This occurs only when you are working on a classification problem with a small dataset that has many classes. For 
+  instance, the "Zoo" dataset contains only 101 samples, but it has 7 classes. If you split the dataset into a 
+  training and testing set with a ratio of around 80% - 20%, there is a chance that one or more classes may appear 
+  in the testing set but not in the training set. As a result, when you calculate the performance metrics, you may 
+  encounter this error. You cannot predict or assign new data to a new label because you have no knowledge about the 
+  new label. There are several solutions to this problem.
+
++ 1st: Use the SMOTE method to address imbalanced data and ensure that all classes have the same number of samples.
+
+```python 
+from imblearn.over_sampling import SMOTE
+import pandas as pd
+from mafese import Data
+
+dataset = pd.read_csv('examples/dataset.csv', index_col=0).values
+X, y = dataset[:, 0:-1], dataset[:, -1]
+
+X_new, y_new = SMOTE().fit_resample(X, y)
+data = Data(X_new, y_new)
+```
+
++ 2nd: Use different random_state numbers in split_train_test() function.
+```python
+import pandas as pd 
+from mafese import Data 
+
+dataset = pd.read_csv('examples/dataset.csv', index_col=0).values
+X, y = dataset[:, 0:-1], dataset[:, -1]
+data = Data(X, y)
+data.split_train_test(test_size=0.2, random_state=10)   # Try different random_state value 
+```
+
 
 For more usage examples please look at [examples](/examples) folder.
 

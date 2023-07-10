@@ -11,12 +11,17 @@ data = get_dataset("Arrhythmia")
 data.split_train_test(test_size=0.2)
 
 list_optimizers = ("OriginalWOA", "OriginalGWO", "OriginalTLO", "OriginalGSKA")
-list_paras = [{"epoch": 50, "pop_size": 30}, ]*4
+list_paras = [
+    {"name": "WOA", "epoch": 20, "pop_size": 30},
+    {"name": "GWO", "epoch": 20, "pop_size": 30},
+    {"name": "TLO", "epoch": 20, "pop_size": 30},
+    {"name": "GSKA", "epoch": 20, "pop_size": 30}
+]
 feat_selector = MultiMhaSelector(problem="classification", estimator="knn",
                             list_optimizers=list_optimizers, list_optimizer_paras=list_paras,
                             transfer_func="vstf_01", obj_name="AS")
 
-feat_selector.fit(data.X_train, data.y_train, n_trials=3, n_jobs=3, verbose=False)
+feat_selector.fit(data.X_train, data.y_train, n_trials=2, n_jobs=2, verbose=False)
 feat_selector.export_boxplot_figures()
 feat_selector.export_convergence_figures()
 
