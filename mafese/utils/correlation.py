@@ -15,14 +15,14 @@ from sklearn.feature_selection import SelectKBest, SelectPercentile
 from sklearn.feature_selection import chi2, f_classif, mutual_info_classif
 from sklearn.feature_selection import r_regression, f_regression, mutual_info_regression
 from scipy import stats
-from skrebate import ReliefF, SURF, MultiSURF, SURFstar
+# from skrebate import ReliefF, SURF, MultiSURF, SURFstar
 
 def kendall_func(X, y):
-    return np.array([stats.spearmanr(X[:, f], y).correlation for f in range(X.shape[1])])
+    return np.array([stats.kendalltau(X[:, f], y).correlation for f in range(X.shape[1])])
 
 
 def spearman_func(X, y):
-    return np.array([stats.kendalltau(X[:, f], y).correlation for f in range(X.shape[1])])
+    return np.array([stats.spearmanr(X[:, f], y).correlation for f in range(X.shape[1])])
 
 
 def point_func(X, y):
