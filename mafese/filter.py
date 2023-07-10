@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# Created by "Thieu" at 22:14, 24/05/2023 ----------%                                                                               
-#       Email: nguyenthieu2102@gmail.com            %                                                    
-#       Github: https://github.com/thieu1995        %                         
+# Created by "Thieu" at 22:14, 24/05/2023 ----------%
+#       Email: nguyenthieu2102@gmail.com            %
+#       Github: https://github.com/thieu1995        %
 # --------------------------------------------------%
 
 import numpy as np
@@ -78,15 +78,19 @@ class FilterSelector(Selector):
 
     SUPPORT = {
         "classification": {"CHI": "chi2", "ANOVA": "f_classif", "MI": "mutual_info_classif",
-                            "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"},
+                           "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func",
+                           "ReliefF": "ReliefF", "SURF": "SURF", "MultiSURF": "MultiSURF", "SURFstar": 'SURFstar'},
         "regression": {"PEARSON": "r_regression", "ANOVA": "f_regression", "MI": "mutual_info_regression",
-                        "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
+                       "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func"}
     }
 
-    def __init__(self, problem="classification", method="ANOVA", n_features=3):
+    def __init__(self, problem="classification", method="ANOVA", n_features=3, relief=False, n_neighbors=10):
         super().__init__(problem)
         self.supported_methods = self.SUPPORT[self.problem]
         self.method = self._set_method(method)
+        if method not in ['ReliefF', 'SURF', 'MultiSURF', 'SURFstar'] and relief:
+            raise ValueError("The selected method is not in relief method groups")
+        self.relief = relief
         self._set_selector(n_features)
 
     def _set_method(self, method=None):
@@ -96,17 +100,34 @@ class FilterSelector(Selector):
         else:
             raise TypeError(f"Your method needs to be a string.")
 
-    def _set_selector(self, n_features):
+    def _set_selector(self, n_features, n_features_to_select=10, n_neighbors=100, discrete_threshold=10, n_jobs=1):
+
+        if self.relief and (n_neighbors == 0 or discrete_threshold < 0 or n_jobs < -1):
+            raise ValueError('Input wrong parameter for Relief method group')
+
         self.n_features = n_features
-        if type(n_features) is int:
+        if type(n_features) is int and not self.relief:
             self.selector = correlation.SelectKBest(score_func=self.method, k=n_features)
-        elif type(n_features) is float and 0 < n_features < 1:
-            self.selector = correlation.SelectPercentile(score_func=self.method, percentile=self.n_features*100)
+        elif type(n_features) is float and 0 < n_features < 1 and not self.relief:
+            self.selector = correlation.SelectPercentile(score_func=self.method, percentile=self.n_features * 100)
+        elif self.relief:
+            try:
+                self.selector = self.method(n_neighbors=n_neighbors, n_features_to_select=n_features,
+                                            discrete_threshold=discrete_threshold, n_jobs=n_jobs)
+            except:
+                self.selector = self.method(n_features_to_select=n_features,
+                                            discrete_threshold=discrete_threshold, n_jobs=n_jobs)
         else:
             raise TypeError(f"Type of n_features parameter is int or float. If int, 1 <= n_features <= max_features. If float, 0 < n_features < 1")
 
     def fit(self, X, y=None):
-        self.selector = self.selector.fit(X, y)
-        self.selected_feature_masks = self.selector._get_support_mask().copy()
-        self.selected_feature_solution = np.array(self.selected_feature_masks, dtype=int)
-        self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
+        if not self.relief:
+            self.selector = self.selector.fit(X, y)
+            self.selected_feature_masks = self.selector._get_support_mask().copy()
+            self.selected_feature_solution = np.array(self.selected_feature_masks, dtype=int)
+            self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
+        else:
+            self.selector = self.selector.fit(X, y)
+            self.selected_feature_masks = self.selector._get_support_mask().copy()
+            self.selected_feature_solution = np.array(self.selected_feature_masks, dtype=int)
+            self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
