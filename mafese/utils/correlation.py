@@ -101,7 +101,7 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwar
     # Initialize feature importance scores to zero
     importance_scores = np.zeros(X.shape[1])
 
-    # # Regression problem: discretize the target variable into n_bins classes
+    # Regression problem: discretize the target variable into n_bins classes
     if problem == "regression":
         y_bins = np.linspace(np.min(y), np.max(y), n_bins)
         y = np.digitize(y, y_bins) - 1
@@ -132,3 +132,68 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwar
     importance_scores /= X.shape[0]
 
     return importance_scores
+
+
+def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwargs):
+    """
+    Performs Relief-F feature selection on the input dataset X and target variable y.
+    Returns a vector of feature importance scores for each class.
+
+    Parameters:
+    X : numpy array
+        Input dataset of shape (n_samples, n_features).
+    y : numpy array
+        Target variable of shape (n_samples,).
+    n_neighbors : int
+        Number of neighbors to use for computing feature importance scores.
+        Default is 5.
+
+    Returns:
+    numpy array
+        Vector of feature importance scores, with shape (n_features,).
+    """
+    # Initialize feature importance scores to zero for each class
+    n_features = X.shape[1]
+    # Regression problem: discretize the target variable into n_bins classes
+    if problem == "regression":
+        y_bins = np.linspace(np.min(y), np.max(y), n_bins)
+        y = np.digitize(y, y_bins) - 1
+    n_classes = len(np.unique(y))
+    importance_scores = np.zeros((n_features, n_classes))
+
+    # Compute distance matrix between instances in the dataset
+    dist_matrix = np.sqrt(np.sum((X[:, np.newaxis, :] - X[np.newaxis, :, :]) ** 2, axis=-1))
+
+    # Loop over instances in the dataset
+    for i in range(X.shape[0]):
+        # Get the target value of the current instance
+        target_value = y[i]
+
+        # Find the indices of the n_neighbors nearest instances with different target labels
+        indices = np.argsort(dist_matrix[i])
+        neighbors_diff = []
+        neighbors_same = []
+        for j in range(len(indices)):
+            if len(neighbors_diff) == n_neighbors and len(neighbors_same) == n_neighbors:
+                break
+            if y[indices[j]] != target_value:
+                neighbors_diff.append(indices[j])
+            else:
+                neighbors_same.append(indices[j])
+
+        # Update feature importance scores based on the distances to the nearest neighbors
+        for j in range(X.shape[1]):
+            diff = np.abs(X[i, j] - X[neighbors_diff, j])
+            importance_scores[j, target_value] += np.sum(diff) / n_neighbors
+            same = np.abs(X[i, j] - X[neighbors_same, j])
+            importance_scores[j, target_value] -= np.sum(same) / n_neighbors
+
+    # Normalize feature importance scores by the number of instances in the dataset
+    importance_scores /= X.shape[0]
+
+    # Combine feature importance scores for each class using a weighted average based on the frequency of each class
+    class_freq = np.bincount(y) / y.shape[0]
+    importance_scores_weighted = np.dot(importance_scores, class_freq)
+
+    return importance_scores_weighted
+
