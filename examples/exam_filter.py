@@ -59,12 +59,15 @@ def get_filter_from_mafese(data_type, method, X, y):
     print(feat_selector.selected_feature_indexes)
 
     ## Set up evaluating method
-    results = feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
+    if data_type == "classification":
+        results = feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
+    else:
+        results = feat_selector.evaluate(estimator="svm", data=data, metrics=["R2", "NSE", "MAPE"])
     print(results)
 
 
 data_type = "classification"
-method = "KENDALL"
+method = "RELIEF"
 X, y = get_dataset(data_type)
 get_filter_from_scikit_learn(data_type, X, y)
 get_filter_from_mafese(data_type, method, X, y)
