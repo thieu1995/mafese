@@ -77,7 +77,7 @@ def select_bests(importance_scores=None, n_features=3):
     return mask
 
 
-def relief_func(X, y, n_neighbors=5, n_bins=10, **kwargs):
+def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwargs):
     """
     Performs Relief feature selection on the input dataset X and target variable y.
     Returns a vector of feature importance scores.
@@ -101,9 +101,8 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, **kwargs):
     # Initialize feature importance scores to zero
     importance_scores = np.zeros(X.shape[1])
 
-    # Discretize the target variable into n_bins classes
-    if len(np.unique(y)) > 2:
-        # Regression problem: discretize the target variable into n_bins classes
+    # # Regression problem: discretize the target variable into n_bins classes
+    if problem == "regression":
         y_bins = np.linspace(np.min(y), np.max(y), n_bins)
         y = np.digitize(y, y_bins) - 1
 

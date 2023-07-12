@@ -113,7 +113,7 @@ class FilterSelector(Selector):
 
     def fit(self, X, y=None):
         if self.relief_flag:
-            importance_scores = self.method(X, y, n_neighbors=self.n_neighbors, n_bins=self.n_bins)
+            importance_scores = self.method(X, y, n_neighbors=self.n_neighbors, n_bins=self.n_bins, problem=self.problem)
         else:
             importance_scores = self.method(X, y)
         self.selected_feature_masks = correlation.select_bests(importance_scores, n_features=self.n_features)
