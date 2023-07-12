@@ -66,8 +66,8 @@ def get_filter_from_mafese(data_type, method, X, y):
     print(results)
 
 
-data_type = "classification"
-method = "RELIEF-F"
+data_type = "regression"
+method = "VLS-RELIEF-F"
 X, y = get_dataset(data_type)
 get_filter_from_scikit_learn(data_type, X, y)
 get_filter_from_mafese(data_type, method, X, y)

@@ -28,6 +28,8 @@ class FilterSelector(Selector):
             - "SPEARMAN": Spearman’s Rho correlation
             - "POINT": Point-biserial correlation
             - "RELIEF": Original Relief method
+            - "RELIEF-F": Weighted average Relief based on the frequency of each class
+            - "VLS-RELIEF-F": Very Large Scale ReliefF
 
         If the problem = "regression", FilterSelector's support method can be one of this value:
 
@@ -38,6 +40,8 @@ class FilterSelector(Selector):
             - "SPEARMAN": Spearman’s Rho correlation
             - "POINT": Point-biserial correlation
             - "RELIEF": Original Relief method
+            - "RELIEF-F": Weighted average Relief based on the frequency of each class
+            - "VLS-RELIEF-F": Very Large Scale ReliefF
 
     n_features: int or float, default=3
         If integer, the parameter is the absolute number of features to select.
@@ -49,6 +53,9 @@ class FilterSelector(Selector):
     n_bins : int, default=10, Optional
         Number of bins to use for discretizing the target variable of Relief-based family in regression problems.
 
+    normalized: bool, default=True, Optional
+        Normalize feature importance scores by the number of instances in the dataset
+
     Attributes
     ----------
 
@@ -58,6 +65,9 @@ class FilterSelector(Selector):
     supported_methods: dict
         Key: is the support method name
         Value: is the support method function
+
+    method_name: str
+        The method that will be used
 
     Examples
     --------
@@ -98,7 +108,7 @@ class FilterSelector(Selector):
     def __init__(self, problem="classification", method="ANOVA", n_features=3, n_neighbors=5, n_bins=10, normalized=True):
         super().__init__(problem)
         self.supported_methods = self.SUPPORT[self.problem]
-        self.method, self._method_name = self._set_method(method)
+        self.method, self.method_name = self._set_method(method)
         self.n_features = n_features
         self.n_neighbors = n_neighbors
         self.n_bins = n_bins
@@ -112,7 +122,7 @@ class FilterSelector(Selector):
             raise TypeError(f"Your method needs to be a string.")
 
     def fit(self, X, y=None):
-        if self._method_name in ("RELIEF", "RELIEF-F", "VLS-RELIEF-F"):
+        if self.method_name in ("RELIEF", "RELIEF-F", "VLS-RELIEF-F"):
             importance_scores = self.method(X, y, n_neighbors=self.n_neighbors, n_bins=self.n_bins,
                                             problem=self.problem, normalized=self.normalized)
         else:

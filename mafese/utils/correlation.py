@@ -14,7 +14,6 @@ import numpy as np
 from sklearn.feature_selection import chi2, f_classif, mutual_info_classif
 from sklearn.feature_selection import r_regression, f_regression, mutual_info_regression
 from scipy import stats
-# from skrebate import ReliefF, SURF, MultiSURF, SURFstar
 
 
 def chi2_func(X, y):
@@ -82,20 +81,30 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normal
     Performs Relief feature selection on the input dataset X and target variable y.
     Returns a vector of feature importance scores.
 
-    Parameters:
+    Parameters
+    ----------
     X : numpy array
         Input dataset of shape (n_samples, n_features).
+
     y : numpy array
         Target variable of shape (n_samples,).
-    n_neighbors : int
-        Number of neighbors to use for computing feature importance scores.
-        Default is 5.
-    n_bins : int
-        Number of bins to use for discretizing the target variable in regression problems.
-        Default is 10.
 
-    Returns:
-    numpy array
+    n_neighbors : int, default=5
+        Number of neighbors to use for computing feature importance scores.
+
+    n_bins : int, default=10
+        Number of bins to use for discretizing the target variable in regression problems.
+
+    problem : str
+        The problem of dataset, either regression or classification
+        If `regression`, discretize the target variable into n_bins classes
+
+    normalized : bool, default=True
+        Normalize feature importance scores by the number of instances in the dataset
+
+    Returns
+    -------
+    importance score : np.ndarray
         Vector of feature importance scores, with shape (n_features,).
     """
     # Initialize feature importance scores to zero
@@ -137,19 +146,32 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normal
 def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normalized=True, **kwargs):
     """
     Performs Relief-F feature selection on the input dataset X and target variable y.
-    Returns a vector of feature importance scores for each class.
+    Returns a vector of feature importance scores
 
-    Parameters:
+    Parameters
+    ----------
     X : numpy array
         Input dataset of shape (n_samples, n_features).
+
     y : numpy array
         Target variable of shape (n_samples,).
-    n_neighbors : int
-        Number of neighbors to use for computing feature importance scores.
-        Default is 5.
 
-    Returns:
-    numpy array
+    n_neighbors : int, default=5
+        Number of neighbors to use for computing feature importance scores.
+
+    n_bins : int, default=10
+        Number of bins to use for discretizing the target variable in regression problems.
+
+    problem : str
+        The problem of dataset, either regression or classification
+        If `regression`, discretize the target variable into n_bins classes
+
+    normalized : bool, default=True
+        Normalize feature importance scores by the number of instances in the dataset
+
+    Returns
+    -------
+    importance score : np.ndarray
         Vector of feature importance scores, with shape (n_features,).
     """
     # Initialize feature importance scores to zero for each class
@@ -199,6 +221,36 @@ def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", norm
 
 
 def vls_relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normalized=True, **kwargs):
+    """
+    Performs Very Large Scale ReliefF feature selection on the input dataset X and target variable y.
+    Returns a vector of feature importance scores
+
+    Parameters
+    ----------
+    X : numpy array
+        Input dataset of shape (n_samples, n_features).
+
+    y : numpy array
+        Target variable of shape (n_samples,).
+
+    n_neighbors : int, default=5
+        Number of neighbors to use for computing feature importance scores.
+
+    n_bins : int, default=10
+        Number of bins to use for discretizing the target variable in regression problems.
+
+    problem : str
+        The problem of dataset, either regression or classification
+        If `regression`, discretize the target variable into n_bins classes
+
+    normalized : bool, default=True
+        Normalize feature importance scores by the number of instances in the dataset
+
+    Returns
+    -------
+    importance score : np.ndarray
+        Vector of feature importance scores, with shape (n_features,).
+    """
     n_samples, n_features = X.shape
     # Regression problem: discretize the target variable into n_bins classes
     if problem == "regression":
