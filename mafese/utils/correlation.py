@@ -77,7 +77,7 @@ def select_bests(importance_scores=None, n_features=3):
     return mask
 
 
-def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwargs):
+def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normalized=True, **kwargs):
     """
     Performs Relief feature selection on the input dataset X and target variable y.
     Returns a vector of feature importance scores.
@@ -129,12 +129,12 @@ def relief_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwar
             importance_scores[j] += np.sum(diff) / n_neighbors
 
     # Normalize feature importance scores by the number of instances in the dataset
-    importance_scores /= X.shape[0]
-
+    if normalized:
+        importance_scores /= X.shape[0]
     return importance_scores
 
 
-def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kwargs):
+def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normalized=True, **kwargs):
     """
     Performs Relief-F feature selection on the input dataset X and target variable y.
     Returns a vector of feature importance scores for each class.
@@ -188,12 +188,48 @@ def relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", **kw
             same = np.abs(X[i, j] - X[neighbors_same, j])
             importance_scores[j, target_value] -= np.sum(same) / n_neighbors
 
-    # Normalize feature importance scores by the number of instances in the dataset
-    importance_scores /= X.shape[0]
-
     # Combine feature importance scores for each class using a weighted average based on the frequency of each class
     class_freq = np.bincount(y) / y.shape[0]
     importance_scores_weighted = np.dot(importance_scores, class_freq)
 
+    # Normalize feature importance scores by the number of instances in the dataset
+    if normalized:
+        importance_scores_weighted /= X.shape[0]
     return importance_scores_weighted
 
+
+def vls_relief_f_func(X, y, n_neighbors=5, n_bins=10, problem="classification", normalized=True, **kwargs):
+    n_samples, n_features = X.shape
+    # Regression problem: discretize the target variable into n_bins classes
+    if problem == "regression":
+        y_bins = np.linspace(np.min(y), np.max(y), n_bins)
+        y = np.digitize(y, y_bins) - 1
+    relevance_scores = np.zeros(n_features)
+    redundancy_scores = np.zeros(n_features)
+
+    for i in range(n_samples):
+        # Randomly select k neighbors
+        neighbors = np.random.choice(n_samples, n_neighbors, replace=False)
+
+        for j in range(n_features):
+            feature_values = X[neighbors, j]
+
+            # Calculate relevance score
+            relevant_diff = np.abs(feature_values - X[i, j])
+            relevance_scores[j] += np.sum(relevant_diff * (y[neighbors] != y[i]))
+
+            # Calculate redundancy score
+            redundant_diff = np.abs(feature_values - feature_values[:, np.newaxis])
+            redundancy_scores[j] += np.sum(redundant_diff)
+
+    # Normalize the scores
+    relevance_scores /= (n_samples * n_neighbors)
+    redundancy_scores /= (n_samples * n_neighbors * (n_samples - 1))
+
+    # Compute the feature importance by subtracting redundancy from relevance
+    feature_importance = relevance_scores - redundancy_scores
+
+    # Normalize feature importance scores by the number of instances in the dataset
+    if normalized:
+        feature_importance /= X.shape[0]
+    return feature_importance

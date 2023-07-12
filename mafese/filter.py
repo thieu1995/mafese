@@ -87,19 +87,22 @@ class FilterSelector(Selector):
     SUPPORT = {
         "classification": {"CHI": "chi2_func", "ANOVA": "f_classification_func", "MI": "mutual_info_classif",
                            "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func",
-                           "RELIEF": "relief_func", "RELIEF-F": "relief_f_func"},
+                           "RELIEF": "relief_func", "RELIEF-F": "relief_f_func",
+                           "VLS-RELIEF-F": "vls_relief_f_func"},
         "regression": {"PEARSON": "r_regression", "ANOVA": "f_regression_func", "MI": "mutual_info_regression",
                        "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func",
-                       "RELIEF": "relief_func", "RELIEF-F": "relief_f_func"}
+                       "RELIEF": "relief_func", "RELIEF-F": "relief_f_func",
+                       "VLS-RELIEF-F": "vls_relief_f_func"}
     }
 
-    def __init__(self, problem="classification", method="ANOVA", n_features=3, n_neighbors=5, n_bins=10):
+    def __init__(self, problem="classification", method="ANOVA", n_features=3, n_neighbors=5, n_bins=10, normalized=True):
         super().__init__(problem)
         self.supported_methods = self.SUPPORT[self.problem]
         self.method, self._method_name = self._set_method(method)
         self.n_features = n_features
         self.n_neighbors = n_neighbors
         self.n_bins = n_bins
+        self.normalized = normalized
 
     def _set_method(self, method=None):
         if type(method) is str:
@@ -109,8 +112,9 @@ class FilterSelector(Selector):
             raise TypeError(f"Your method needs to be a string.")
 
     def fit(self, X, y=None):
-        if self._method_name in ("RELIEF", "RELIEF-F"):
-            importance_scores = self.method(X, y, n_neighbors=self.n_neighbors, n_bins=self.n_bins, problem=self.problem)
+        if self._method_name in ("RELIEF", "RELIEF-F", "VLS-RELIEF-F"):
+            importance_scores = self.method(X, y, n_neighbors=self.n_neighbors, n_bins=self.n_bins,
+                                            problem=self.problem, normalized=self.normalized)
         else:
             importance_scores = self.method(X, y)
         self.selected_feature_masks = correlation.select_bests(importance_scores, n_features=self.n_features)
