@@ -101,7 +101,7 @@ class MhaSelector(Selector):
 
     SUPPORT = {
         "estimator": ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"],
-        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"],
+        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04"],
         "regression_objective": {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
                              "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
                              "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"},
@@ -240,18 +240,9 @@ class MhaSelector(Selector):
 
 class MultiMhaSelector(Selector):
 
-    # SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
-    # SUPPORTED_TRANSFER_FUNCS = ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"]
-    # SUPPORTED_REG_METRICS = {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
-    #                          "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
-    #                          "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"}
-    # SUPPORTED_CLS_METRICS = {"AS": "max", "PS": "max", "NPV": "max", "RS": "max", "F1S": "max", "F2S": "max",
-    #                          "FBS": "max", "SS": "max", "MCC": "max", "JSI": "max", "CKS": "max", "ROC-AUC": "max"}
-    # SUPPORTED_OPTIMIZERS = list(get_all_optimizers().keys())
-
     SUPPORT = {
         "estimator": ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"],
-        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04", "rtf"],
+        "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04"],
         "regression_objective": {"MAE": "min", "MSE": "min", "RMSE": "min", "MRE": "min", "MAPE": "min", "MASE": "min",
                              "NSE": "max", "NNSE": "max", "WI": "max", "PCC": "max", "R2s": "max", "R2": "max", "AR2": "max",
                              "CI": "max", "KGE": "max", "VAF": "max", "A10": "max", "A20": "max"},
