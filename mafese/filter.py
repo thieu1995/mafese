@@ -85,10 +85,10 @@ class FilterSelector(Selector):
     """
 
     SUPPORT = {
-        "classification": {"CHI": "chi2", "ANOVA": "f_classif", "MI": "mutual_info_classif",
+        "classification": {"CHI": "chi2_func", "ANOVA": "f_classification_func", "MI": "mutual_info_classif",
                            "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func",
                            "RELIEF": "relief_func", },
-        "regression": {"PEARSON": "r_regression", "ANOVA": "f_regression", "MI": "mutual_info_regression",
+        "regression": {"PEARSON": "r_regression", "ANOVA": "f_regression_func", "MI": "mutual_info_regression",
                        "KENDALL": "kendall_func", "SPEARMAN": "spearman_func", "POINT": "point_func",
                        "RELIEF": "relief_func", }
     }

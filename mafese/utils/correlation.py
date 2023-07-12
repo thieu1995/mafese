@@ -17,6 +17,30 @@ from scipy import stats
 # from skrebate import ReliefF, SURF, MultiSURF, SURFstar
 
 
+def chi2_func(X, y):
+    return chi2(X, y)[0]
+
+
+def f_classification_func(X, y):
+    return f_classif(X, y)[0]
+
+
+def f_regression_func(X, y, center=True, force_finite=True):
+    return f_regression(X, y, center=center, force_finite=force_finite)[0]
+
+
+def kendall_func(X, y):
+    return np.array([stats.kendalltau(X[:, f], y).correlation for f in range(X.shape[1])])
+
+
+def spearman_func(X, y):
+    return np.array([stats.spearmanr(X[:, f], y).correlation for f in range(X.shape[1])])
+
+
+def point_func(X, y):
+    return np.array([stats.pointbiserialr(X[:, f], y).correlation for f in range(X.shape[1])])
+
+
 def select_bests(importance_scores=None, n_features=3):
     """
     Select features according to the k highest scores or percentile of the highest scores.
@@ -45,25 +69,12 @@ def select_bests(importance_scores=None, n_features=3):
             else:
                 raise ValueError("n_features based on percentile should has value in range (0, 1).")
         if n_features < 1 or n_features > max_features:
-            raise ValueError("n_features should has value in range (1, max_feature).")
+            raise ValueError(f"n_features should has value in range [1, {max_features}].")
     else:
         raise ValueError("n_features should be int if based on k highest scores, or float if based on percentile of highest scores.")
     mask = np.zeros(importance_scores.shape, dtype=bool)
-    # Request a stable sort. Mergesort takes more memory (~40MB per megafeature on x86-64).
     mask[np.argsort(importance_scores, kind="mergesort")[-n_features:]] = 1
     return mask
-
-
-def kendall_func(X, y):
-    return np.array([stats.kendalltau(X[:, f], y).correlation for f in range(X.shape[1])])
-
-
-def spearman_func(X, y):
-    return np.array([stats.spearmanr(X[:, f], y).correlation for f in range(X.shape[1])])
-
-
-def point_func(X, y):
-    return np.array([stats.pointbiserialr(X[:, f], y).correlation for f in range(X.shape[1])])
 
 
 def relief_func(X, y, n_neighbors=5, n_bins=10, **kwargs):
