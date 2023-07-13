@@ -4,7 +4,7 @@
 ---
 
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.6-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.1.7-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -26,7 +26,7 @@ using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
-* **Total Filter-based (Statistical-based)**: > 12 methods
+* **Total Filter-based (Statistical-based)**: > 15 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets
@@ -43,7 +43,7 @@ using meta-heuristic algorithms.
 
 Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.6
+$ pip install mafese==0.1.7
 ```
 
 ### Install directly from source code
@@ -61,9 +61,14 @@ docs
 examples
 mafese
     data/
-        Arrhythmia.csv
-        BreastCancer.csv
-        ...
+        cls/
+            aggregation.csv
+            Arrhythmia.csv
+            ...
+        reg/
+            boston-housing.csv
+            diabetes.csv
+            ...
     wrapper/
         mha.py
         recursive.py

@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.1.6-yellow.svg
+.. image:: https://img.shields.io/badge/release-0.1.7-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -57,7 +57,7 @@ using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
-* **Total Filter-based (Statistical-based)**: > 12 methods
+* **Total Filter-based (Statistical-based)**: > 15 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods
 * **Total classification dataset**: >= 30 datasets

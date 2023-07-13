@@ -15,7 +15,7 @@ def readme():
 
 setup(
     name="mafese",
-    version="0.1.6",
+    version="0.1.7",
     author="Thieu",
     author_email="nguyenthieu2102@gmail.com",
     description="MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library",
@@ -30,7 +30,7 @@ setup(
               "Differential evolution (DE)", "Simulated annealing", "Grey wolf optimizer (GWO)", "Whale Optimization Algorithm (WOA)",
               "confusion matrix", "recall", "precision", "accuracy", "K-Nearest Neighbors", "random forest",
               "support vector machine", "pearson correlation coefficient (PCC)", "spearman correlation coefficient (SCC)",
-              "relief", "multi-objectives optimization problems", "Stochastic optimization", "Global optimization",
+              "relief", "relief-f", "multi-objectives optimization problems", "Stochastic optimization", "Global optimization",
               "Convergence analysis", "Search space exploration", "Local search", "Computational intelligence", "Robust optimization",
               "Performance analysis", "Intelligent optimization", "Simulations"],
     url="https://github.com/thieu1995/mafese",
