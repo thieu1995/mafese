@@ -1,3 +1,17 @@
+# Version 0.1.7
+
++ Remove some unknown datasets
++ Fix bug name in Kendall and Spearman functions of FilterSelector 
++ Add Relief-based family to FilterSelector 
+  + Relief Original 
+  + Relief-F 
+  + VLS-Relief-F: Very Large Scale ReliefF 
++ Remove rtf transfer function in MhaSelector
++ Update save results file of MultiMhaSelector's evaluate() function.
++ Update examples for some Selector class
+
+---------------------------------------------------------------------
+
 # Version 0.1.6
 
 + Rename some public functions to private functions

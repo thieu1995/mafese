@@ -5,7 +5,7 @@ authors:
     given-names: "Nguyen"
     orcid: "https://orcid.org/0000-0001-9994-8747"
 title: "MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library"
-version: 0.1.1
+version: 0.1.7
 doi: 10.5281/zenodo.7969042
-date-released: 2023-05-25
+date-released: 2023-07-13
 url: "https://github.com/thieu1995/mafese"
