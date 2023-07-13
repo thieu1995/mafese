@@ -4,8 +4,7 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-from mafese import get_dataset
-from mafese.wrapper.mha import MultiMhaSelector
+from mafese import get_dataset, MultiMhaSelector
 
 data = get_dataset("Arrhythmia")
 data.split_train_test(test_size=0.2)
@@ -27,6 +26,4 @@ feat_selector.export_convergence_figures()
 
 print(feat_selector.transform(data.X_train, trial=2, model="OriginalGSKA"))
 
-print(feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"], trial=2, model="OriginalGWO"))
-
-print(feat_selector.evaluate(estimator="knn", data=data, metrics=["AS", "PS", "RS"], all_models=True))
+feat_selector.evaluate(estimator="knn", data=data, metrics=["AS", "PS", "RS"], save_path="history", verbose=True)

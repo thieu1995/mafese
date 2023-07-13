@@ -518,8 +518,7 @@ class MultiMhaSelector(Selector):
         self.fit(X, y, n_trials, n_jobs, save_path, save_results, verbose, fit_weights, mode, n_workers, termination)
         return self.transform(X, trial=1, model="BaseGa", all_models=False)
 
-    def evaluate(self, estimator=None, estimator_paras=None, data=None, metrics=None,
-                 trial=1, model="BaseGA", all_models=False):
+    def evaluate(self, estimator=None, estimator_paras=None, data=None, metrics=None, save_path="history", verbose=False):
         """
         Evaluate the new dataset. We will re-train the estimator with training set
         and return the metrics of both training and testing set
@@ -548,15 +547,11 @@ class MultiMhaSelector(Selector):
             Depend on the regression or classification you are trying to tackle. The supported metrics can be found at:
             https://github.com/thieu1995/permetrics
 
-        trial : int.
-            The index of i-th trial
+        save_path : str, default="history"
+            The path to save the file
 
-        model : str.
-            The name of the tested optimizer
-
-        all_models : bool, default = False
-            If True, it will ignore `trial` and `model` parameters. It will calculate metrics for all of models in all trials
-            If False, it will calculate the metrics for `model` in i-th `trial`
+        verbose : bool, default=False
+            Print the results to console or not.
 
         Returns
         -------
@@ -578,35 +573,20 @@ class MultiMhaSelector(Selector):
         if (metrics is None) or (type(metrics) not in (tuple, list)):
             raise ValueError("You need to pass a tuple/list of performance metrics. See the supported metrics at https://github.com/thieu1995/permetrics")
         if isinstance(data, Data):
-            if all_models:
-                dict_results = {}
-                dict_X_train = self.transform(data.X_train, all_models=True)
-                dict_X_test = self.transform(data.X_test, all_models=True)
-                for trial_, model_ in dict_X_train.items():
-                    dict_results[trial_] = {}
-                    for name_, X_train_selected in model_.items():
-                        est_.fit(X_train_selected, data.y_train)
-                        y_train_pred = est_.predict(X_train_selected)
-                        y_test_pred = est_.predict(dict_X_test[trial_][name_])
-                        train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
-                        test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
-                        dict_results[trial_][name_] = {**train_result, **test_result}
-                return dict_results
-            else:
-                if type(trial) is int and 1 <= trial <= self.n_trials:
-                    list_models = [model.get_name() for model in self.list_optimizers]
-                    if type(model) is str and model in list_models:
-                        X_train = self.transform(data.X_train, trial, model)
-                        X_test = self.transform(data.X_test, trial, model)
-                        est_.fit(X_train, data.y_train)
-                        y_train_pred = est_.predict(X_train)
-                        y_test_pred = est_.predict(X_test)
-                        train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
-                        test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
-                        return {**train_result, **test_result}
-                    else:
-                        raise ValueError(f"model: {model} is not trained yet.")
-                else:
-                    raise ValueError("trial index should be >= 1 and <= n_trials.")
+            list_results = []
+            dict_X_train = self.transform(data.X_train, all_models=True)
+            dict_X_test = self.transform(data.X_test, all_models=True)
+            for trial_, model_ in dict_X_train.items():
+                for name_, X_train_selected in model_.items():
+                    est_.fit(X_train_selected, data.y_train)
+                    y_train_pred = est_.predict(X_train_selected)
+                    y_test_pred = est_.predict(dict_X_test[trial_][name_])
+                    train_result = get_metrics(self.problem, data.y_train, y_train_pred, metrics=metrics, testcase="train")
+                    test_result = get_metrics(self.problem, data.y_test, y_test_pred, metrics=metrics, testcase="test")
+                    list_results.append({"model": name_, "trial": trial_, **train_result, **test_result})
+            if verbose:
+                print(list_results)
+            df = pd.DataFrame(list_results)
+            df.to_csv(f"{save_path}/evaluation_results.csv", index_label="Index")
         else:
             raise ValueError("'data' should be an instance of Data class.")
