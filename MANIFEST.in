@@ -1,2 +1,3 @@
 include README.md LICENSE CODE_OF_CONDUCT.md ChangeLog.md examples.md
-include mafese/data/*.csv
+include mafese/data/reg/*.csv
+include mafese/data/cls/*.csv

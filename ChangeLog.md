@@ -1,3 +1,9 @@
+# Version 0.1.8
+
++ Fix bug load data from library.
+
+---------------------------------------------------------------------
+
 # Version 0.1.7
 
 + Remove some unknown datasets

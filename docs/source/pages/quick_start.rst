@@ -4,7 +4,7 @@ Installation
 
 * Install the `current PyPI release <https://pypi.python.org/pypi/mafese />`_::
 
-   $ pip install mafese==0.1.7
+   $ pip install mafese==0.1.8
 
 
 * Install directly from source code::
