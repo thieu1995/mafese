@@ -4,7 +4,13 @@ authors:
   - family-names: "Van Thieu"
     given-names: "Nguyen"
     orcid: "https://orcid.org/0000-0001-9994-8747"
-title: "MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library"
+  - family-names: "Nguyen"
+    given-names: "Ngoc Hung"
+    orcid: "https://orcid.org/0009-0007-7363-5014"
+  - family-names: "Heidari"
+    given-names: "Ali Asghar"
+    orcid: "https://orcid.org/0000-0001-6938-9948"
+title: "Feature Selection using Metaheuristics Made Easy: Open Source MAFESE Library in Python"
 version: 0.1.8
 doi: 10.5281/zenodo.7969042
 date-released: 2023-07-14

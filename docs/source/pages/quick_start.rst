@@ -13,6 +13,17 @@ Installation
    $ cd mafese
    $ python setup.py install
 
+* In case, you want to install the development version from Github::
+
+   $ pip install git+https://github.com/thieu1995/mafese
+
+
+After installation, you can import MAFESE as any other Python module::
+
+   $ python
+   >>> import mafese
+   >>> mafese.__version__
+
 
 ===============
 Lib's structure
@@ -50,22 +61,10 @@ Current's structure::
    README.md
    setup.py
 
-=====
-Usage
-=====
-
-After installation, you can import MAFESE as any other Python module::
-
-   $ python
-   >>> import mafese
-   >>> mafese.__version__
-
-
-Let's go through some examples.
-
 ========
 Examples
 ========
+Let's go through some examples.
 
 First, you need to load your dataset, or you can load own available datasets::
 

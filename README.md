@@ -21,8 +21,8 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python library for feature selection problem 
-using meta-heuristic algorithms. 
+MAFESE (Metaheuristic Algorithms for FEature SElection) is the biggest python library for feature selection (FS) 
+problem using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
 * **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
@@ -34,23 +34,34 @@ using meta-heuristic algorithms.
 * **Total performance metrics (as fitness)**: > 30 metrics
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
 * **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
-* **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics
+* **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics, plotly, kaleido
 
 
 # Installation
 
-### Install with pip
-
-Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
+#### Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
 $ pip install mafese==0.1.8
 ```
 
-### Install directly from source code
+#### Install directly from source code
 ```sh 
 $ git clone https://github.com/thieu1995/mafese.git
 $ cd mafese
 $ python setup.py install
+```
+
+#### In case, you want to install the development version from Github:
+```sh 
+$ pip install git+https://github.com/thieu1995/mafese 
+```
+
+#### After installation, you can import MAFESE as any other Python module:
+
+```sh
+$ python
+>>> import mafese
+>>> mafese.__version__
 ```
 
 
@@ -92,22 +103,9 @@ README.md
 setup.py
 ```
 
-
-# Usage
-
-After installation, you can import MAFESE as any other Python module:
-
-```sh
-$ python
->>> import mafese
->>> mafese.__version__
-```
+### Examples
 
 Let's go through some examples.
-
-
-
-### Examples
 
 #### 1. First, load dataset. You can use the available datasets from Mafese:
 
@@ -284,7 +282,9 @@ data.split_train_test(test_size=0.2, random_state=10)   # Try different random_s
 For more usage examples please look at [examples](/examples) folder.
 
 
-# Get helps (questions, problems)
+# Support (questions, problems)
+
+### Official Links 
 
 * Official source code repo: https://github.com/thieu1995/mafese
 * Official document: https://mafese.readthedocs.io/
@@ -294,44 +294,52 @@ For more usage examples please look at [examples](/examples) folder.
 * Examples with different mealpy version: https://github.com/thieu1995/mafese/blob/master/examples.md
 * Official chat group: https://t.me/+fRVCJGuGJg1mNDg1
 
-* This project also related to our another projects which are "meta-heuristics", "neural-network", and "optimization" 
-  check it here
+* This project also related to our another projects which are "optimization" and "machine learning", check it here:
     * https://github.com/thieu1995/mealpy
     * https://github.com/thieu1995/metaheuristics
     * https://github.com/thieu1995/opfunu
     * https://github.com/thieu1995/enoppy
     * https://github.com/thieu1995/permetrics
+    * https://github.com/thieu1995/MetaCluster
+    * https://github.com/thieu1995/pfevaluator
     * https://github.com/aiir-team
 
+### Citation Request 
 
-# References 
-
-If you are using mafese in your project, we would appreciate citations:
+Please include these citations if you plan to use this library:
 
 ```code 
 @software{nguyen_van_thieu_2023_7969043,
-  author       = {Nguyen Van Thieu},
-  title        = {MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library},
+  author       = {Nguyen Van Thieu, Ngoc Hung Nguyen, Ali Asghar Heidari},
+  title        = {Feature Selection using Metaheuristics Made Easy: Open Source MAFESE Library in Python},
   month        = may,
   year         = 2023,
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.7969042},
   url          = {https://github.com/thieu1995/mafese}
 }
+
+@article{van2023mealpy,
+  title={MEALPY: An open-source library for latest meta-heuristic algorithms in Python},
+  author={Van Thieu, Nguyen and Mirjalili, Seyedali},
+  journal={Journal of Systems Architecture},
+  year={2023},
+  publisher={Elsevier},
+  doi={10.1016/j.sysarc.2023.102871}
+}
 ```
 
 
 
-```code 
+### Related Documents
+
 1. https://neptune.ai/blog/feature-selection-methods
 2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
 3. https://github.com/LBBSoft/FeatureSelect
 4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
 5. https://github.com/scikit-learn-contrib/boruta_py
-6.  https://elki-project.github.io/
+6. https://elki-project.github.io/
 7. https://sci2s.ugr.es/keel/index.php
 8. https://archive.ics.uci.edu/datasets
 9. https://python-charts.com/distribution/box-plot-plotly/
 10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
-
-```
