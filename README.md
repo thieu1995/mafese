@@ -1,6 +1,6 @@
 
 <p align="center">
-<img style="height:300px;" 
+<img style="max-width:100%;" 
 src="https://thieu1995.github.io/post/2023-08/mafese-02.png" 
 alt="MAFESE"/>
 </p>
