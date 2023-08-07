@@ -7,7 +7,7 @@
 from abc import ABC
 from mafese.utils import validator
 from mafese.utils.estimator import get_general_estimator
-from mafese.utils.evaluator import get_metrics
+from mafese.utils.evaluator import get_metrics, get_all_classification_metrics, get_all_regression_metrics
 from mafese.utils.data_loader import Data
 
 
@@ -18,6 +18,8 @@ class Selector(ABC):
     name = "Feature Selector"
     SUPPORTED_PROBLEMS = ["classification", "regression"]
     SUPPORTED_ESTIMATORS = ["knn", "svm", "rf", "adaboost", "xgb", "tree", "ann"]
+    SUPPORTED_REGRESSION_METRICS = list(get_all_regression_metrics().keys())
+    SUPPORTED_CLASSIFICATION_METRICS = list(get_all_classification_metrics().keys())
 
     def __init__(self, problem="classification"):
         self.problem = self._set_problem(problem)

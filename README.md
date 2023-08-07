@@ -8,7 +8,7 @@ alt="MAFESE"/>
 
 ---
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.8-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.1.9-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -29,38 +29,38 @@ MAFESE (Metaheuristic Algorithms for FEature SElection) is the biggest python li
 problem using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
-* **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
+* **Total Wrapper-based (Metaheuristic Algorithms)**: > 200 methods
 * **Total Filter-based (Statistical-based)**: > 15 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods
-* **Total classification dataset**: >= 30 datasets
-* **Total regression dataset**: >= 7 datasets
-* **Total performance metrics (as fitness)**: > 30 metrics
+* **Total datasets**: >= 30 (47 classifications and 7 regressions)
+* **Total performance metrics**: >= 61 (45 regressions and 16 classifications)
+* **Total objective functions (as fitness functions)**: >= 61 (45 regressions and 16 classifications)
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
-* **Python versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x, 3.11.x
+* **Python versions:** >= 3.7.x
 * **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics, plotly, kaleido
 
 
 # Installation
 
-#### Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
+* Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.8
+$ pip install mafese==0.1.9
 ```
 
-#### Install directly from source code
+* Install directly from source code
 ```sh 
 $ git clone https://github.com/thieu1995/mafese.git
 $ cd mafese
 $ python setup.py install
 ```
 
-#### In case, you want to install the development version from Github:
+* In case, you want to install the development version from Github:
 ```sh 
 $ pip install git+https://github.com/thieu1995/mafese 
 ```
 
-#### After installation, you can import MAFESE as any other Python module:
+After installation, you can import MAFESE as any other Python module:
 
 ```sh
 $ python
@@ -235,9 +235,15 @@ feat_selector.evaluate(estimator=None, data=data, metrics=["AS", "PS", "RS"])
 ```
 
 1) Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?
-You can find it here: https://github.com/thieu1995/permetrics
+You can find it here: https://github.com/thieu1995/permetrics or use this 
+```python 
+from mafese import MhaSelector 
 
-2) How do I know my Selector support which estimator? which methods?
+print(MhaSelector.SUPPORTED_REGRESSION_METRICS)
+print(MhaSelector.SUPPORTED_CLASSIFICATION_METRICS)
+```
+
+3) How do I know my Selector support which estimator? which methods?
 ```python 
 print(feat_selector.SUPPORT) 
 ```

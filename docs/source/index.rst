@@ -56,7 +56,7 @@ MAFESE (Metaheuristic Algorithms for FEature SElection) is the largest python li
 using meta-heuristic algorithms.
 
 * **Free software:** GNU General Public License (GPL) V3 license
-* **Total Wrapper-based (Metaheuristic Algorithms)**: > 180 methods
+* **Total Wrapper-based (Metaheuristic Algorithms)**: > 200 methods
 * **Total Filter-based (Statistical-based)**: > 15 methods
 * **Total Embedded-based (Tree and Lasso)**: > 10 methods
 * **Total Unsupervised-based**: >= 4 methods

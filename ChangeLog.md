@@ -1,6 +1,16 @@
+# Version 0.1.9
+
++ Add more Regression and Classification objectives for fitness function
++ Add more Regression and Classification metrics for evaluate() function 
++ Update logo and documents
++ Add more examples
+
+---------------------------------------------------------------------
+
 # Version 0.1.8
 
 + Fix bug load data from library.
+
 
 ---------------------------------------------------------------------
 

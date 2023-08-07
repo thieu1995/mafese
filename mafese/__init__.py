@@ -4,7 +4,7 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-__version__ = "0.1.8"
+__version__ = "0.1.9"
 
 from mafese.utils.data_loader import Data, get_dataset
 from mafese.filter import FilterSelector
