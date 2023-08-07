@@ -7,30 +7,6 @@
 import numpy as np
 from mealpy.optimizer import Optimizer
 from mealpy import *
-import sys, inspect
-
-
-EXCLUDE_MODULES = ["__builtins__", "current_module", "inspect", "sys"]
-
-
-def get_all_optimizers():
-    cls = {}
-    for name, obj in inspect.getmembers(sys.modules[__name__]):
-        if inspect.ismodule(obj) and (name not in EXCLUDE_MODULES):
-            for cls_name, cls_obj in inspect.getmembers(obj):
-                if inspect.isclass(cls_obj) and issubclass(cls_obj, Optimizer):
-                    cls[cls_name] = cls_obj
-    del cls['Optimizer']
-    return cls
-
-
-def get_optimizer_by_name(name):
-    try:
-        cls = get_all_optimizers()[name]
-        return cls
-    except KeyError:
-        print(f"Mafese doesn't support optimizer named: {name}.\n"
-              f"Please see the supported Optimizer name from here: https://mealpy.readthedocs.io/en/latest/pages/support.html#classification-table")
 
 
 class FeatureSelectionProblem(Problem):
