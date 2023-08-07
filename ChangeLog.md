@@ -1,5 +1,6 @@
 # Version 0.1.9
 
++ Add more Optimizers in MhaSelector and MultiMhaSelector 
 + Add more Regression and Classification objectives for fitness function
 + Add more Regression and Classification metrics for evaluate() function 
 + Update logo and documents
