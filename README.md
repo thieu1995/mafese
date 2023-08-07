@@ -1,8 +1,12 @@
 
-<p align="center"><img style="height:300px;" src=".github/img/logo.png" alt="MAFESE" title="MAFESE"/></p>
+<p align="center">
+<img style="height:300px;" 
+src="https://thieu1995.github.io/post/2023-08/mafese-02.png" 
+alt="MAFESE"/>
+</p>
+
 
 ---
-
 
 [![GitHub release](https://img.shields.io/badge/release-0.1.8-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
