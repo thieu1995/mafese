@@ -1,6 +1,7 @@
-=======
-Cite Us
-=======
+================
+Citation Request
+================
+
 Please include these citations if you plan to use this library::
 
 	@software{nguyen_van_thieu_2023_7969043,
