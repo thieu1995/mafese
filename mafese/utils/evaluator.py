@@ -34,3 +34,20 @@ def get_metrics(problem, y_true, y_pred, metrics=None, testcase="test"):
         else:
             final_result[f"{key}_{testcase}"] = value
     return final_result
+
+
+def get_all_regression_metrics():
+    UNUSED_METRICS = ("RE", "RB", "AE", "SE", "SLE")
+    dict_results = {}
+    for key, value in RegressionMetric.SUPPORT.items():
+        if (key not in UNUSED_METRICS) and (value["type"] in ("min", "max")):
+            dict_results[key] = value["type"]
+    return dict_results
+
+
+def get_all_classification_metrics():
+    dict_results = {}
+    for key, value in ClassificationMetric.SUPPORT.items():
+        if value["type"] in ("min", "max"):
+            dict_results[key] = value["type"]
+    return dict_results
