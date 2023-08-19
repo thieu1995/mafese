@@ -27,7 +27,7 @@ Welcome to MAFESE's documentation!
 .. image:: https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml/badge.svg
    :target: https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml
 
-.. image:: https://pepy.tech/badge/mafese
+.. image:: https://static.pepy.tech/badge/mafese
    :target: https://pepy.tech/project/mafese
 
 .. image:: https://img.shields.io/github/release-date/thieu1995/mafese.svg
