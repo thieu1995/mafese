@@ -28,17 +28,17 @@ alt="MAFESE"/>
 MAFESE (Metaheuristic Algorithms for FEature SElection) is the biggest python library for feature selection (FS) 
 problem using meta-heuristic algorithms.
 
-* **Free software:** GNU General Public License (GPL) V3 license
-* **Total Wrapper-based (Metaheuristic Algorithms)**: > 200 methods
-* **Total Filter-based (Statistical-based)**: > 15 methods
-* **Total Embedded-based (Tree and Lasso)**: > 10 methods
-* **Total Unsupervised-based**: >= 4 methods
-* **Total datasets**: >= 30 (47 classifications and 7 regressions)
-* **Total performance metrics**: >= 61 (45 regressions and 16 classifications)
-* **Total objective functions (as fitness functions)**: >= 61 (45 regressions and 16 classifications)
-* **Documentation:** https://mafese.readthedocs.io/en/latest/
-* **Python versions:** >= 3.7.x
-* **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics, plotly, kaleido
+* **🆓 Free software:** GNU General Public License (GPL) V3 license
+* **🔄 Total Wrapper-based (Metaheuristic Algorithms):** > 200 methods
+* **📊 Total Filter-based (Statistical-based):** > 15 methods
+* **🌳 Total Embedded-based (Tree and Lasso):** > 10 methods
+* **🔍 Total Unsupervised-based:** ≥ 4 methods
+* **📂 Total datasets:** ≥ 30 (47 classifications and 7 regressions)
+* **📈 Total performance metrics:** ≥ 61 (45 regressions and 16 classifications)
+* **⚙️ Total objective functions (as fitness functions):** ≥ 61 (45 regressions and 16 classifications)
+* **📖 Documentation:** [https://mafese.readthedocs.io/en/latest/](https://mafese.readthedocs.io/en/latest/)
+* **🐍 Python versions:** ≥ 3.7.x
+* **📦 Dependencies:** `numpy`, `scipy`, `scikit-learn`, `pandas`, `mealpy`, `permetrics`, `plotly`, `kaleido`
 
 
 # Installation
