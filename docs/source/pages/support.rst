@@ -2,7 +2,15 @@
 Citation Request
 ================
 
-Please include these citations if you plan to use this library::
+Please include these citations if you plan to use this incredible library::
+
+	@article{thieu2024feature,
+		title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
+		author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
+		journal={Future Generation Computer Systems},
+		year={2024},
+		publisher={Elsevier}
+	}
 
 	@software{nguyen_van_thieu_2023_7969043,
 	  author       = {Nguyen Van Thieu, Ngoc Hung Nguyen, Ali Asghar Heidari},

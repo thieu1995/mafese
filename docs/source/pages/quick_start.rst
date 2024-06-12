@@ -4,7 +4,7 @@ Installation
 
 * Install the `current PyPI release <https://pypi.python.org/pypi/mafese />`_::
 
-   $ pip install mafese==0.1.9
+   $ pip install mafese==0.2.0
 
 
 * Install directly from source code::
@@ -95,6 +95,14 @@ Next, split dataset into train and test set::
 	data.split_train_test(test_size=0.2, inplace=True)
 	print(data.X_train[:2].shape)
 	print(data.y_train[:2].shape)
+
+Next, normalize or transform your data into a good range::
+
+	data.X_train, scaler_X = data.scale(data.X_train, scaling_methods=("standard", "minmax"))
+	data.X_test = scaler_X.transform(data.X_test)
+
+	data.y_train, scaler_y = data.encode_label(data.y_train)   # This is for classification problem only
+	data.y_test = scaler_y.transform(data.y_test)
 
 
 Next, how to use Recursive wrapper-based method::

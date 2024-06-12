@@ -30,7 +30,7 @@ copyright = '2023, Thieu'
 author = 'Thieu'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.9'
+release = '0.2.0'
 
 
 # -- General configuration ---------------------------------------------------
