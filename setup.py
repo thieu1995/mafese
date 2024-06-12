@@ -15,10 +15,10 @@ def readme():
 
 setup(
     name="mafese",
-    version="0.1.9",
+    version="0.2.0",
     author="Thieu",
     author_email="nguyenthieu2102@gmail.com",
-    description="MAFESE: Metaheuristic Algorithm for Feature Selection - An Open Source Python Library",
+    description="Feature Selection using Metaheuristics Made Easy: Open Source MAFESE Library in Python",
     long_description=readme(),
     long_description_content_type="text/markdown",
     keywords=["engineering optimization problems", "mathematical optimization",

@@ -4,9 +4,9 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-__version__ = "0.1.9"
+__version__ = "0.2.0"
 
-from mafese.utils.data_loader import Data, get_dataset
+from mafese.utils.data_loader import Data, get_dataset, DataTransformer
 from mafese.filter import FilterSelector
 from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.sequential import SequentialSelector
