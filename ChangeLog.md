@@ -1,3 +1,11 @@
+# Version 0.2.0
+
++ Add scaler module
++ Add DataTransformer class, that can handle the feature scaling for data
++ Set up a strict requirement for mealpy version 2.5.4
+
+---------------------------------------------------------------------
+
 # Version 0.1.9
 
 + Add more Optimizers in MhaSelector and MultiMhaSelector 
