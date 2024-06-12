@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+from mafese.utils.encoder import LabelEncoder
+from mafese.utils.scaler import DataTransformer
 
 
 class Data:
@@ -22,10 +24,36 @@ class Data:
     y : np.ndarray
         The labels of your data
     """
-    def __init__(self, X, y):
+
+    SUPPORT = {
+        "scaler": list(DataTransformer.SUPPORTED_SCALERS.keys())
+    }
+
+    def __init__(self, X=None, y=None, name="Unknown"):
         self.X = X
         self.y = y
+        self.name = name
         self.X_train, self.y_train, self.X_test, self.y_test = None, None, None, None
+
+    @staticmethod
+    def scale(X, scaling_methods=('standard', ), list_dict_paras=None):
+        X = np.squeeze(np.asarray(X))
+        if X.ndim == 1:
+            X = np.reshape(X, (-1, 1))
+        if X.ndim >= 3:
+            raise TypeError(f"Invalid X data type. It should be array-like with shape (n samples, m features)")
+        scaler = DataTransformer(scaling_methods=scaling_methods, list_dict_paras=list_dict_paras)
+        data = scaler.fit_transform(X)
+        return data, scaler
+
+    @staticmethod
+    def encode_label(y):
+        y = np.squeeze(np.asarray(y))
+        if y.ndim != 1:
+            raise TypeError(f"Invalid y data type. It should be a vector / array-like with shape (n samples,)")
+        scaler = LabelEncoder()
+        data = scaler.fit_transform(y)
+        return data, scaler
 
     def split_train_test(self, test_size=0.2, train_size=None,
                          random_state=41, shuffle=True, stratify=None, inplace=True):
@@ -52,6 +80,7 @@ class Data:
         self.y_train = y_train
         self.X_test = X_test
         self.y_test = y_test
+        return self
 
 
 def get_dataset(dataset_name):
