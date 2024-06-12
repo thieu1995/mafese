@@ -7,7 +7,7 @@ alt="MAFESE"/>
 
 ---
 
-[![GitHub release](https://img.shields.io/badge/release-0.1.9-yellow.svg)](https://github.com/thieu1995/mafese/releases)
+[![GitHub release](https://img.shields.io/badge/release-0.2.0-yellow.svg)](https://github.com/thieu1995/mafese/releases)
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
@@ -40,12 +40,12 @@ problem using meta-heuristic algorithms.
 * **📦 Dependencies:** `numpy`, `scipy`, `scikit-learn`, `pandas`, `mealpy`, `permetrics`, `plotly`, `kaleido`
 
 
-### Citation Request
+## Citation Request
 
 Please include these citations if you plan to use this incredible library:
 
 
-```code
+```bibtex
 
 @article{van2024feature,
   title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
@@ -259,7 +259,7 @@ X_test_selected = feat_selector.transform(data.X_test)
 
 ### 8.You can build your own evaluating method or use our method.
 
-**If you use our method, don't transform the data.**
+If you use our method, don't transform the data.
 
 #### 8.1 You can use difference estimator than the one used in feature selection process 
 ```python
@@ -380,31 +380,3 @@ data.split_train_test(test_size=0.2, random_state=10)   # Try different random_s
 10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
 
 </details>
-
-
-
-
-### Citation Request 
-
-Please include these citations if you plan to use this library:
-
-```code 
-@software{nguyen_van_thieu_2023_7969043,
-  author       = {Nguyen Van Thieu, Ngoc Hung Nguyen, Ali Asghar Heidari},
-  title        = {Feature Selection using Metaheuristics Made Easy: Open Source MAFESE Library in Python},
-  month        = may,
-  year         = 2023,
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.7969042},
-  url          = {https://github.com/thieu1995/mafese}
-}
-
-@article{van2023mealpy,
-  title={MEALPY: An open-source library for latest meta-heuristic algorithms in Python},
-  author={Van Thieu, Nguyen and Mirjalili, Seyedali},
-  journal={Journal of Systems Architecture},
-  year={2023},
-  publisher={Elsevier},
-  doi={10.1016/j.sysarc.2023.102871}
-}
-```
