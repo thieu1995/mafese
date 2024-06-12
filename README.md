@@ -52,7 +52,9 @@ Please include these citations if you plan to use this incredible library:
   author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
   journal={Future Generation Computer Systems},
   year={2024},
-  publisher={Elsevier}
+  publisher={Elsevier},
+  doi={10.1016/j.future.2024.06.006},
+  url={https://doi.org/10.1016/j.future.2024.06.006},
 }
 
 @article{van2023mealpy,
