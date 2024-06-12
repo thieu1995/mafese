@@ -5,7 +5,6 @@ src="https://thieu1995.github.io/post/2023-08/mafese-02.png"
 alt="MAFESE"/>
 </p>
 
-
 ---
 
 [![GitHub release](https://img.shields.io/badge/release-0.1.9-yellow.svg)](https://github.com/thieu1995/mafese/releases)
@@ -41,26 +40,55 @@ problem using meta-heuristic algorithms.
 * **📦 Dependencies:** `numpy`, `scipy`, `scikit-learn`, `pandas`, `mealpy`, `permetrics`, `plotly`, `kaleido`
 
 
-# Installation
+### Citation Request
+
+Please include these citations if you plan to use this incredible library:
+
+
+```code
+
+@article{van2024feature,
+  title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
+  author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
+  journal={Future Generation Computer Systems},
+  year={2024},
+  publisher={Elsevier}
+}
+
+@article{van2023mealpy,
+  title={MEALPY: An open-source library for latest meta-heuristic algorithms in Python},
+  author={Van Thieu, Nguyen and Mirjalili, Seyedali},
+  journal={Journal of Systems Architecture},
+  year={2023},
+  publisher={Elsevier},
+  doi={10.1016/j.sysarc.2023.102871}
+}
+
+```
+
+# Usage
+
+## Goals
+
+- **Our library provides all state-of-the-art feature selection methods**:
+  + Unsupervised-based FS
+  + Filter-based FS
+  + Embedded-based FS
+    + Regularization (Lasso-based)
+    + Tree-based methods
+  + Wrapper-based FS
+    + Sequential-based: forward and backward
+    + Recursive-based
+    + MHA-based: Metaheuristic Algorithms
+
+## Installation
 
 * Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
 ```sh 
-$ pip install mafese==0.1.9
+$ pip install mafese
 ```
 
-* Install directly from source code
-```sh 
-$ git clone https://github.com/thieu1995/mafese.git
-$ cd mafese
-$ python setup.py install
-```
-
-* In case, you want to install the development version from Github:
-```sh 
-$ pip install git+https://github.com/thieu1995/mafese 
-```
-
-After installation, you can import MAFESE as any other Python module:
+After installation, you can import MAFESE and check its installed version:
 
 ```sh
 $ python
@@ -69,9 +97,10 @@ $ python
 ```
 
 
-### Lib's structure
 
-```code 
+<details><summary><h2>Lib's structure</h2></summary>
+
+```code
 docs
 examples
 mafese
@@ -107,13 +136,16 @@ README.md
 setup.py
 ```
 
-### Examples
+</details>
+
+
+## Examples
 
 Let's go through some examples.
 
-#### 1. First, load dataset. You can use the available datasets from Mafese:
+### 1. First, load dataset. You can use the available datasets from Mafese:
 
-```python 
+```python
 # Load available dataset from MAFESE
 from mafese import get_dataset
 
@@ -137,20 +169,30 @@ X, y = dataset[:, 0:-1], dataset[:, -1]
 data = Data(X, y)
 ```
 
-#### 2. Next, split dataset into train and test set
+### 2. Next, prepare your dataset
 
-```python 
+
+#### 2.1 Split dataset into train and test set
+
+```python
 data.split_train_test(test_size=0.2, inplace=True)
 print(data.X_train[:2].shape)
 print(data.y_train[:2].shape)
 ```
 
-**You should confirm that your dataset is scaled and normalized for some problem or estimator such as Neural Network**
+#### 2.2 Feature Scaling
 
+```python
+data.X_train, scaler_X = data.scale(data.X_train, scaling_methods=("standard", "minmax"))
+data.X_test = scaler_X.transform(data.X_test)
 
-#### 3. Next, choose the Selector that you want to use by first import them:
+data.y_train, scaler_y = data.encode_label(data.y_train)   # This is for classification problem only
+data.y_test = scaler_y.transform(data.y_test)
+```
 
-```python 
+### 3. Next, choose the Selector that you want to use by first import them:
+
+```python
 ## First way, we recommended 
 from mafese import UnsupervisedSelector, FilterSelector, LassoSelector, TreeSelector
 from mafese import SequentialSelector, RecursiveSelector, MhaSelector, MultiMhaSelector
@@ -165,9 +207,9 @@ from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.mha import MhaSelector, MultiMhaSelector
 ```
 
-#### 4. Next, create an instance of Selector class you want to use:
+### 4. Next, create an instance of Selector class you want to use:
 
-```python 
+```python
 feat_selector = UnsupervisedSelector(problem='classification', method='DR', n_features=5)
 
 feat_selector = FilterSelector(problem='classification', method='SPEARMAN', n_features=5)
@@ -191,15 +233,15 @@ feat_selector = MultiMhaSelector(problem="classification", estimator="knn",
                             transfer_func="vstf_01", obj_name="AS")
 ```
 
-#### 5. Fit the model to X_train and y_train
+### 5. Fit the model to X_train and y_train
 
-```python 
+```python
 feat_selector.fit(data.X_train, data.y_train)
 ```
 
-#### 6. Get the information
+### 6. Get the information
 
-```python 
+```python
 # check selected features - True (or 1) is selected, False (or 0) is not selected
 print(feat_selector.selected_feature_masks)
 print(feat_selector.selected_feature_solution)
@@ -208,19 +250,19 @@ print(feat_selector.selected_feature_solution)
 print(feat_selector.selected_feature_indexes)
 ```
 
-#### 7. Call transform() on the X that you want to filter it down to selected features
+### 7. Call transform() on the X that you want to filter it down to selected features
 
-```python 
+```python
 X_train_selected = feat_selector.transform(data.X_train)
 X_test_selected = feat_selector.transform(data.X_test)
 ```
 
-#### 8.You can build your own evaluating method or use our method.
+### 8.You can build your own evaluating method or use our method.
 
 **If you use our method, don't transform the data.**
 
-i) You can use difference estimator than the one used in feature selection process 
-```python 
+#### 8.1 You can use difference estimator than the one used in feature selection process 
+```python
 feat_selector.evaluate(estimator="svm", data=data, metrics=["AS", "PS", "RS"])
 
 ## Here, we pass the data that was loaded above. So it contains both train and test set. So, the results will look 
@@ -228,44 +270,55 @@ like this:
 {'AS_train': 0.77176, 'PS_train': 0.54177, 'RS_train': 0.6205, 'AS_test': 0.72636, 'PS_test': 0.34628, 'RS_test': 0.52747}
 ```
 
-ii) You can use the same estimator in feature selection process 
-```python 
+#### 8.2 You can use the same estimator in feature selection process 
+```python
 X_test, y_test = data.X_test, data.y_test
 feat_selector.evaluate(estimator=None, data=data, metrics=["AS", "PS", "RS"])
 ```
 
-1) Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?
+For more usage examples please look at [examples](/examples) folder.
+
+
+# Support
+
+## Some popular questions
+
+1. Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?
+
 You can find it here: https://github.com/thieu1995/permetrics or use this 
-```python 
+
+```python
 from mafese import MhaSelector 
 
 print(MhaSelector.SUPPORTED_REGRESSION_METRICS)
 print(MhaSelector.SUPPORTED_CLASSIFICATION_METRICS)
 ```
 
-3) How do I know my Selector support which estimator? which methods?
-```python 
+2. How do I know my Selector support which estimator? which methods?
+
+```python
 print(feat_selector.SUPPORT) 
 ```
 Or you better read the document from: https://mafese.readthedocs.io/en/latest/
 
-3) I got this type of error
-```python 
+3. I got this type of error. How to solve it?
+
+```python
 raise ValueError("Existed at least one new label in y_pred.")
 ValueError: Existed at least one new label in y_pred.
-``` 
-How to solve this?
+```
 
-+ This occurs only when you are working on a classification problem with a small dataset that has many classes. For 
+> This occurs only when you are working on a classification problem with a small dataset that has many classes. For 
   instance, the "Zoo" dataset contains only 101 samples, but it has 7 classes. If you split the dataset into a 
   training and testing set with a ratio of around 80% - 20%, there is a chance that one or more classes may appear 
   in the testing set but not in the training set. As a result, when you calculate the performance metrics, you may 
   encounter this error. You cannot predict or assign new data to a new label because you have no knowledge about the 
   new label. There are several solutions to this problem.
 
+
 + 1st: Use the SMOTE method to address imbalanced data and ensure that all classes have the same number of samples.
 
-```python 
+```python
 from imblearn.over_sampling import SMOTE
 import pandas as pd
 from mafese import Data
@@ -289,14 +342,9 @@ data.split_train_test(test_size=0.2, random_state=10)   # Try different random_s
 ```
 
 
-For more usage examples please look at [examples](/examples) folder.
+<details><summary><h2>Official Links</h2></summary>
 
-
-# Support (questions, problems)
-
-### Official Links 
-
-* Official source code repo: https://github.com/thieu1995/mafese
+* Official source code repository: https://github.com/thieu1995/mafese
 * Official document: https://mafese.readthedocs.io/
 * Download releases: https://pypi.org/project/mafese/
 * Issue tracker: https://github.com/thieu1995/mafese/issues
@@ -313,6 +361,28 @@ For more usage examples please look at [examples](/examples) folder.
     * https://github.com/thieu1995/MetaCluster
     * https://github.com/thieu1995/pfevaluator
     * https://github.com/aiir-team
+
+</details>
+
+
+
+<details><summary><h2>Related Documents</h2></summary>
+
+1. https://neptune.ai/blog/feature-selection-methods
+2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
+3. https://github.com/LBBSoft/FeatureSelect
+4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
+5. https://github.com/scikit-learn-contrib/boruta_py
+6. https://elki-project.github.io/
+7. https://sci2s.ugr.es/keel/index.php
+8. https://archive.ics.uci.edu/datasets
+9. https://python-charts.com/distribution/box-plot-plotly/
+10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
+
+</details>
+
+
+
 
 ### Citation Request 
 
@@ -338,18 +408,3 @@ Please include these citations if you plan to use this library:
   doi={10.1016/j.sysarc.2023.102871}
 }
 ```
-
-
-
-### Related Documents
-
-1. https://neptune.ai/blog/feature-selection-methods
-2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
-3. https://github.com/LBBSoft/FeatureSelect
-4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
-5. https://github.com/scikit-learn-contrib/boruta_py
-6. https://elki-project.github.io/
-7. https://sci2s.ugr.es/keel/index.php
-8. https://archive.ics.uci.edu/datasets
-9. https://python-charts.com/distribution/box-plot-plotly/
-10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
