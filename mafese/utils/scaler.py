@@ -12,8 +12,17 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Ro
 
 
 class TimeSeriesDifferencer:
+    """
+    Class used to perform differencing on time series data.
+    This is useful for making the data stationary.
 
+    Parameters
+    ----------
+    interval : int
+        The interval for differencing. Default is 1, which means first difference.
+    """
     def __init__(self, interval=1):
+        self.original_data = None
         if interval < 1:
             raise ValueError("Interval for differencing must be at least 1.")
         self.interval = interval
@@ -29,6 +38,15 @@ class TimeSeriesDifferencer:
 
 
 class FeatureEngineering:
+    """
+    Class used to create binary indicator columns for low values in the dataset.
+    This is useful for identifying and processing low values in the data.
+
+    Parameters
+    ----------
+    threshold : float
+        The threshold value for identifying low values.
+    """
     def __init__(self):
         """
         Initialize the FeatureEngineering class
@@ -66,6 +84,7 @@ class FeatureEngineering:
             X_new[:, idx * 2] = feature_values
             X_new[:, idx * 2 + 1] = indicator_column
         return X_new
+
 
 
 class Log1pScaler(BaseEstimator, TransformerMixin):
@@ -172,6 +191,18 @@ class SinhArcSinhScaler(BaseEstimator, TransformerMixin):
 
 
 class DataTransformer(BaseEstimator, TransformerMixin):
+    """
+    The class is used to transform data using different scaling techniques.
+
+    Parameters
+    ----------
+    scaling_methods : str, tuple, list, or np.ndarray
+        The name of the scaler you want to use. Supported scaler names are: 'standard', 'minmax', 'max-abs',
+        'log1p', 'loge', 'sqrt', 'sinh-arc-sinh', 'robust', 'box-cox', 'yeo-johnson'.
+
+    list_dict_paras : dict or list of dict
+        The parameters for the scaler. If you have only one scaler, please use a dict. Otherwise, please use a list of dict.
+    """
 
     SUPPORTED_SCALERS = {"standard": StandardScaler, "minmax": MinMaxScaler, "max-abs": MaxAbsScaler,
                          "log1p": Log1pScaler, "loge": LogeScaler, "sqrt": SqrtScaler,
