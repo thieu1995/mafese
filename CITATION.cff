@@ -11,7 +11,7 @@ authors:
     given-names: "Ali Asghar"
     orcid: "https://orcid.org/0000-0001-6938-9948"
 title: "Feature Selection using Metaheuristics Made Easy: Open Source MAFESE Library in Python"
-version: 0.1.8
+version: 1.0.0
 doi: 10.5281/zenodo.7969042
-date-released: 2023-07-14
+date-released: 2025-05-30
 url: "https://github.com/thieu1995/mafese"
