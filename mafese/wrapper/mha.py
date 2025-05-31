@@ -14,7 +14,7 @@ import os
 from mafese.selector import Selector
 from mafese.utils import validator
 from mafese.utils.estimator import get_general_estimator
-from mafese.utils.mealpy_util import get_optimizer_by_name, get_all_optimizers, FeatureSelectionProblem, Optimizer
+from mafese.utils.mealpy_util import get_optimizer_by_class, get_all_optimizers, FeatureSelectionProblem, Optimizer
 from mafese.utils import transfer
 from mafese.utils.data_loader import Data
 from mafese.utils.evaluator import get_metrics, get_all_regression_metrics, get_all_classification_metrics
@@ -127,15 +127,17 @@ class MhaSelector(Selector):
             raise NotImplementedError(f"Your estimator needs to implement at least 'fit' and 'predict' functions.")
 
     def _set_optimizer(self, optimizer=None, optimizer_paras=None):
-        if type(optimizer) is str:
-            opt_class = get_optimizer_by_name(optimizer)
-            if type(optimizer_paras) is dict:
+        if isinstance(optimizer, str):
+            opt_class = get_optimizer_by_class(optimizer)
+            if isinstance(optimizer_paras, dict):
                 return opt_class(**optimizer_paras)
             else:
                 return opt_class(epoch=100, pop_size=30)
         elif isinstance(optimizer, Optimizer):
-            if type(optimizer_paras) is dict:
-                return optimizer.set_parameters(optimizer_paras)
+            if isinstance(optimizer_paras, dict):
+                if "name" in optimizer_paras:  # Check if key exists and remove it
+                    optimizer.name = optimizer_paras.pop("name")
+                optimizer.set_parameters(optimizer_paras)
             return optimizer
         else:
             raise TypeError(f"optimizer needs to set as a string and supported by Mealpy library.")
@@ -157,7 +159,7 @@ class MhaSelector(Selector):
         else:
             raise ValueError(f"obj_name should be a string and belongs to {list_supported_metrics}")
 
-    def fit(self, X, y=None, fit_weights=(0.9, 0.1), verbose=True, mode='single', n_workers=None, termination=None):
+    def fit(self, X, y=None, test_size=0.25, verbose=True, mode='single', n_workers=None, termination=None):
         """
         Parameters
         ----------
@@ -188,7 +190,8 @@ class MhaSelector(Selector):
             The termination dictionary or an instance of Termination class. It is for Optimizer belongs to Mealpy library.
         """
         self.data = Data(X.copy(), y.copy())
-        self.data.split_train_test(test_size=0.25)
+        self.data.split_train_test(test_size=test_size)
+
         lb = [-8, ] * X.shape[1]
         ub = [8, ] * X.shape[1]
         if self.problem == "classification":
@@ -203,7 +206,7 @@ class MhaSelector(Selector):
             minmax = self.SUPPORT["classification_objective"][self.obj_name]
             metric_class = ClassificationMetric
         else:
-            self.obj_paras = {"decimal": 4}
+            self.obj_paras = {}
             if self.obj_name is None:
                 self.obj_name = "MSE"
             else:
@@ -273,7 +276,7 @@ class MultiMhaSelector(Selector):
             list_opts = []
             for idx, opt in enumerate(list_optimizers):
                 if type(opt) is str:
-                    opt_class = get_optimizer_by_name(opt)
+                    opt_class = get_optimizer_by_class(opt)
                     if type(list_paras[idx]) is dict:
                         list_opts.append(opt_class(**list_paras[idx]))
                     else:

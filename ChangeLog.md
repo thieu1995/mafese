@@ -1,3 +1,17 @@
+
+# Version 1.0.0
+
++ Update requirements `mealpy` from `2.5.4` to `3.0.2` and `permetrics` from `1.4.2` to `2.0.0`
++ Update citation and manifest
++ Update `validator` module with broader types.
++ Update `scaler` module.
++ Update `encoder` module with `ObjectiveScaler` class.
+
++ Add DataTransformer class, that can handle the feature scaling for data
++ Set up a strict requirement for mealpy version 2.5.4
+
+---------------------------------------------------------------------
+
 # Version 0.2.0
 
 + Add scaler module
