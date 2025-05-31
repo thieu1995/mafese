@@ -221,7 +221,7 @@ class MhaSelector(Selector):
         return {
             "fit": self.optimizer.g_best.target.objectives[0],
             "obj": self.optimizer.g_best.target.objectives[1],
-            "n_columns": self.optimizer.g_best.target.objectives[2]
+            "n_columns": int(self.optimizer.g_best.target.objectives[2])
         }
 
 

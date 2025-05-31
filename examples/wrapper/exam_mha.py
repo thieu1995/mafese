@@ -6,12 +6,12 @@
 
 from mafese import get_dataset, MhaSelector
 
-data = get_dataset("Arrhythmia")
+data = get_dataset("aniso")
 data.split_train_test(test_size=0.2)
 
 
 selector = MhaSelector(problem="classification", obj_name="F1S",
-                       estimator="knn", estimator_paras=None,
+                       estimator="svm", estimator_paras=None,
                        optimizer="BaseGA", optimizer_paras={"epoch": 100, "pop_size": 20, "name": "GA"},
                        mode='single', n_workers=None, termination=None,
                        seed=None, verbose=True)
