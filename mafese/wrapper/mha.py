@@ -104,17 +104,25 @@ class MhaSelector(Selector):
         "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04"],
         "regression_objective": get_all_regression_metrics(),
         "classification_objective": get_all_classification_metrics(),
-        "optimizer": list(get_all_optimizers().keys())
+        "optimizer": list(get_all_optimizers(verbose=False).keys())
     }
 
-    def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
-                 optimizer="BaseGA", optimizer_paras=None, transfer_func="vstf_01", obj_name=None):
+    def __init__(self, problem="classification", obj_name=None,
+                 estimator="knn", estimator_paras=None,
+                 optimizer="BaseGA", optimizer_paras=None,
+                 mode='single', n_workers=None, termination=None,
+                 seed=None, verbose=True):
         super().__init__(problem)
-        self.estimator = self._set_estimator(estimator, estimator_paras)
-        self.optimizer_paras = estimator_paras
-        self.optimizer = self._set_optimizer(optimizer, optimizer_paras)
-        self.transfer_func_ = self._set_transfer_func(transfer_func)
         self.obj_name = obj_name
+        self.estimator = estimator
+        self.estimator_paras = estimator_paras
+        self.optimizer = optimizer
+        self.optimizer_paras = optimizer_paras
+        self.mode = mode
+        self.n_workers = n_workers
+        self.termination = termination
+        self.seed = seed
+        self.verbose = verbose
 
     def _set_estimator(self, estimator=None, paras=None):
         if type(estimator) is str:
@@ -159,41 +167,13 @@ class MhaSelector(Selector):
         else:
             raise ValueError(f"obj_name should be a string and belongs to {list_supported_metrics}")
 
-    def fit(self, X, y=None, test_size=0.25, verbose=True, mode='single', n_workers=None, termination=None):
-        """
-        Parameters
-        ----------
-        X : {array-like, sparse matrix} of shape (n_samples, n_features)
-            The training input samples.
+    def fit(self, X, y=None, test_size=0.2, fit_weights=(0.9, 0.1), transfer_func="vstf_01", fs_problem=None):
+        self.estimator_ = self._set_estimator(self.estimator, self.estimator_paras)
+        self.optimizer_ = self._set_optimizer(self.optimizer, self.optimizer_paras)
 
-        y : array-like of shape (n_samples,)
-            The target values.
+        data = Data(X.copy(), y.copy())
+        data.split_train_test(test_size=test_size)
 
-        fit_weights : list, tuple or np.ndarray, default = (0.9, 0.1)
-            The first weight is for objective value and the second weight is for the number of features
-
-        verbose : int, default = True
-            Controls verbosity of output.
-
-        mode : str, default = 'single'
-            The mode used in Optimizer belongs to Mealpy library. Parallel: 'process', 'thread'; Sequential: 'swarm', 'single'.
-
-                - 'process': The parallel mode with multiple cores run the tasks
-                - 'thread': The parallel mode with multiple threads run the tasks
-                - 'swarm': The sequential mode that no effect on updating phase of other agents
-                - 'single': The sequential mode that effect on updating phase of other agents, default
-
-        n_workers : int or None, default = None
-            The number of workers (cores or threads) to do the tasks (effect only on parallel mode)
-
-        termination : dict or None, default = None
-            The termination dictionary or an instance of Termination class. It is for Optimizer belongs to Mealpy library.
-        """
-        self.data = Data(X.copy(), y.copy())
-        self.data.split_train_test(test_size=test_size)
-
-        lb = [-8, ] * X.shape[1]
-        ub = [8, ] * X.shape[1]
         if self.problem == "classification":
             if len(np.unique(y)) == 2:
                 self.obj_paras = {"average": "micro"}
@@ -214,12 +194,18 @@ class MhaSelector(Selector):
             minmax = self.SUPPORT["regression_objective"][self.obj_name]
             metric_class = RegressionMetric
         fit_sign = -1 if minmax == "max" else 1
-        log_to = "console" if verbose else "None"
-        prob = FeatureSelectionProblem(lb, ub, minmax, data=self.data,
-                                       estimator=self.estimator, transfer_func=self.transfer_func_, obj_name=self.obj_name,
-                                       metric_class=metric_class, fit_weights=fit_weights, fit_sign=fit_sign, log_to=log_to,
-                                       obj_weights=(1.0, 0.), obj_paras=self.obj_paras)
-        best_position, best_fitness = self.optimizer.solve(prob, mode=mode, n_workers=n_workers, termination=termination)
+        log_to = "console" if self.verbose else "None"
+        if fs_problem is None:
+            prob = FeatureSelectionProblem(minmax=minmax, data=data, estimator=self.estimator_,
+                                           metric_class=metric_class, obj_name=self.obj_name,
+                                           obj_paras=self.obj_paras, fit_weights=fit_weights,
+                                           fit_sign=fit_sign, transfer_func=transfer_func, log_to=log_to)
+        elif isinstance(fs_problem, FeatureSelectionProblem):
+            prob = fs_problem
+        else:
+            raise TypeError("fs_problem should be a type of `FeatureSelectionProblem`")
+        best_position, best_fitness = self.optimizer.solve(prob, mode=self.mode,
+                                                           n_workers=self.n_workers, termination=self.termination)
         self.selected_feature_solution = np.array(best_position, dtype=int)
         self.selected_feature_masks = np.where(self.selected_feature_solution == 0, False, True)
         self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
@@ -227,8 +213,8 @@ class MhaSelector(Selector):
     def transform(self, X):
         return X[:, self.selected_feature_indexes]
 
-    def fit_transform(self, X, y=None, fit_weights=(0.9, 0.1), verbose=True, mode='single', n_workers=None, termination=None):
-        self.fit(X, y, fit_weights, verbose, mode, n_workers, termination)
+    def fit_transform(self, X, y=None, test_size=0.2, fit_weights=(0.9, 0.1), transfer_func="vstf_01", fs_problem=None):
+        self.fit(X, y, test_size, fit_weights, transfer_func, fs_problem)
         return self.transform(X)
 
     def get_best_obj_and_fit(self):

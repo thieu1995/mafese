@@ -7,6 +7,7 @@
 __version__ = "0.2.0"
 
 from mafese.utils.data_loader import Data, get_dataset, DataTransformer
+from mafese.utils.mealpy_util import FeatureSelectionProblem
 from mafese.filter import FilterSelector
 from mafese.wrapper.recursive import RecursiveSelector
 from mafese.wrapper.sequential import SequentialSelector
