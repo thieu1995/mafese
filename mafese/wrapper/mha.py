@@ -168,8 +168,8 @@ class MhaSelector(Selector):
             raise ValueError(f"obj_name should be a string and belongs to {list_supported_metrics}")
 
     def fit(self, X, y=None, test_size=0.2, fit_weights=(0.9, 0.1), transfer_func="vstf_01", fs_problem=None):
-        self.estimator_ = self._set_estimator(self.estimator, self.estimator_paras)
-        self.optimizer_ = self._set_optimizer(self.optimizer, self.optimizer_paras)
+        self.estimator = self._set_estimator(self.estimator, self.estimator_paras)
+        self.optimizer = self._set_optimizer(self.optimizer, self.optimizer_paras)
 
         data = Data(X.copy(), y.copy())
         data.split_train_test(test_size=test_size)
@@ -196,7 +196,7 @@ class MhaSelector(Selector):
         fit_sign = -1 if minmax == "max" else 1
         log_to = "console" if self.verbose else "None"
         if fs_problem is None:
-            prob = FeatureSelectionProblem(minmax=minmax, data=data, estimator=self.estimator_,
+            prob = FeatureSelectionProblem(minmax=minmax, data=data, estimator=self.estimator,
                                            metric_class=metric_class, obj_name=self.obj_name,
                                            obj_paras=self.obj_paras, fit_weights=fit_weights,
                                            fit_sign=fit_sign, transfer_func=transfer_func, log_to=log_to)
@@ -204,9 +204,9 @@ class MhaSelector(Selector):
             prob = fs_problem
         else:
             raise TypeError("fs_problem should be a type of `FeatureSelectionProblem`")
-        best_position, best_fitness = self.optimizer.solve(prob, mode=self.mode,
-                                                           n_workers=self.n_workers, termination=self.termination)
-        self.selected_feature_solution = np.array(best_position, dtype=int)
+        g_best = self.optimizer.solve(prob, mode=self.mode, n_workers=self.n_workers,
+                                      termination=self.termination, seed=self.seed)
+        self.selected_feature_solution = self.optimizer.problem.decode_solution(g_best.solution)["my_var"]
         self.selected_feature_masks = np.where(self.selected_feature_solution == 0, False, True)
         self.selected_feature_indexes = np.where(self.selected_feature_masks)[0]
 
@@ -217,10 +217,11 @@ class MhaSelector(Selector):
         self.fit(X, y, test_size, fit_weights, transfer_func, fs_problem)
         return self.transform(X)
 
-    def get_best_obj_and_fit(self):
+    def get_best_information(self):
         return {
-            "obj": self.optimizer.solution[1][1][1],
-            "fit": self.optimizer.solution[1][1][0]
+            "fit": self.optimizer.g_best.target.objectives[0],
+            "obj": self.optimizer.g_best.target.objectives[1],
+            "n_columns": self.optimizer.g_best.target.objectives[2]
         }
 
 
@@ -231,7 +232,7 @@ class MultiMhaSelector(Selector):
         "transfer_func": ["vstf_01", "vstf_02", "vstf_03", "vstf_04", "sstf_01", "sstf_02", "sstf_03", "sstf_04"],
         "regression_objective": get_all_regression_metrics(),
         "classification_objective": get_all_classification_metrics(),
-        "optimizer": list(get_all_optimizers().keys())
+        "optimizer": list(get_all_optimizers(verbose=False).keys())
     }
 
     def __init__(self, problem="classification", estimator="knn", estimator_paras=None,
