@@ -11,10 +11,11 @@ from pathlib import Path
 import concurrent.futures as parallel
 from functools import partial
 import os
+from mealpy import TransferBinaryVar, get_optimizer_by_class, get_all_optimizers, Optimizer
 from mafese.selector import Selector
 from mafese.utils import validator
 from mafese.utils.estimator import get_general_estimator
-from mafese.utils.mealpy_util import get_optimizer_by_class, get_all_optimizers, FeatureSelectionProblem, Optimizer
+from mafese.utils.mealpy_util import FeatureSelectionProblem
 from mafese.utils import transfer
 from mafese.utils.data_loader import Data
 from mafese.utils.evaluator import get_metrics, get_all_regression_metrics, get_all_classification_metrics
@@ -150,17 +151,6 @@ class MhaSelector(Selector):
         else:
             raise TypeError(f"optimizer needs to set as a string and supported by Mealpy library.")
 
-    def _set_transfer_func(self, transfer_func="vstf_01"):
-        if transfer_func is None:
-            return getattr(transfer, "vstf_01")
-        elif type(transfer_func) is str:
-            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORT["transfer_func"])
-            return getattr(transfer, transfer_func)
-        elif callable(transfer_func):
-            return transfer_func
-        else:
-            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORT['transfer_func']}")
-
     def _set_metric(self, metric_name=None, list_supported_metrics=None):
         if type(metric_name) is str:
             return validator.check_str("obj_name", metric_name, list_supported_metrics)
@@ -195,15 +185,20 @@ class MhaSelector(Selector):
             metric_class = RegressionMetric
         fit_sign = -1 if minmax == "max" else 1
         log_to = "console" if self.verbose else "None"
-        if fs_problem is None:
-            prob = FeatureSelectionProblem(minmax=minmax, data=data, estimator=self.estimator,
-                                           metric_class=metric_class, obj_name=self.obj_name,
-                                           obj_paras=self.obj_paras, fit_weights=fit_weights,
-                                           fit_sign=fit_sign, transfer_func=transfer_func, log_to=log_to)
+        bounds = TransferBinaryVar(n_vars=data.X.shape[1], tf_func=transfer_func, lb=-8, ub=8,
+                                   all_zeros=False, name="my_var")
+        if callable(fs_problem):
+            prob = fs_problem(bounds=bounds, minmax=minmax, data=data, estimator=self.estimator,
+                              metric_class=metric_class, obj_name=self.obj_name, obj_paras=self.obj_paras,
+                              fit_weights=fit_weights, fit_sign=fit_sign, log_to=log_to)
         elif isinstance(fs_problem, FeatureSelectionProblem):
             prob = fs_problem
+        elif fs_problem is None:
+            prob = FeatureSelectionProblem(bounds=bounds, minmax=minmax, data=data, estimator=self.estimator,
+                                           metric_class=metric_class, obj_name=self.obj_name, obj_paras=self.obj_paras,
+                                           fit_weights=fit_weights, fit_sign=fit_sign, log_to=log_to)
         else:
-            raise TypeError("fs_problem should be a type of `FeatureSelectionProblem`")
+            raise TypeError("fs_problem should be None, a FeatureSelectionProblem object, or a callable that returns one.")
         g_best = self.optimizer.solve(prob, mode=self.mode, n_workers=self.n_workers,
                                       termination=self.termination, seed=self.seed)
         self.selected_feature_solution = self.optimizer.problem.decode_solution(g_best.solution)["my_var"]
@@ -275,17 +270,6 @@ class MultiMhaSelector(Selector):
                 else:
                     raise TypeError(f"optimizer needs to set as a string and supported by Mealpy library.")
         return list_opts, list_paras
-
-    def _set_transfer_func(self, transfer_func="vstf_01"):
-        if transfer_func is None:
-            transfer_func = "vstf_01"
-        if type(transfer_func) is str:
-            transfer_func = validator.check_str("transfer_func", transfer_func, self.SUPPORT['transfer_func'])
-            return getattr(transfer, transfer_func)
-        elif callable(transfer_func):
-            return transfer_func
-        else:
-            raise TypeError(f"transfer_func needs to be a callable function or a string with valid value belongs to {self.SUPPORT['transfer_func']}")
 
     def _set_metric(self, metric_name=None, list_supported_metrics=None):
         if type(metric_name) is str:
