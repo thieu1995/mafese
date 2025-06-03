@@ -31,35 +31,40 @@ Lib's structure
 
 Current's structure::
 
-   docs
-   examples
-   mafese
-      data/
-         cls/
-         ...csv
-         reg/
-         ...csv
-      wrapper/
-         mha.py
-         recursive.py
-         sequential.py
-      embedded/
-         lasso.py
-         tree.py
-      filter.py
-      unsupervised.py
-      utils/
-         correlation.py
-         data_loader.py
-         encoder.py
-         estimator.py
-         mealpy_util.py
-         transfer.py
-         validator.py
-      __init__.py
-      selector.py
-   README.md
-   setup.py
+    docs
+    examples
+    mafese
+        data/
+            cls/
+                aggregation.csv
+                Arrhythmia.csv
+                ...
+            reg/
+                boston-housing.csv
+                diabetes.csv
+                ...
+        wrapper/
+            mha.py
+            recursive.py
+            sequential.py
+        embedded/
+            lasso.py
+            tree.py
+        filter.py
+        unsupervised.py
+        utils/
+            correlation.py
+            data_loader.py
+            encoder.py
+            estimator.py
+            mealpy_util.py
+            transfer.py
+            validator.py
+        __init__.py
+        selector.py
+    README.md
+    setup.py
+
 
 ========
 Examples
@@ -184,11 +189,13 @@ Or, use Metaheuristic-based feature selection with different metaheuristic algor
 	print(data.X_train.shape, data.X_test.shape)            # (361, 279) (91, 279)
 
 	# define mafese feature selection method
-	feat_selector = MhaSelector(problem="classification", estimator="knn",
-	                            optimizer="BaseGA", optimizer_paras=None,
-	                            transfer_func="vstf_01", obj_name="AS")
+	feat_selector = MhaSelector(problem="classification",obj_name="AS",
+                            estimator="knn", estimator_paras=None,
+                            optimizer="BaseGA", optimizer_paras=None,
+                            mode='single', n_workers=None, termination=None, seed=None, verbose=True)
+
 	# find all relevant features
-	feat_selector.fit(data.X_train, data.y_train, fit_weights=(0.9, 0.1), verbose=True)
+	feat_selector.fit(data.X_train, data.y_train, fit_weights=(0.9, 0.1))
 
 	# check selected features - True (or 1) is selected, False (or 0) is not selected
 	print(feat_selector.selected_feature_masks)

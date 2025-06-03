@@ -5,13 +5,13 @@ Citation Request
 Please include these citations if you plan to use this incredible library::
 
 	@article{thieu2024feature,
-	title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
-	author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
-	journal={Future Generation Computer Systems},
-	year={2024},
-	publisher={Elsevier},
-	doi={10.1016/j.future.2024.06.006},
-	url={https://doi.org/10.1016/j.future.2024.06.006},
+        title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
+        author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
+        journal={Future Generation Computer Systems},
+        year={2024},
+        publisher={Elsevier},
+        doi={10.1016/j.future.2024.06.006},
+        url={https://doi.org/10.1016/j.future.2024.06.006},
 	}
 
 	@software{nguyen_van_thieu_2023_7969043,
@@ -56,6 +56,24 @@ Important links
     * https://github.com/thieu1995/MetaCluster
     * https://github.com/thieu1995/pfevaluator
     * https://github.com/aiir-team
+
+
+
+=====================
+Some support websites
+=====================
+
+1. https://neptune.ai/blog/feature-selection-methods
+2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
+3. https://github.com/LBBSoft/FeatureSelect
+4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
+5. https://github.com/scikit-learn-contrib/boruta_py
+6. https://elki-project.github.io/
+7. https://sci2s.ugr.es/keel/index.php
+8. https://archive.ics.uci.edu/datasets
+9. https://python-charts.com/distribution/box-plot-plotly/
+10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
+
 
 
 =======

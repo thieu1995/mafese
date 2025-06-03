@@ -6,7 +6,7 @@
 Welcome to MAFESE's documentation!
 ==================================
 
-.. image:: https://img.shields.io/badge/release-0.2.0-yellow.svg
+.. image:: https://img.shields.io/badge/release-1.0.0-yellow.svg
    :target: https://github.com/thieu1995/mafese/releases
 
 .. image:: https://img.shields.io/pypi/wheel/gensim.svg
@@ -18,20 +18,14 @@ Welcome to MAFESE's documentation!
 .. image:: https://img.shields.io/pypi/pyversions/mafese.svg
    :target: https://www.python.org/
 
-.. image:: https://img.shields.io/pypi/status/mafese.svg
-   :target: https://img.shields.io/pypi/status/mafese.svg
-
 .. image:: https://img.shields.io/pypi/dm/mafese.svg
    :target: https://img.shields.io/pypi/dm/mafese.svg
-
-.. image:: https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml/badge.svg
-   :target: https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml
 
 .. image:: https://static.pepy.tech/badge/mafese
    :target: https://pepy.tech/project/mafese
 
-.. image:: https://img.shields.io/github/release-date/thieu1995/mafese.svg
-   :target: https://img.shields.io/github/release-date/thieu1995/mafese.svg
+.. image:: https://github.com/thieu1995/mafese/actions/workflows/test.yml/badge.svg
+   :target: https://github.com/thieu1995/mafese/actions/workflows/test.yml
 
 .. image:: https://readthedocs.org/projects/mafese/badge/?version=latest
    :target: https://mafese.readthedocs.io/en/latest/?badge=latest
@@ -39,14 +33,8 @@ Welcome to MAFESE's documentation!
 .. image:: https://img.shields.io/badge/Chat-on%20Telegram-blue
    :target: https://t.me/+fRVCJGuGJg1mNDg1
 
-.. image:: https://img.shields.io/github/contributors/thieu1995/mafese.svg
-   :target: https://img.shields.io/github/contributors/thieu1995/mafese.svg
-
-.. image:: https://img.shields.io/badge/PR-Welcome-%23FF8300.svg?
-   :target: https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project
-
-.. image:: https://zenodo.org/badge/545209353.svg
-   :target: https://doi.org/10.5281/zenodo.7969042
+.. image:: https://img.shields.io/badge/DOI-10.1016%2Fj.future.2024.06.006-blue
+   :target: https://doi.org/10.1016/j.future.2024.06.006
 
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
    :target: https://www.gnu.org/licenses/gpl-3.0
@@ -64,7 +52,7 @@ using meta-heuristic algorithms.
 * **Total performance metrics**: >= 61 (45 regressions and 16 classifications)
 * **Total objective functions (as fitness functions)**: >= 61 (45 regressions and 16 classifications)
 * **Documentation:** https://mafese.readthedocs.io/en/latest/
-* **Python versions:** >= 3.7.x
+* **Python versions:** >= 3.8.x
 * **Dependencies:** numpy, scipy, scikit-learn, pandas, mealpy, permetrics, plotly, kaleido
 
 
