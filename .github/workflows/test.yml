@@ -1,0 +1,57 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+
+env:
+  PROJECT_NAME: mafese
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 9
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/cache@v3
+        id: depcache
+        with:
+          path: deps
+          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Download dependencies
+        if: steps.depcache.outputs.cache-hit != 'true'
+        run: |
+          pip download --dest=deps -r requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -U --no-index --find-links=deps deps/*
+
+      - name: Run tests
+        run: |
+          pytest --doctest-modules --junitxml=junit/pytest-results-${{ matrix.python-version }}.xml --cov=$PROJECT_NAME --cov-report=xml tests/
+          flake8 tests/
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/pytest-results-${{ matrix.python-version }}.xml
+        if: always()
