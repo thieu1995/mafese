@@ -46,12 +46,12 @@ jobs:
           name: dist-package
           path: dist
 
-#      - name: Publish to Test PyPI
-#        uses: pypa/gh-action-pypi-publish@release/v1
-#        with:
-#          repository-url: https://test.pypi.org/legacy/
-#          skip-existing: true
-#          attestations: true
+      - name: Publish to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+          attestations: true
 
       - name: Clean existing attestations
         run: rm -f dist/*.intoto.jsonl
