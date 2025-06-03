@@ -37,9 +37,10 @@ def test_RecursiveSelector_class():
 def test_MhaSelector_class():
     X = np.random.rand(100, 6)
     y = np.random.randint(0, 2, size=100)
-    feat_selector = MhaSelector(problem="classification", estimator="knn",
+    feat_selector = MhaSelector(problem="classification", obj_name="AS",
+                                estimator="knn", estimator_paras=None,
                                 optimizer="OriginalWOA", optimizer_paras=None,
-                                transfer_func="vstf_01", obj_name="AS")
+                                mode='single', n_workers=None, termination=None, seed=42, verbose=True)
     feat_selector.fit(X, y)
     X_selected = feat_selector.transform(X)
     assert X_selected.shape[1] == len(feat_selector.selected_feature_indexes)
