@@ -13,7 +13,7 @@ alt="MAFESE"/>
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/mafese.svg)
 [![Downloads](https://static.pepy.tech/badge/mafese)](https://pepy.tech/project/mafese)
-[![Tests & Publishes to PyPI](https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml/badge.svg)](https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml)
+[![Run Tests](https://github.com/thieu1995/mafese/actions/workflows/test.yml/badge.svg)](https://github.com/thieu1995/mafese/actions/workflows/test.yml)
 [![Documentation Status](https://readthedocs.org/projects/mafese/badge/?version=latest)](https://mafese.readthedocs.io/en/latest/?badge=latest)
 [![Chat](https://img.shields.io/badge/Chat-on%20Telegram-orange)](https://t.me/+fRVCJGuGJg1mNDg1)
 [![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.future.2024.06.006-blue)](https://doi.org/10.1016/j.future.2024.06.006)
