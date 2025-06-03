@@ -6,9 +6,10 @@
 + Update `validator` module with broader types.
 + Update `scaler` module.
 + Update `encoder` module with `ObjectiveScaler` class.
-
-+ Add DataTransformer class, that can handle the feature scaling for data
-+ Set up a strict requirement for mealpy version 2.5.4
++ Update `MhaSelector` with different parameters order and different parameter names.
++ Update `MultiMhaSelector` with different parameters order and different parameter names.
++ Update `fit()` method in `MhaSelector` and `MultiMhaSelector`.
++ Update Github action workflows, documentation, examples, and tests.
 
 ---------------------------------------------------------------------
 
