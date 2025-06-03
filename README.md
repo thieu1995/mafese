@@ -11,42 +11,61 @@ alt="MAFESE"/>
 [![Wheel](https://img.shields.io/pypi/wheel/gensim.svg)](https://pypi.python.org/pypi/mafese) 
 [![PyPI version](https://badge.fury.io/py/mafese.svg)](https://badge.fury.io/py/mafese)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mafese.svg)
-![PyPI - Status](https://img.shields.io/pypi/status/mafese.svg)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/mafese.svg)
 [![Downloads](https://static.pepy.tech/badge/mafese)](https://pepy.tech/project/mafese)
 [![Tests & Publishes to PyPI](https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml/badge.svg)](https://github.com/thieu1995/mafese/actions/workflows/publish-package.yaml)
-![GitHub Release Date](https://img.shields.io/github/release-date/thieu1995/mafese.svg)
 [![Documentation Status](https://readthedocs.org/projects/mafese/badge/?version=latest)](https://mafese.readthedocs.io/en/latest/?badge=latest)
-[![Chat](https://img.shields.io/badge/Chat-on%20Telegram-blue)](https://t.me/+fRVCJGuGJg1mNDg1)
-![GitHub contributors](https://img.shields.io/github/contributors/thieu1995/mafese.svg)
-[![GitTutorial](https://img.shields.io/badge/PR-Welcome-%23FF8300.svg?)](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project)
-[![DOI](https://zenodo.org/badge/545209353.svg)](https://doi.org/10.5281/zenodo.7969042)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Chat](https://img.shields.io/badge/Chat-on%20Telegram-orange)](https://t.me/+fRVCJGuGJg1mNDg1)
+[![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.future.2024.06.006-blue)](https://doi.org/10.1016/j.future.2024.06.006)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-yellow.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-MAFESE (Metaheuristic Algorithms for FEature SElection) is the biggest python library for feature selection (FS) 
-problem using meta-heuristic algorithms.
+---
+
+**MAFESE (Metaheuristic Algorithms for FEature SElection)** is the **largest open-source Python library** dedicated to 
+the feature selection (FS) problem using metaheuristic algorithms. It contains filter, wrapper, embedded, and unsupervised-based methods with modern optimization techniques.
+Whether you're tackling classification or regression tasks, MAFESE helps automate and enhance feature selection to improve model performance.
+
+---
+
+## 🔥 Key Features
 
 * **🆓 Free software:** GNU General Public License (GPL) V3 license
 * **🔄 Total Wrapper-based (Metaheuristic Algorithms):** > 200 methods
 * **📊 Total Filter-based (Statistical-based):** > 15 methods
 * **🌳 Total Embedded-based (Tree and Lasso):** > 10 methods
 * **🔍 Total Unsupervised-based:** ≥ 4 methods
-* **📂 Total datasets:** ≥ 30 (47 classifications and 7 regressions)
+* **📂 Built-in Datasets**: ≥ 30 datasets (47 classifications, 7 regressions) 
 * **📈 Total performance metrics:** ≥ 61 (45 regressions and 16 classifications)
 * **⚙️ Total objective functions (as fitness functions):** ≥ 61 (45 regressions and 16 classifications)
 * **📖 Documentation:** [https://mafese.readthedocs.io/en/latest/](https://mafese.readthedocs.io/en/latest/)
-* **🐍 Python versions:** ≥ 3.7.x
+* **🐍 Python versions:** ≥ 3.8.x
 * **📦 Dependencies:** `numpy`, `scipy`, `scikit-learn`, `pandas`, `mealpy`, `permetrics`, `plotly`, `kaleido`
 
 
-## Citation Request
+## 🎯 Goals
+MAFESE provides all state-of-the-art feature selection (FS) methods:
+
+* 🧠 Unsupervised-based FS
+
+* 🔎 Filter-based FS
+
+* 🌲 Embedded-based FS
+  * Regularization (Lasso-based)
+  * Tree-based methods
+
+* ⚙️ Wrapper-based FS
+
+  * Sequential-based: forward and backward
+  * Recursive-based
+  * MHA-based: Metaheuristic Algorithms
+
+
+## 📝 Citation
 
 Please include these citations if you plan to use this incredible library:
 
-
 ```bibtex
-
 @article{van2024feature,
   title={Feature selection using metaheuristics made easy: Open source MAFESE library in Python},
   author={Van Thieu, Nguyen and Nguyen, Ngoc Hung and Heidari, Ali Asghar},
@@ -65,134 +84,68 @@ Please include these citations if you plan to use this incredible library:
   publisher={Elsevier},
   doi={10.1016/j.sysarc.2023.102871}
 }
-
 ```
-
-# Usage
-
-## Goals
-
-- **Our library provides all state-of-the-art feature selection methods**:
-  + Unsupervised-based FS
-  + Filter-based FS
-  + Embedded-based FS
-    + Regularization (Lasso-based)
-    + Tree-based methods
-  + Wrapper-based FS
-    + Sequential-based: forward and backward
-    + Recursive-based
-    + MHA-based: Metaheuristic Algorithms
 
 ## Installation
 
-* Install the [current PyPI release](https://pypi.python.org/pypi/mafese):
-```sh 
+Install the latest release from PyPI:
+
+```bash
 $ pip install mafese
 ```
 
-After installation, you can import MAFESE and check its installed version:
+After installation, check the version:
 
-```sh
+```bash
 $ python
 >>> import mafese
 >>> mafese.__version__
 ```
 
 
+## 🚀 Quick Start
 
-<details><summary><h2>Lib's structure</h2></summary>
+### 1. Load Dataset
 
-```code
-docs
-examples
-mafese
-    data/
-        cls/
-            aggregation.csv
-            Arrhythmia.csv
-            ...
-        reg/
-            boston-housing.csv
-            diabetes.csv
-            ...
-    wrapper/
-        mha.py
-        recursive.py
-        sequential.py
-    embedded/
-        lasso.py
-        tree.py
-    filter.py
-    unsupervised.py
-    utils/
-        correlation.py
-        data_loader.py
-        encoder.py
-        estimator.py
-        mealpy_util.py
-        transfer.py
-        validator.py
-    __init__.py
-    selector.py
-README.md
-setup.py
-```
-
-</details>
-
-
-## Examples
-
-Let's go through some examples.
-
-### 1. First, load dataset. You can use the available datasets from Mafese:
+Use a built-in dataset:
 
 ```python
-# Load available dataset from MAFESE
 from mafese import get_dataset
-
-# Try unknown data
-get_dataset("unknown")
-# Enter: 1      -> This wil list all of avaialble dataset
-
 data = get_dataset("Arrhythmia")
 ```
 
-* Or you can load your own dataset 
+Or load your own:
 
 ```python
 import pandas as pd
 from mafese import Data
 
-# load X and y
-# NOTE mafese accepts numpy arrays only, hence the .values attribute
-dataset = pd.read_csv('examples/dataset.csv', index_col=0).values
-X, y = dataset[:, 0:-1], dataset[:, -1]
+df = pd.read_csv('examples/dataset.csv', index_col=0).values
+X, y = df[:, :-1], df[:, -1]
 data = Data(X, y)
 ```
 
 ### 2. Next, prepare your dataset
 
-
-#### 2.1 Split dataset into train and test set
+#### Split Train/Test
 
 ```python
-data.split_train_test(test_size=0.2, inplace=True)
+data.split_train_test(test_size=0.2)
 print(data.X_train[:2].shape)
 print(data.y_train[:2].shape)
 ```
 
-#### 2.2 Feature Scaling
+#### Scale Features and Labels
 
 ```python
 data.X_train, scaler_X = data.scale(data.X_train, scaling_methods=("standard", "minmax"))
 data.X_test = scaler_X.transform(data.X_test)
 
-data.y_train, scaler_y = data.encode_label(data.y_train)   # This is for classification problem only
+data.y_train, scaler_y = data.encode_label(data.y_train)  # Classification only
 data.y_test = scaler_y.transform(data.y_test)
 ```
 
-### 3. Next, choose the Selector that you want to use by first import them:
+### 3. Select Feature Selection Method
 
 ```python
 ## First way, we recommended 
@@ -224,15 +177,16 @@ feat_selector = SequentialSelector(problem="classification", estimator="knn", n_
 
 feat_selector = RecursiveSelector(problem="classification", estimator="rf", n_features=5)
 
-feat_selector = MhaSelector(problem="classification", estimator="knn",
+feat_selector = MhaSelector(problem="classification",obj_name="AS",
+                            estimator="knn", estimator_paras=None,
                             optimizer="BaseGA", optimizer_paras=None,
-                            transfer_func="vstf_01", obj_name="AS")
+                            mode='single', n_workers=None, termination=None, seed=None, verbose=True)
 
-list_optimizers = ("OriginalWOA", "OriginalGWO", "OriginalTLO", "OriginalGSKA")
-list_paras = [{"epoch": 10, "pop_size": 30}, ]*4
-feat_selector = MultiMhaSelector(problem="classification", estimator="knn",
-                            list_optimizers=list_optimizers, list_optimizer_paras=list_paras,
-                            transfer_func="vstf_01", obj_name="AS")
+feat_selector = MultiMhaSelector(problem="classification", obj_name="AS",
+                                 estimator="knn", estimator_paras=None,
+                                 list_optimizers=("OriginalWOA", "OriginalGWO", "OriginalTLO", "OriginalGSKA"), 
+                                 list_optimizer_paras=[{"epoch": 10, "pop_size": 30}, ]*4,
+                                 mode='single', n_workers=None, termination=None, seed=None, verbose=True)
 ```
 
 ### 5. Fit the model to X_train and y_train
@@ -281,9 +235,7 @@ feat_selector.evaluate(estimator=None, data=data, metrics=["AS", "PS", "RS"])
 For more usage examples please look at [examples](/examples) folder.
 
 
-# Support
-
-## Some popular questions
+## ❓ Troubleshooting
 
 1. Where do I find the supported metrics like above ["AS", "PS", "RS"]. What is that?
 
@@ -344,41 +296,17 @@ data.split_train_test(test_size=0.2, random_state=10)   # Try different random_s
 ```
 
 
-<details><summary><h2>Official Links</h2></summary>
 
-* Official source code repository: https://github.com/thieu1995/mafese
-* Official document: https://mafese.readthedocs.io/
-* Download releases: https://pypi.org/project/mafese/
-* Issue tracker: https://github.com/thieu1995/mafese/issues
-* Notable changes log: https://github.com/thieu1995/mafese/blob/master/ChangeLog.md
-* Examples with different mealpy version: https://github.com/thieu1995/mafese/blob/master/examples.md
-* Official chat group: https://t.me/+fRVCJGuGJg1mNDg1
+## 📞 Community & Support
 
-* This project also related to our another projects which are "optimization" and "machine learning", check it here:
-    * https://github.com/thieu1995/mealpy
-    * https://github.com/thieu1995/metaheuristics
-    * https://github.com/thieu1995/opfunu
-    * https://github.com/thieu1995/enoppy
-    * https://github.com/thieu1995/permetrics
-    * https://github.com/thieu1995/MetaCluster
-    * https://github.com/thieu1995/pfevaluator
-    * https://github.com/aiir-team
-
-</details>
+- 📖 [Official Source Code](https://github.com/thieu1995/mafese)
+- 📖 [Official Releases](https://pypi.org/project/mafese/)
+- 📖 [Official Docs](https://mafese.readthedocs.io/)
+- 💬 [Telegram Chat](https://t.me/+fRVCJGuGJg1mNDg1)
+- 🐛 [Report Issues](https://github.com/thieu1995/mafese/issues)
+- 🔄 [Changelog](https://github.com/thieu1995/mafese/blob/master/ChangeLog.md)
 
 
+---
 
-<details><summary><h2>Related Documents</h2></summary>
-
-1. https://neptune.ai/blog/feature-selection-methods
-2. https://www.blog.trainindata.com/feature-selection-machine-learning-with-python/
-3. https://github.com/LBBSoft/FeatureSelect
-4. https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-2754-0
-5. https://github.com/scikit-learn-contrib/boruta_py
-6. https://elki-project.github.io/
-7. https://sci2s.ugr.es/keel/index.php
-8. https://archive.ics.uci.edu/datasets
-9. https://python-charts.com/distribution/box-plot-plotly/
-10. https://plotly.com/python/box-plots/?_ga=2.50659434.2126348639.1688086416-114197406.1688086416#box-plot-styling-mean--standard-deviation
-
-</details>
+Developed by: [Thieu](mailto:nguyenthieu2102@gmail.com?Subject=Mafese_QUESTIONS) @ 2023
