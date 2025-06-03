@@ -4,7 +4,7 @@
 #       Github: https://github.com/thieu1995        %                         
 # --------------------------------------------------%
 
-__version__ = "0.2.0"
+__version__ = "1.0.0"
 
 from mafese.utils.data_loader import Data, get_dataset, DataTransformer
 from mafese.utils.mealpy_util import FeatureSelectionProblem
